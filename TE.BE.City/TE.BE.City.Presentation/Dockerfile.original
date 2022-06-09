@@ -1,0 +1,23 @@
+FROM microsoft/aspnetcore:2.0-nanoserver-1709 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM microsoft/aspnetcore-build:2.0-nanoserver-1709 AS build
+WORKDIR /src
+COPY TE.BE.City.Presentation/TE.BE.City.Api.csproj TE.BE.City.Presentation/
+COPY TE.BE.City.Service/TE.BE.City.Service.csproj TE.BE.City.Service/
+COPY TE.BE.City.Domain/TE.BE.City.Domain.csproj TE.BE.City.Domain/
+COPY TE.BE.City.Infra.CrossCutting/TE.BE.City.Infra.CrossCutting.csproj TE.BE.City.Infra.CrossCutting/
+COPY TE.BE.City.Infra.Data/TE.BE.City.Infra.Data.csproj TE.BE.City.Infra.Data/
+RUN dotnet restore TE.BE.City.Presentation/TE.BE.City.Api.csproj
+COPY . .
+WORKDIR /src/TE.BE.City.Presentation
+RUN dotnet build TE.BE.City.Api.csproj -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish TE.BE.City.Api.csproj -c Release -o /app
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "TE.BE.City.Api.dll"]
