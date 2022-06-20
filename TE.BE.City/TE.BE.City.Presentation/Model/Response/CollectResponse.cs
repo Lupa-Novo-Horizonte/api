@@ -7,8 +7,11 @@ namespace TE.BE.City.Presentation.Model.Response
 {
     public class CollectResponse : BaseResponse
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool Closed { get; set; }
+        // Existe coleta de lixo na sua casa?
+        public bool HasCollect { get; set; }
+        // Qual a frequencia semanal?
+        public int HowManyTimes { get; set; }
+        // Existe coleta seletiva?
+        public bool HasSelectiveCollect { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace TE.BE.City.Domain.Interfaces
         Task<AsphaltEntity> Post(AsphaltEntity request);
         Task<AsphaltEntity> Put(AsphaltEntity request);
         Task<AsphaltEntity> Delete(int id);
-        Task<IEnumerable<AsphaltEntity>> GetAll(bool closed, int skip, int limit);
+        Task<IEnumerable<AsphaltEntity>> GetAll(int skip, int limit);
         Task<IEnumerable<AsphaltEntity>> GetById(int id);
         Task<int> GetCount(bool closed);
         Task<IEnumerable<AsphaltEntity>> GetByOcorrencyId(bool closed, int ocorrencyId);

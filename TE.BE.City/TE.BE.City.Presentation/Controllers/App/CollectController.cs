@@ -43,7 +43,7 @@ namespace TE.BE.City.Presentation.Controllers
             }
             else
             {
-                collectEntity = await _collectService.GetAll(false, skip, limit);
+                collectEntity = await _collectService.GetAll(skip, limit);
                 collectSearchResponse.Total = await _collectService.GetCount(false);
             }
 
@@ -59,6 +59,9 @@ namespace TE.BE.City.Presentation.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CollectRequest request)
         {
+            var token = HttpContext.Request.Headers["Authorization"];
+            int userId = int.Parse(this.User.Claims.First(i => i.Type == "userId").Value);
+
             var collectEntity = new CollectEntity();
             collectEntity.Longitude = request.Longitude;
             collectEntity.Latitude = request.Latitude;
@@ -66,8 +69,8 @@ namespace TE.BE.City.Presentation.Controllers
             collectEntity.HowManyTimes = request.HowManyTimes;
             collectEntity.HasSelectiveCollect = request.HasSelectiveCollect;
             collectEntity.CreatedAt = DateTime.Now.ToUniversalTime();
-            collectEntity.UserId = request.UserId;
-            collectEntity.StatusId = request.StatusId;
+            collectEntity.UserId = userId;
+            collectEntity.StatusId = 1; // request.StatusId;
 
             var result = await _collectService.Post(collectEntity);
 

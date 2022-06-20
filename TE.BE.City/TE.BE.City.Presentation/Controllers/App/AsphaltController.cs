@@ -51,7 +51,7 @@ namespace TE.BE.City.Presentation.Controllers
             }
             else
             {
-                var asphaltEntity = await _asphaltService.GetAll(false, skip, limit);
+                var asphaltEntity = await _asphaltService.GetAll(skip, limit);
                 _mapper.Map(asphaltEntity, asphaltSearchResponse.AsphaltList);
                 asphaltSearchResponse.Total = await _asphaltService.GetCount(false);
             }
@@ -66,6 +66,9 @@ namespace TE.BE.City.Presentation.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] AsphaltRequest request)
         {
+            var token = HttpContext.Request.Headers["Authorization"];
+            int userId = int.Parse(this.User.Claims.First(i => i.Type == "userId").Value);
+
             var asphaltEntity = new AsphaltEntity();
             asphaltEntity.Longitude = request.Longitude;
             asphaltEntity.Latitude = request.Latitude;
@@ -73,8 +76,8 @@ namespace TE.BE.City.Presentation.Controllers
             asphaltEntity.HasHoles = request.HasHoles;
             asphaltEntity.HasPavedSidewalks = request.HasPavedSidewalks;
             asphaltEntity.CreatedAt = DateTime.Now.ToUniversalTime();
-            asphaltEntity.UserId = request.UserId;
-            asphaltEntity.StatusId = request.StatusId;
+            asphaltEntity.UserId = userId; // request.UserId;
+            asphaltEntity.StatusId = 1; // request.StatusId;
 
             var result = await _asphaltService.Post(asphaltEntity);
 

@@ -12,5 +12,6 @@ namespace TE.BE.City.Domain.Interfaces
         Task<LightEntity> Put(LightEntity request);
         Task<LightEntity> Delete(int id);
         Task<LightEntity> Get();
+        Task<IEnumerable<LightEntity>> GetAll(int skip, int limit);
     }
 }

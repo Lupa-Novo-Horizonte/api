@@ -2,7 +2,10 @@
 {
     public class AsphaltResponse : BaseResponse
     {
-        public int Total { get; set; }
-        public int Page { get; set; }
+        public bool IsPaved { get; set; }
+        //A via possui buracos ou crateras?
+        public bool HasHoles { get; set; }
+        // Há calçadas pavimentadas?
+        public bool HasPavedSidewalks { get; set; }
     }
 }

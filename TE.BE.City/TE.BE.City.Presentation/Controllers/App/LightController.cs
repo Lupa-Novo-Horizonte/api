@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
@@ -45,6 +46,9 @@ namespace TE.BE.City.Presentation.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] LightRequest request)
         {
+            var token = HttpContext.Request.Headers["Authorization"];
+            int userId = int.Parse(this.User.Claims.First(i => i.Type == "userId").Value);
+
             var lightEntity = new LightEntity();
             lightEntity.Longitude = request.Longitude;
             lightEntity.Latitude = request.Latitude;
@@ -52,8 +56,8 @@ namespace TE.BE.City.Presentation.Controllers
             lightEntity.IsItWorking = request.IsItWorking;
             lightEntity.HasLosesCable = request.HasLosesCable;
             lightEntity.CreatedAt = DateTime.Now.ToUniversalTime();
-            lightEntity.UserId = request.UserId;
-            lightEntity.StatusId = request.StatusId;
+            lightEntity.UserId = userId;
+            lightEntity.StatusId = 1; // request.StatusId;
 
             var result = await _lightService.Post(lightEntity);
 

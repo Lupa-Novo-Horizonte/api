@@ -19,9 +19,9 @@ namespace TE.BE.City.Service.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<AsphaltEntity>> GetAll(bool closed, int skip, int limit)
+        public async Task<IEnumerable<AsphaltEntity>> GetAll(int skip, int limit)
         {
-            var asphaltEntity = new List<AsphaltEntity>();
+            var asphaltsEntity = new List<AsphaltEntity>();
 
             try
             {
@@ -36,7 +36,7 @@ namespace TE.BE.City.Service.Services
                     return result;
                 else
                 {
-                    var contactEntity = new AsphaltEntity()
+                    var asphaltEntity = new AsphaltEntity()
                     {
                         Error = new ErrorDetail()
                         {
@@ -45,10 +45,10 @@ namespace TE.BE.City.Service.Services
                             Message = ErrorCode.SearchHasNoResult.GetDescription()
                         }
                     };
-                    asphaltEntity.Add(contactEntity);
+                    asphaltsEntity.Add(asphaltEntity);
                 }
 
-                return asphaltEntity;
+                return asphaltsEntity;
             }
             catch (ExecptionHelper.ExceptionService ex)
             {

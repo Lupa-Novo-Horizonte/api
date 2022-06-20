@@ -64,40 +64,21 @@ namespace TE.BE.City.Service.Services
         /// <summary>
         /// Get all itens
         /// </summary>
-        public async Task<IEnumerable<WaterEntity>> GetAll(WaterEntity request, int skip, int limit)
+        public async Task<IEnumerable<WaterEntity>> GetAll(int skip, int limit)
         {
-            var ordersEntity = new List<WaterEntity>();
+            var waterEntity = new List<WaterEntity>();
 
             try
             {
                 IEnumerable<WaterEntity> result;
 
-                // apply filter
-                var predicate = PredicateBuilder.New<WaterEntity>(true);
-
-                if (request.Id > 0)
-                    predicate.And(model => model.Id == request.Id);
-                if (request.StatusId > 0)
-                    predicate.And(model => model.StatusId == request.StatusId);
-                if (request.CreatedAt > DateTime.MinValue)
-                    predicate.And(model => model.CreatedAt.Date >= request.CreatedAt.Date);
-                if (request.EndDate > DateTime.MinValue)
-                    predicate.And(model => model.CreatedAt.Date <= request.EndDate.Date);
-
-                // get order
                 if (skip == 0 && limit == 0)
-                    result = await _waterRepository.Filter(predicate);
+                    result = await _waterRepository.Select();
                 else
-                    result = await _waterRepository.FilterWithPagination(predicate, skip, limit);
+                    result = await _waterRepository.SelectWithPagination(skip, limit);
 
                 if (result != null)
-                {
-                    // get order status
-                    foreach (var item in result.ToList())
-                        item.Status = await _StatusRepository.SelectById(item.StatusId);
-
                     return result;
-                }
                 else
                 {
                     var orderEntity = new WaterEntity()
@@ -109,10 +90,10 @@ namespace TE.BE.City.Service.Services
                             Message = ErrorCode.SearchHasNoResult.GetDescription()
                         }
                     };
-                    ordersEntity.Add(orderEntity);
+                    waterEntity.Add(orderEntity);
                 }
 
-                return ordersEntity;
+                return waterEntity;
             }
             catch
             {

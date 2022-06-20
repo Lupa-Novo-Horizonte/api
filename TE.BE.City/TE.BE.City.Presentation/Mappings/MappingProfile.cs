@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Collections.Generic;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Presentation.Model.Response;
 
@@ -21,32 +22,32 @@ namespace TE.BE.City.Presentation.Mappings
             CreateMap<StatusEntity, StatusResponseModel>();
             CreateMap<WaterEntity, WaterResponse>();
 
-                 //.ForMember(destination => destination.Status, map =>
-                 //{
-                 //    map.PreCondition(src => (src.Status != null));
-                 //    map.MapFrom(source => new StatusResponseModel
-                 //    {
-                 //        Id = source.Status.Id,
-                 //        Name = source.Status.Name,
-                 //        CreatedAt = source.Status.CreatedAt.Date,
-                 //        Closed = source.Status.Closed
-                 //    });
-                 //})
-                 //.ForMember(destination => destination.User, map =>
-                 //{
-                 //    map.PreCondition(src => (src.User != null));
-                 //    map.MapFrom(source => new UserResponse
-                 //    {
-                 //        Id = source.Status.Id,
-                 //        FirstName = source.User.FirstName,
-                 //        LastName = source.User.LastName,
-                 //        RoleId = source.User.RoleId.ToString(),
-                 //        Username = source.User.Username,
-                 //        Active = source.User.Active,
-                 //        Block = source.User.Block,
-                 //        CreatedAt = source.User.CreatedAt.Date
-                 //    });
-                 //}); ;
+            //.ForMember(destination => destination.Status, map =>
+            //{
+            //    map.PreCondition(src => (src.Status != null));
+            //    map.MapFrom(source => new StatusResponseModel
+            //    {
+            //        Id = source.Status.Id,
+            //        Name = source.Status.Name,
+            //        CreatedAt = source.Status.CreatedAt.Date,
+            //        Closed = source.Status.Closed
+            //    });
+            //})
+            //.ForMember(destination => destination.User, map =>
+            //{
+            //    map.PreCondition(src => (src.User != null));
+            //    map.MapFrom(source => new UserResponse
+            //    {
+            //        Id = source.Status.Id,
+            //        FirstName = source.User.FirstName,
+            //        LastName = source.User.LastName,
+            //        RoleId = source.User.RoleId.ToString(),
+            //        Username = source.User.Username,
+            //        Active = source.User.Active,
+            //        Block = source.User.Block,
+            //        CreatedAt = source.User.CreatedAt.Date
+            //    });
+            //}); ;
         }
     }
 }

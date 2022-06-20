@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
@@ -65,7 +66,7 @@ namespace TE.BE.City.Presentation.Controllers
         public async Task<ActionResult> Post([FromBody] TrashRequest request)
         {
             var token = HttpContext.Request.Headers["Authorization"];
-            int userId = await _userService.ValidateJWTToken(token);
+            int userId = int.Parse(this.User.Claims.First(i => i.Type == "userId").Value);
 
             var trashEntity = new TrashEntity();
             trashEntity.Longitude = request.Longitude;
@@ -75,7 +76,7 @@ namespace TE.BE.City.Presentation.Controllers
             trashEntity.HasAccumulatedTrash = request.HasAccumulatedTrash;
             trashEntity.CreatedAt = DateTime.Now.ToUniversalTime();
             trashEntity.UserId = userId;
-            trashEntity.StatusId = request.StatusId;
+            trashEntity.StatusId = 1; //request.StatusId;
 
             var result = await _trashService.Post(trashEntity);
 

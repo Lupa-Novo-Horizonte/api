@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
@@ -34,11 +35,14 @@ namespace TE.BE.City.Presentation.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody]WaterRequest request)
         {
+            var token = HttpContext.Request.Headers["Authorization"];
+            int userId = int.Parse(this.User.Claims.First(i => i.Type == "userId").Value);
+
             var waterEntity = new WaterEntity();
             waterEntity.Latitude = request.Latitude;
             waterEntity.Longitude = request.Longitude;
-            waterEntity.StatusId = request.StatusId;
-            waterEntity.UserId = request.UserId;
+            waterEntity.StatusId = 1; // request.StatusId;
+            waterEntity.UserId = userId;
             waterEntity.HasWell = request.hasWell;
             waterEntity.HomeWithWater = request.homeWithWater;
             waterEntity.WaterMissedInAWeek = request.waterMissedInAWeek;
@@ -73,7 +77,7 @@ namespace TE.BE.City.Presentation.Controllers
                 waterEntity.CreatedAt = request.StartDate;
                 waterEntity.EndDate = request.EndDate;
 
-                var usersEntity = await _waterService.GetAll(waterEntity, request.Skip, request.Limit);
+                var usersEntity = await _waterService.GetAll(request.Skip, request.Limit);
                 _mapper.Map(usersEntity, waterSearchResponseModel.WaterList);
             }
 

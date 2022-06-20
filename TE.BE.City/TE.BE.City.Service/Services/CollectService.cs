@@ -19,7 +19,7 @@ namespace TE.BE.City.Service.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<CollectEntity>> GetAll(bool closed, int skip, int limit)
+        public async Task<IEnumerable<CollectEntity>> GetAll(int skip, int limit)
         {
             var contactsEntity = new List<CollectEntity>();
 
@@ -28,9 +28,9 @@ namespace TE.BE.City.Service.Services
                 IEnumerable<CollectEntity> result;
 
                 if (skip == 0 && limit == 0)
-                    result = await _repository.Filter(c => c.EndDate <= DateTime.Today);
+                    result = await _repository.Select();
                 else
-                    result = await _repository.FilterWithPagination(c => c.EndDate <= DateTime.Today, skip, limit);
+                    result = await _repository.SelectWithPagination(skip, limit);
 
                 if (result != null)
                     return result;

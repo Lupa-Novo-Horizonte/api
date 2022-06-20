@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
@@ -32,6 +33,9 @@ namespace TE.BE.City.Presentation.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] SewerRequest request)
         {
+            var token = HttpContext.Request.Headers["Authorization"];
+            int userId = int.Parse(this.User.Claims.First(i => i.Type == "userId").Value);
+
             var sewerEntity = new SewerEntity();
             sewerEntity.Longitude = request.Longitude;
             sewerEntity.Latitude = request.Latitude;
@@ -39,8 +43,8 @@ namespace TE.BE.City.Presentation.Controllers
             sewerEntity.HasHomeCesspool = request.HasHomeCesspool;
             sewerEntity.DoesCityHallCleanTheSewer = request.DoesCityHallCleanTheSewer;
             sewerEntity.CreatedAt = DateTime.Now.ToUniversalTime();
-            sewerEntity.UserId = request.UserId;
-            sewerEntity.StatusId = request.StatusId;
+            sewerEntity.UserId = userId;
+            sewerEntity.StatusId = 1; // request.StatusId;
 
             var result = await _sewerService.Post(sewerEntity);
 

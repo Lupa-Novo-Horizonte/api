@@ -19,6 +19,43 @@ namespace TE.BE.City.Service.Services
             _repository = repository;
         }
 
+        public async Task<IEnumerable<LightEntity>> GetAll(int skip, int limit)
+        {
+            var lightsEntity = new List<LightEntity>();
+
+            try
+            {
+                IEnumerable<LightEntity> result;
+
+                if (skip == 0 && limit == 0)
+                    result = await _repository.Select();
+                else
+                    result = await _repository.SelectWithPagination(skip, limit);
+
+                if (result != null)
+                    return result;
+                else
+                {
+                    var lightEntity = new LightEntity()
+                    {
+                        Error = new ErrorDetail()
+                        {
+                            Code = (int)ErrorCode.SearchHasNoResult,
+                            Type = ErrorCode.SearchHasNoResult.ToString(),
+                            Message = ErrorCode.SearchHasNoResult.GetDescription()
+                        }
+                    };
+                    lightsEntity.Add(lightEntity);
+                }
+
+                return lightsEntity;
+            }
+            catch (ExecptionHelper.ExceptionService ex)
+            {
+                throw new ExecptionHelper.ExceptionService(ex.Message);
+            }
+        }
+
         public async Task<LightEntity> Get()
         {
             try

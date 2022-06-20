@@ -11,7 +11,7 @@ namespace TE.BE.City.Domain.Interfaces
         Task<CollectEntity> Post(CollectEntity request);
         Task<CollectEntity> Put(CollectEntity request);
         Task<CollectEntity> Delete(int id);
-        Task<IEnumerable<CollectEntity>> GetAll(bool closed, int skip, int limit);
+        Task<IEnumerable<CollectEntity>> GetAll(int skip, int limit);
         Task<IEnumerable<CollectEntity>> GetById(int id);
         Task<int> GetCount(bool? closed);
     }

@@ -32,11 +32,13 @@ namespace TE.BE.City.Domain
                 Claim claimName = new Claim("fullName", userEntity.FirstName + userEntity.LastName);
                 Claim claimRole = new Claim("role", userEntity.RoleId.ToString());
                 Claim claimEmail = new Claim("email", userEntity.Username);
+                Claim claimUserId = new Claim("userId", userEntity.Id.ToString());
                 IList<Claim> claims = new List<Claim>()
                 {
                     claimName,
                     claimRole,
-                    claimEmail
+                    claimEmail,
+                    claimUserId
                 };
 
                 var token = new JwtSecurityToken(_config["Jwt:Issuer"],
