@@ -42,7 +42,7 @@ namespace TE.BE.City.Presentation.Controllers
             sewerEntity.HasHomeSewer = request.HasHomeSewer;
             sewerEntity.HasHomeCesspool = request.HasHomeCesspool;
             sewerEntity.DoesCityHallCleanTheSewer = request.DoesCityHallCleanTheSewer;
-            sewerEntity.CreatedAt = DateTime.Now.ToUniversalTime();
+            sewerEntity.CreatedAt = DateTime.Now.ToLocalTime();
             sewerEntity.UserId = userId;
             sewerEntity.StatusId = 1; // request.StatusId;
 
@@ -96,7 +96,7 @@ namespace TE.BE.City.Presentation.Controllers
             sewerEntity.HasHomeSewer = request.HasHomeSewer;
             sewerEntity.HasHomeCesspool = request.HasHomeCesspool;
             sewerEntity.DoesCityHallCleanTheSewer = request.DoesCityHallCleanTheSewer;
-            sewerEntity.CreatedAt = DateTime.Now.ToUniversalTime();
+            sewerEntity.CreatedAt = DateTime.Now.ToLocalTime();
             sewerEntity.UserId = request.UserId;
             sewerEntity.StatusId = request.StatusId;
 

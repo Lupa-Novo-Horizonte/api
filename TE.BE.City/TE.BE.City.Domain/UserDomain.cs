@@ -1,22 +1,26 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MailKit.Net.Smtp;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
+using TE.BE.City.Infra.CrossCutting;
 
 namespace TE.BE.City.Domain
 {
     public class UserDomain : IUserDomain
     {
         private IConfiguration _config;
-
+        
         public UserDomain(IConfiguration config)
         {
             _config = config;
@@ -98,6 +102,44 @@ namespace TE.BE.City.Domain
                 return true;
             else
                 return false;
+        }
+
+        public async Task<bool> SendMail(UserEntity userEntity)
+        {
+            string url = _config["SmtpSettings:Url"] + userEntity.Token;
+
+            var message = new MimeMessage();
+            message.From.Add(MailboxAddress.Parse(_config["SmtpSettings:SenderEmail"]));
+            message.To.Add(MailboxAddress.Parse(userEntity.Username));
+            message.Subject = "Projeto Lupa NH - Recuperação de Senha";
+            message.Body = new TextPart("plain")
+            {
+                Text = "Olá. Você requisitou uma redefinição de senha. Para prosseguir clique no link abaixo. Caso não tenha requisitado, por favor ignore este e-mail." +
+                "\nAcesse pelo link: " + url +
+                "\n\n" +
+                "Projeto Luta NH"
+            };
+
+            var client = new SmtpClient();
+
+            try
+            {
+                await client.ConnectAsync(_config["SmtpSettings:Server"], int.Parse(_config["SmtpSettings:Port"]), true);
+                await client.AuthenticateAsync(new NetworkCredential(_config["SmtpSettings:SenderEmail"], _config["SmtpSettings:Password"]));
+                //await client.SendAsync(message);
+                await client.DisconnectAsync(true);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                client.Dispose();
+            }
+
+            return true;
         }
     }
 }

@@ -175,6 +175,52 @@ namespace TE.BE.City.Service.Services
             }
         }
 
+        public async Task<UserEntity> Recovery(string userName)
+        {
+            var userEntity = new UserEntity();
+
+            try
+            {
+                var user = await _repository.Filter(x => x.Username == userName);
+
+                if (user.Any())
+                {
+                    userEntity.Id = user.FirstOrDefault().Id;
+                    userEntity.RoleId = user.FirstOrDefault().RoleId;
+                    userEntity.Username = user.FirstOrDefault().Username;
+                    
+                    userEntity.Token = await _userDomain.GenerateJWTToken(userEntity);
+
+                    var result = await _userDomain.SendMail(userEntity);
+
+                    if (result)
+                        return userEntity;
+                    else
+                        userEntity.Error = new ErrorDetail()
+                        {
+                            Code = (int)ErrorCode.GenericError,
+                            Type = ErrorCode.GenericError.ToString(),
+                            Message = ErrorCode.GenericError.GetDescription()
+                        };
+                    return userEntity;
+                }
+                else
+                {
+                    userEntity.Error = new ErrorDetail()
+                    {
+                        Code = (int)ErrorCode.UserNotIdentified,
+                        Type = ErrorCode.UserNotIdentified.ToString(),
+                        Message = ErrorCode.UserNotIdentified.GetDescription()
+                    };
+                    return userEntity;
+                }
+            }
+            catch (ExecptionHelper.ExceptionService ex)
+            {
+                throw new ExecptionHelper.ExceptionService(ex.Message);
+            }
+        }
+
         public Task<int> ValidateJWTToken(string token)
         {
             return _userDomain.ValidateJWTToken(token);

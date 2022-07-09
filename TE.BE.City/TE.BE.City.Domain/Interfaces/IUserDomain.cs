@@ -12,5 +12,6 @@ namespace TE.BE.City.Domain.Interfaces
         Task<string> Encrypt(string password);
         Task<bool> IsValidPassword(string attemptPassword, string savedPassword);
         Task<int> ValidateJWTToken(string token);
+        Task<bool> SendMail(UserEntity userEntity);
     }
 }

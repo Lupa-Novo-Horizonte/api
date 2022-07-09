@@ -68,7 +68,7 @@ namespace TE.BE.City.Presentation.Controllers
             collectEntity.HasCollect = request.HasCollect;
             collectEntity.HowManyTimes = request.HowManyTimes;
             collectEntity.HasSelectiveCollect = request.HasSelectiveCollect;
-            collectEntity.CreatedAt = DateTime.Now.ToUniversalTime();
+            collectEntity.CreatedAt = DateTime.Now.ToLocalTime();
             collectEntity.UserId = userId;
             collectEntity.StatusId = 1; // request.StatusId;
 
@@ -91,7 +91,7 @@ namespace TE.BE.City.Presentation.Controllers
             collectEntity.HasCollect = request.HasCollect;
             collectEntity.HowManyTimes = request.HowManyTimes;
             collectEntity.HasSelectiveCollect = request.HasSelectiveCollect;
-            collectEntity.CreatedAt = DateTime.Now.ToUniversalTime();
+            collectEntity.CreatedAt = DateTime.Now.ToLocalTime();
             collectEntity.UserId = request.UserId;
             collectEntity.StatusId = request.StatusId;
 

@@ -21,6 +21,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Pages\Recovery.html" />
+    <None Remove="Views\User\Recovery.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\Recovery.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
@@ -33,6 +44,10 @@
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="Views\User\Recovery.html" />
   </ItemGroup>
 
   <ItemGroup>

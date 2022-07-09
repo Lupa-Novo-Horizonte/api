@@ -51,6 +51,23 @@ namespace TE.BE.City.Presentation.Controllers
         }
 
         /// <summary>
+        /// Request recover password. E-mail sent to user.
+        /// </summary>
+        /// <param name="request"></param>
+        [HttpPost("recovery")]
+        [AllowAnonymous]
+        public async Task<UserResponse> Recovery([FromBody] UserRequest request)
+        {
+            var userResponse = new UserResponse();
+
+            var usersEntity = await _userService.Recovery(request.Username);
+
+            _mapper.Map(usersEntity, userResponse);
+
+            return userResponse;
+        }
+        
+        /// <summary>
         /// Post new user.
         /// </summary>
         /// <param name="request"></param>
@@ -68,7 +85,7 @@ namespace TE.BE.City.Presentation.Controllers
             userEntity.Active = true;
             userEntity.Block = false;
             userEntity.RoleId = request.RoleId != 0 ? request.RoleId : 1;
-            userEntity.CreatedAt = DateTime.Now.ToUniversalTime();
+            userEntity.CreatedAt = DateTime.Now.ToLocalTime();
 
             var usersEntity = await _userService.Post(userEntity);
             _mapper.Map(usersEntity, userResponse);
@@ -113,7 +130,7 @@ namespace TE.BE.City.Presentation.Controllers
             userEntity.Username = request.Username;
             userEntity.Password = request.Password;
             userEntity.RoleId = request.RoleId != 0 ? request.RoleId : 1;
-            userEntity.CreatedAt = DateTime.Now.ToUniversalTime();
+            userEntity.CreatedAt = DateTime.Now.ToLocalTime();
 
             var result = await _userService.Put(userEntity);
 

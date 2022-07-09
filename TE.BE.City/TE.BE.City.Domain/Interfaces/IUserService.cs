@@ -14,7 +14,7 @@ namespace TE.BE.City.Domain.Interfaces
         Task<UserEntity> Delete(int id);
         Task<IEnumerable<UserEntity>> GetAll();
         Task<UserEntity> GetById(int id);
-
         Task<int> ValidateJWTToken(string token);
+        Task<UserEntity> Recovery(string userName);
     }
 }

@@ -74,7 +74,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Água Potável",
-                    Description = item.CreatedAt.ToLongTimeString()
+                    Description = $"Possui água? {item.HomeWithWater} / Quantos dias faltam água na semana? {item.WaterMissedInAWeek} / Possui poço? {item.HasWell} / Criado em: {item.CreatedAt.ToLongTimeString()}"
                 });
             }
 
@@ -85,7 +85,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Iluminação Pública",
-                    Description = item.CreatedAt.ToLongTimeString()
+                    Description = $"Possui poste? {item.HasLight} / Luzes funcionando? {item.IsItWorking} / Há fios soltos? {item.HasLosesCable} / Criado em: {item.CreatedAt.ToLongTimeString()}"
                 });
             }
 
@@ -96,7 +96,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Limpeza Urbana",
-                    Description = item.CreatedAt.ToLongTimeString()
+                    Description = $"Existe limpeza da rua? {item.HasRoadcleanUp} / Qual a frequência? {item.HowManyTimes} / Existe lixo acumulado? {item.HasAccumulatedTrash} / Criado em: {item.CreatedAt.ToLongTimeString()}"
                 });
             }
 
@@ -107,7 +107,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Coleta de Lixo",
-                    Description = item.CreatedAt.ToLongTimeString()
+                    Description = $"Existe coleta? {item.HasCollect} / Qual a frequência? {item.HowManyTimes} / Existe coleta seletiva? {item.HasSelectiveCollect} / Criado em: {item.CreatedAt.ToLongTimeString()}"
                 });
             }
 
@@ -118,7 +118,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Tratamento de Esgoto",
-                    Description = item.CreatedAt.ToLongTimeString()
+                    Description = $"Existe coleta de esgoto? {item.HasHomeSewer} / Possui fossa? {item.HasHomeCesspool} / A prefeitura limpa o esgoto? {item.DoesCityHallCleanTheSewer} / Criado em: {item.CreatedAt.ToLongTimeString()}"
                 });
             }
 
@@ -129,7 +129,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Calçadas e Asfalto",
-                    Description = item.CreatedAt.ToLongTimeString()
+                    Description = $"A via é asfaltada? {item.IsPaved} / Possui buracos? {item.HasHoles} / Calçadas pavimentadas? {item.HasPavedSidewalks} / Criado em: {item.CreatedAt.ToLongTimeString()}"
                 });
             }
 

@@ -14,6 +14,8 @@ using System.Text;
 using AutoMapper;
 using TE.BE.City.Presentation.Mappings;
 using System;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace TE.BE.City.Presentation
 {
@@ -127,9 +129,19 @@ namespace TE.BE.City.Presentation
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "City API"); });
 
             app.UseMvc();
-
+             
+            /*
             app.Run(async context => {
                 context.Response.Redirect("swagger/index.html");
+            });
+            */
+            
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Pages")),
+                RequestPath = "/Pages",
+                EnableDefaultFiles = true
             });
         }
     }

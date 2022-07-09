@@ -7,13 +7,15 @@ namespace TE.BE.City.Infra.CrossCutting.Enum
 {
     public enum ErrorCode
     {
-        [Description("User/password invalid.")]
+        [Description("Usuário ou senha inválidos.")]
         UserNotIdentified = 1000,
-        [Description("No data was found.")]
+        [Description("Não foi encontrado nenhum registro.")]
         SearchHasNoResult = 1001,
-        [Description("Error to create a issue.")]
+        [Description("Erro ao criar o registro.")]
         CreateIssueFail = 1002,
-        [Description("Error to insert contact.")]
+        [Description("Erro ao inserir o contato.")]
         InsertContactFail = 1003,
+        [Description("Tente novamente mais tarde.")]
+        GenericError = 1004,
     }
 }

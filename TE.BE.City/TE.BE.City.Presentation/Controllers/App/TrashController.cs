@@ -74,7 +74,7 @@ namespace TE.BE.City.Presentation.Controllers
             trashEntity.HasRoadcleanUp = request.HasRoadcleanUp;
             trashEntity.HowManyTimes = request.HowManyTimes;
             trashEntity.HasAccumulatedTrash = request.HasAccumulatedTrash;
-            trashEntity.CreatedAt = DateTime.Now.ToUniversalTime();
+            trashEntity.CreatedAt = DateTime.Now.ToLocalTime();
             trashEntity.UserId = userId;
             trashEntity.StatusId = 1; //request.StatusId;
 
@@ -97,7 +97,7 @@ namespace TE.BE.City.Presentation.Controllers
             trashEntity.HasRoadcleanUp = request.HasRoadcleanUp;
             trashEntity.HowManyTimes = request.HowManyTimes;
             trashEntity.HasAccumulatedTrash = request.HasAccumulatedTrash;
-            trashEntity.CreatedAt = DateTime.Now.ToUniversalTime();
+            trashEntity.CreatedAt = DateTime.Now.ToLocalTime();
             trashEntity.UserId = request.UserId;
             trashEntity.StatusId = request.StatusId;
 

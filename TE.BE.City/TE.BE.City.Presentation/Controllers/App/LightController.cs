@@ -55,7 +55,7 @@ namespace TE.BE.City.Presentation.Controllers
             lightEntity.HasLight = request.HasLight;
             lightEntity.IsItWorking = request.IsItWorking;
             lightEntity.HasLosesCable = request.HasLosesCable;
-            lightEntity.CreatedAt = DateTime.Now.ToUniversalTime();
+            lightEntity.CreatedAt = DateTime.Now.ToLocalTime();
             lightEntity.UserId = userId;
             lightEntity.StatusId = 1; // request.StatusId;
 
@@ -78,7 +78,7 @@ namespace TE.BE.City.Presentation.Controllers
             lightEntity.HasLight = request.HasLight;
             lightEntity.IsItWorking = request.IsItWorking;
             lightEntity.HasLosesCable = request.HasLosesCable;
-            lightEntity.CreatedAt = DateTime.Now.ToUniversalTime();
+            lightEntity.CreatedAt = DateTime.Now.ToLocalTime();
             lightEntity.UserId = request.UserId;
             lightEntity.StatusId = request.StatusId;
 
