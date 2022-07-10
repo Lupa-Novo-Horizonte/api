@@ -51,6 +51,8 @@ WantedBy=multi-user.target
 sudo systemctl enable apilupanh20.service
 sudo systemctl start apilupanh20.service
 sudo systemctl status apilupanh20.service
+OR
+sudo systemctl restart apilupanh20.service
 
 7. disable or add thengix paths to firewall.
 
