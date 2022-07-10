@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Presentation.Model.Response;
+using TE.BE.City.Infra.CrossCutting;
 
 namespace TE.BE.City.Presentation.Controllers
 {
@@ -74,7 +75,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Água Potável",
-                    Description = $"Possui água? {item.HomeWithWater} / Quantos dias faltam água na semana? {item.WaterMissedInAWeek} / Possui poço? {item.HasWell} / Criado em: {item.CreatedAt.ToLongTimeString()}"
+                    Description = $"Possui água? {item.HomeWithWater.ToSimNao()} | Dias faltam água na semana? {item.WaterMissedInAWeek} | Possui poço? {item.HasWell.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
@@ -85,7 +86,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Iluminação Pública",
-                    Description = $"Possui poste? {item.HasLight} / Luzes funcionando? {item.IsItWorking} / Há fios soltos? {item.HasLosesCable} / Criado em: {item.CreatedAt.ToLongTimeString()}"
+                    Description = $"Possui poste? {item.HasLight.ToSimNao()} | Luzes funcionando? {item.IsItWorking.ToSimNao()} | Há fios soltos? {item.HasLosesCable.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
@@ -96,7 +97,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Limpeza Urbana",
-                    Description = $"Existe limpeza da rua? {item.HasRoadcleanUp} / Qual a frequência? {item.HowManyTimes} / Existe lixo acumulado? {item.HasAccumulatedTrash} / Criado em: {item.CreatedAt.ToLongTimeString()}"
+                    Description = $"Existe limpeza da rua? {item.HasRoadcleanUp.ToSimNao()} | Qual a frequência? {item.HowManyTimes} | Existe lixo acumulado? {item.HasAccumulatedTrash.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
@@ -107,7 +108,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Coleta de Lixo",
-                    Description = $"Existe coleta? {item.HasCollect} / Qual a frequência? {item.HowManyTimes} / Existe coleta seletiva? {item.HasSelectiveCollect} / Criado em: {item.CreatedAt.ToLongTimeString()}"
+                    Description = $"Existe coleta? {item.HasCollect.ToSimNao()} | Qual a frequência? {item.HowManyTimes} | Existe coleta seletiva? {item.HasSelectiveCollect.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
@@ -118,7 +119,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Tratamento de Esgoto",
-                    Description = $"Existe coleta de esgoto? {item.HasHomeSewer} / Possui fossa? {item.HasHomeCesspool} / A prefeitura limpa o esgoto? {item.DoesCityHallCleanTheSewer} / Criado em: {item.CreatedAt.ToLongTimeString()}"
+                    Description = $"Existe coleta de esgoto? {item.HasHomeSewer.ToSimNao()} | Possui fossa? {item.HasHomeCesspool.ToSimNao()} | Prefeitura limpa o esgoto? {item.DoesCityHallCleanTheSewer.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
@@ -129,7 +130,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Calçadas e Asfalto",
-                    Description = $"A via é asfaltada? {item.IsPaved} / Possui buracos? {item.HasHoles} / Calçadas pavimentadas? {item.HasPavedSidewalks} / Criado em: {item.CreatedAt.ToLongTimeString()}"
+                    Description = $"A via é asfaltada? {item.IsPaved.ToSimNao()} | Possui buracos? {item.HasHoles.ToSimNao()} | Calçadas pavimentadas? {item.HasPavedSidewalks.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
