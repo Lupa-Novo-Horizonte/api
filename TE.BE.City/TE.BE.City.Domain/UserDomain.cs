@@ -126,7 +126,7 @@ namespace TE.BE.City.Domain
             {
                 await client.ConnectAsync(_config["SmtpSettings:Server"], int.Parse(_config["SmtpSettings:Port"]), true);
                 await client.AuthenticateAsync(new NetworkCredential(_config["SmtpSettings:SenderEmail"], _config["SmtpSettings:Password"]));
-                //await client.SendAsync(message);
+                await client.SendAsync(message);
                 await client.DisconnectAsync(true);
                 return true;
             }
