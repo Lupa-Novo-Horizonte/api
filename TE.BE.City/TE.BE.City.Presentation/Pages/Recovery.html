@@ -27,7 +27,6 @@
             padding: 14px 20px;
             margin: 8px 0;
             border: none;
-            cursor: pointer;
             width: 100%;
         }
 
@@ -43,11 +42,37 @@
 
         .container {
             padding: 16px;
+            font-size: 14px;
+        }
+
+        .message {
+            color: red;
+        }
+
+        .confirmMessage {
+            color: #092654;
+            font-size: 13px;
+        }
+
+        .divImg {
+            background-color: #092654;
+            margin: -10px;
+            padding: 5px;
+        }
+
+        img {
+            height: 80px;
         }
 
         span.psw {
             float: right;
             padding-top: 16px;
+        }
+
+        h3{
+            margin-top: 20px;
+            margin-bottom: 0px;
+            font-size: 15px;
         }
 
         /* Change styles for span and cancel button on extra small screens */
@@ -72,15 +97,17 @@
             const token = GetURLParameter('token');
 
             if (username == '' || password == '' || repassword == '') {
-                alert('Preencha todos os campos.');
+                document.getElementById('message').innerHTML = "Preencha todos os campos.";
             }
             else if (password != repassword) {
-                alert('Os campos de senha devem ser iguais.');
+                document.getElementById('message').innerHTML = "Os campos de senha devem ser iguais.";
             }
             else if (password.length < 4) {
-                alert('Tamanho mínimo para senha deve ser 4 dígitos.');
+                document.getElementById('message').innerHTML = "Tamanho mínimo para senha deve ser 4 dígitos.";
             }
             else {
+                document.getElementById('message').innerHTML = "";
+
                 const item = {
                     username: username,
                     password: password
@@ -98,11 +125,11 @@
                     .then(response => {
                         console.log(response.status);
                         if (response.status == 200)
-                            alert('Senha atualizada com sucesso. Regresse ao aplicativo e tente logar com a nova senha.');
+                            Confirm();
                         else
-                            alert('Não foi possível atualizar. Erro:' + response.status);
+                            document.getElementById('message').innerHTML = "Não foi possível atualizar. Erro:" + response.status;
                     })
-                    .catch(error => alert('Não foi possível atualizar a senha.'))
+                    .catch(error => document.getElementById('message').innerHTML = "Não foi possível atualizar.")
             }
         }
 
@@ -116,26 +143,47 @@
                 }
             }
         }
+
+        function Confirm() {
+            var div = document.getElementById('container');
+            div.style.display = 'none';
+
+            var divButton = document.getElementById('containerButton');
+            divButton.style.display = 'none';
+
+            var divConfirm = document.getElementById('confirmContainer');
+            divConfirm.style.display = 'block';
+        }
+
     </script>
 </head>
 <body>
 
-    <h2>Lupa NH - Redefinição de Senha</h2>
-    
-    <div class="container">
-        <label for="uname"><b>E-mail</b></label>
+    <div class="divImg">
+        <img src="Images/banner.png" />
+    </div>
+
+    <h3>Redefinição de Senha</h3>
+
+    <div class="container" id="container">
+        <label for="uname">E-mail</label>
         <input type="text" placeholder="Entre com o e-mail" id="uname" name="uname" required>
 
-        <label for="psw"><b>Senha</b></label>
+        <label for="psw">Senha</label>
         <input type="password" placeholder="Entre com a senha" id="psw" name="psw" required>
 
-        <label for="psw"><b>Redigite a senha</b></label>
+        <label for="psw">Redigite a senha</label>
         <input type="password" placeholder="Entre com a senha" id="repasw" name="psw" required>
+        <label class="message" id="message"></label>
     </div>
 
-    <div class="container" style="background-color:#f1f1f1">
-        <button type="button" onclick="Post()" class="cancelbtn">Redefinir</button>
+    <div class="container" id="containerButton">
+        <buton type="button" onclick="Post()" class="cancelbtn">Redefinir</buton>
     </div>
-    
+
+    <div class="confirmContainer" id="confirmContainer" style="display: none; margin-top: 10px;">
+        <label class="confirmMessage" id="confirmMessage">Senha atualizada com sucesso. Volte ao aplicativo e tente logar com a nova senha.</label>
+    </div>
+
 </body>
 </html>
