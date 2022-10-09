@@ -137,6 +137,7 @@ namespace TE.BE.City.Service.Services
                 lightEntity.HasLight = request.HasLight;
                 lightEntity.IsItWorking = request.IsItWorking;
                 lightEntity.HasLosesCable = request.HasLosesCable;
+                lightEntity.Path = request.Path;
                 lightEntity.UserId = request.UserId;
                 lightEntity.StatusId = request.StatusId;
 

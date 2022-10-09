@@ -20,6 +20,7 @@ namespace TE.BE.City.Infra.Data
         public DbSet<SewerEntity> Sewer { get; set; }
         public DbSet<TrashEntity> Trash { get; set; }
         public DbSet<StatusEntity> Status { get; set; }
+        public DbSet<PublicServiceEntity> PublicService { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,7 @@ namespace TE.BE.City.Infra.Data
             modelBuilder.Entity<SewerEntity>(new SewerEntityMap().Configure);
             modelBuilder.Entity<TrashEntity>(new TrashEntityMap().Configure);
             modelBuilder.Entity<StatusEntity>(new StatusEntityMap().Configure);
+            modelBuilder.Entity<PublicServiceEntity>(new PublicServiceEntityMap().Configure);
             base.OnModelCreating(modelBuilder);
         }
     }

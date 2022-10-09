@@ -207,9 +207,10 @@ namespace TE.BE.City.Service.Services
                 trashEntity = await _repository.SelectById(request.Id);
                 trashEntity.Longitude = request.Longitude;
                 trashEntity.Latitude = request.Latitude;
-                trashEntity.HasRoadcleanUp = request.HasRoadcleanUp;
+                trashEntity.HasRoadCleanUp = request.HasRoadCleanUp;
                 trashEntity.HowManyTimes = request.HowManyTimes;
                 trashEntity.HasAccumulatedTrash = request.HasAccumulatedTrash;
+                trashEntity.HasLandWeeding = request.HasLandWeeding;
                 trashEntity.CreatedAt = DateTime.Now.ToUniversalTime();
                 trashEntity.UserId = request.UserId;
                 trashEntity.StatusId = request.StatusId;

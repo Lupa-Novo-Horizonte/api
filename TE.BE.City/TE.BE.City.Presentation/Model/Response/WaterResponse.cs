@@ -14,5 +14,7 @@ namespace TE.BE.City.Presentation.Model.Response
         public int WaterMissedInAWeek { get; set; }
         // Possui posso de água?
         public bool HasWell { get; set; }
+        // A prefeitura está excutando algum projetode saneamento?
+        public bool HasSanitationProject { get; set; }
     }   
 }

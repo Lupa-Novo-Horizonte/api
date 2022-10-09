@@ -43,10 +43,11 @@ namespace TE.BE.City.Presentation.Controllers
             waterEntity.Longitude = request.Longitude;
             waterEntity.StatusId = 1; // request.StatusId;
             waterEntity.UserId = userId;
-            waterEntity.HasWell = request.hasWell;
-            waterEntity.HomeWithWater = request.homeWithWater;
-            waterEntity.WaterMissedInAWeek = request.waterMissedInAWeek;
-            waterEntity.CreatedAt = DateTime.Now.ToLocalTime();
+            waterEntity.HasWell = request.HasWell;
+            waterEntity.HomeWithWater = request.HomeWithWater;
+            waterEntity.WaterMissedInAWeek = request.WaterMissedInAWeek;
+            waterEntity.HasSanitationProject = request.HasSanitationProject;
+            waterEntity.CreatedAt = DateTime.UtcNow;
                 
             var result = await _waterService.Post(waterEntity);
              
@@ -99,14 +100,17 @@ namespace TE.BE.City.Presentation.Controllers
             waterEntity.Id = request.Id;
             waterEntity.Latitude = request.Latitude;
             waterEntity.Longitude = request.Longitude;
-            waterEntity.HasWell = request.hasWell;
-            waterEntity.HomeWithWater = request.homeWithWater;
-            waterEntity.WaterMissedInAWeek = request.waterMissedInAWeek;
+            waterEntity.HasWell = request.HasWell;
+            waterEntity.HomeWithWater = request.HomeWithWater;
+            waterEntity.WaterMissedInAWeek = request.WaterMissedInAWeek;
+            waterEntity.HasSanitationProject = request.HasSanitationProject;
             waterEntity.UserId = request.UserId;
             waterEntity.StatusId = request.StatusId;
-            waterEntity.CreatedAt = DateTime.Now.ToLocalTime();
+            waterEntity.CreatedAt = DateTime.UtcNow;
 
-            return Response(true, await _waterService.Put(waterEntity));
+            var result = await _waterService.Put(waterEntity);
+
+            return Response(result, null);
         }
 
         /// <summary>
@@ -116,7 +120,9 @@ namespace TE.BE.City.Presentation.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
-            return Response(true, await _waterService.Delete(id));    
+            var result = await _waterService.Delete(id);
+
+            return Response(result, null);    
         }
     }
 }

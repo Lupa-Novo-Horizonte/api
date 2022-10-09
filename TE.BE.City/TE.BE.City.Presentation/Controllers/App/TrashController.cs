@@ -71,10 +71,11 @@ namespace TE.BE.City.Presentation.Controllers
             var trashEntity = new TrashEntity();
             trashEntity.Longitude = request.Longitude;
             trashEntity.Latitude = request.Latitude;
-            trashEntity.HasRoadcleanUp = request.HasRoadcleanUp;
+            trashEntity.HasRoadCleanUp = request.HasRoadCleanUp;
             trashEntity.HowManyTimes = request.HowManyTimes;
             trashEntity.HasAccumulatedTrash = request.HasAccumulatedTrash;
-            trashEntity.CreatedAt = DateTime.Now.ToLocalTime();
+            trashEntity.HasLandWeeding = request.HasLandWeeding;
+            trashEntity.CreatedAt = DateTime.UtcNow;
             trashEntity.UserId = userId;
             trashEntity.StatusId = 1; //request.StatusId;
 
@@ -94,9 +95,10 @@ namespace TE.BE.City.Presentation.Controllers
             trashEntity.Id = request.Id;
             trashEntity.Longitude = request.Longitude;
             trashEntity.Latitude = request.Latitude;
-            trashEntity.HasRoadcleanUp = request.HasRoadcleanUp;
+            trashEntity.HasRoadCleanUp = request.HasRoadCleanUp;
             trashEntity.HowManyTimes = request.HowManyTimes;
             trashEntity.HasAccumulatedTrash = request.HasAccumulatedTrash;
+            trashEntity.HasLandWeeding = request.HasLandWeeding;
             trashEntity.CreatedAt = DateTime.Now.ToLocalTime();
             trashEntity.UserId = request.UserId;
             trashEntity.StatusId = request.StatusId;

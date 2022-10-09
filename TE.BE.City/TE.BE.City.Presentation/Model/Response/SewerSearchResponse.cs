@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TE.BE.City.Presentation.Model.Response
 {
-    public class SewerSearchResponse : BaseResponse
+    public class SewerSearchResponse
     {
         public SewerSearchResponse()
         {

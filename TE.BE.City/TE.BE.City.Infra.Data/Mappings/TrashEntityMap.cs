@@ -23,9 +23,9 @@ namespace TE.BE.City.Infra.Data.Mappings
                 .HasColumnName("longitude")
                 .HasColumnType("varchar(24)");
 
-            builder.Property(c => c.HasRoadcleanUp)
+            builder.Property(c => c.HasRoadCleanUp)
                 .IsRequired()
-                .HasColumnName("hasRoadcleanUp")
+                .HasColumnName("hasRoadCleanUp")
                 .HasColumnType("bool");
 
             builder.Property(c => c.HowManyTimes)
@@ -36,6 +36,11 @@ namespace TE.BE.City.Infra.Data.Mappings
             builder.Property(c => c.HasAccumulatedTrash)
                 .IsRequired()
                 .HasColumnName("hasAccumulatedTrash")
+                .HasColumnType("bool");
+
+            builder.Property(c => c.HasLandWeeding)
+                .IsRequired()
+                .HasColumnName("hasLandWeeding")
                 .HasColumnType("bool");
 
             builder.Property(c => c.CreatedAt)

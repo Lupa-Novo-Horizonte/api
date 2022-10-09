@@ -23,6 +23,7 @@ namespace TE.BE.City.Presentation.Controllers
         private readonly ISewerService _sewerService;
         private readonly ITrashService _trashService;
         private readonly IWaterService _waterService;
+        private readonly IPublicServiceService _publicServiceService;
 
         public MapController(IMapper mapper, 
             IAsphaltService asphaltService, 
@@ -30,7 +31,8 @@ namespace TE.BE.City.Presentation.Controllers
             ILightService lightService, 
             ISewerService sewerService,
             ITrashService trashService,
-            IWaterService waterService)
+            IWaterService waterService,
+            IPublicServiceService publicServiceService)
         {
             _mapper = mapper;
             _asphaltService = asphaltService;
@@ -39,6 +41,7 @@ namespace TE.BE.City.Presentation.Controllers
             _sewerService = sewerService;
             _trashService = trashService;
             _waterService = waterService;
+            _publicServiceService = publicServiceService;
         }
                 
         /// <summary>
@@ -51,31 +54,22 @@ namespace TE.BE.City.Presentation.Controllers
             var mapResponse = new MapResponse();
 
             var watersEntity = await _waterService.GetAll(0, 0);
-            //_mapper.Map(watersEntity.ToList(), mapResponse.WaterList);
-
             var lightEntity = await _lightService.GetAll(0, 0);
-            //_mapper.Map(lightEntity.ToList(), mapResponse.LightList);
-
             var trashEntity = await _trashService.GetAll(0,0);
-            //_mapper.Map(trashEntity.ToList(), mapResponse.TrashList);
-
             var collectEntity = await _collectService.GetAll(0, 0);
-            //_mapper.Map(collectEntity.ToList(), mapResponse.CollectList);
-
             var sewerEntity = await _sewerService.GetAll(0, 0);
-            //_mapper.Map(sewerEntity.ToList(), mapResponse.SewerList);
-
             var asphaltEntity = await _asphaltService.GetAll(0, 0);
-            //_mapper.Map(asphaltEntity.ToList(), mapResponse.AsphaltList);
+            var publicServiceEntity = await _publicServiceService.GetAll(0, 0);
 
             foreach (var item in watersEntity.ToList())
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Type = Infra.CrossCutting.Enum.TypeIssue.Water,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Água Potável",
-                    Description = $"Possui água? {item.HomeWithWater.ToSimNao()} | Dias faltam água na semana? {item.WaterMissedInAWeek} | Possui poço? {item.HasWell.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
+                    Description = $"- Possui poço amazônico? {item.HasWell.ToSimNao()} |- Há água encanada? {item.HomeWithWater.ToSimNao()} |- Quantos dias faltam água na semana? {item.WaterMissedInAWeek} |- Alguma obra de saneamento está sendo executada? {item.HasWell.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
@@ -83,10 +77,11 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Type = Infra.CrossCutting.Enum.TypeIssue.Light,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Iluminação Pública",
-                    Description = $"Possui poste? {item.HasLight.ToSimNao()} | Luzes funcionando? {item.IsItWorking.ToSimNao()} | Há fios soltos? {item.HasLosesCable.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
+                    Description = $"- Possui poste? {item.HasLight.ToSimNao()} |- As luzes estão funcionando? {item.IsItWorking.ToSimNao()} |- Há fios elétricos soltos? {item.HasLosesCable.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
@@ -94,10 +89,11 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Type = Infra.CrossCutting.Enum.TypeIssue.Trash,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Limpeza Urbana",
-                    Description = $"Existe limpeza da rua? {item.HasRoadcleanUp.ToSimNao()} | Qual a frequência? {item.HowManyTimes} | Existe lixo acumulado? {item.HasAccumulatedTrash.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
+                    Description = $"- A prefeitura faz a limpeza? {item.HasRoadCleanUp.ToSimNao()} |- Se sim, qual a frequência semanal? {item.HowManyTimes} |- Existe lixo acumulado? {item.HasAccumulatedTrash.ToSimNao()} |- A prefeitura faz a capinagem? {item.HasAccumulatedTrash.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
@@ -105,10 +101,11 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Type = Infra.CrossCutting.Enum.TypeIssue.Collect,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Coleta de Lixo",
-                    Description = $"Existe coleta? {item.HasCollect.ToSimNao()} | Qual a frequência? {item.HowManyTimes} | Existe coleta seletiva? {item.HasSelectiveCollect.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
+                    Description = $"- Há coleta de lixo? {item.HasCollect.ToSimNao()} |- Qual a frequência semanal? {item.HowManyTimes} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
@@ -116,10 +113,11 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Type = Infra.CrossCutting.Enum.TypeIssue.Sewer,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Tratamento de Esgoto",
-                    Description = $"Existe coleta de esgoto? {item.HasHomeSewer.ToSimNao()} | Possui fossa? {item.HasHomeCesspool.ToSimNao()} | Prefeitura limpa o esgoto? {item.DoesCityHallCleanTheSewer.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
+                    Description = $"- Há coleta ou tratamento de esgoto? {item.HasHomeSewer.ToSimNao()} |- Possui fossa? {item.HasHomeCesspool.ToSimNao()} |- Alguma obra de saneamento está sendo executada? {item.HasSanitationProject.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 
@@ -127,10 +125,23 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Type = Infra.CrossCutting.Enum.TypeIssue.Asphalt,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Calçadas e Asfalto",
-                    Description = $"A via é asfaltada? {item.IsPaved.ToSimNao()} | Possui buracos? {item.HasHoles.ToSimNao()} | Calçadas pavimentadas? {item.HasPavedSidewalks.ToSimNao()} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
+                    Description = $"- A via é asfaltada? {item.IsPaved.ToSimNao()} |- A via possui buracos ou crateras? {item.HasHoles.ToSimNao()} |- Há calçadas pavimentadas de acordo com os requisitos municipais? {item.HasPavedSidewalks.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
+                });
+            }
+
+            foreach (var item in publicServiceEntity.ToList())
+            {
+                mapResponse.Regions.Add(new Issues()
+                {
+                    Type = Infra.CrossCutting.Enum.TypeIssue.PublicService,
+                    Latitude = float.Parse(item.Latitude),
+                    Longitude = float.Parse(item.Longitude),
+                    Title = "Serviços e Referências",
+                    Description = $"{item.Service} | Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
 

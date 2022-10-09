@@ -1,42 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TE.BE.City.Domain.Entity;
 
 namespace TE.BE.City.Infra.Data.Mappings
 {
-    public class SewerEntityMap : IEntityTypeConfiguration<SewerEntity>
+    public class PublicServiceEntityMap : IEntityTypeConfiguration<PublicServiceEntity>
     {
-        public void Configure(EntityTypeBuilder<SewerEntity> builder)
+        public void Configure(EntityTypeBuilder<PublicServiceEntity> builder)
         {
-            builder.ToTable("sewer");
+            builder.ToTable("service");
 
             builder.HasKey(c => c.Id)
                 .HasName("id");
 
             builder.Property(c => c.Latitude)
-               .IsRequired()
                .HasColumnName("latitude")
                .HasColumnType("varchar(24)");
 
             builder.Property(c => c.Longitude)
-                .IsRequired()
                 .HasColumnName("longitude")
                 .HasColumnType("varchar(24)");
 
-            builder.Property(c => c.HasHomeSewer)
-                .HasColumnName("hasHomeSewer")
-                .HasColumnType("bool");
-
-            builder.Property(c => c.HasHomeCesspool)
-                .HasColumnName("hasHomeCesspool")
-                .HasColumnType("bool");
-
-            builder.Property(c => c.HasSanitationProject)
-                .HasColumnName("hasSanitationProject")
-                .HasColumnType("bool");
+            builder.Property(c => c.Service)
+                .HasColumnName("service")
+                .HasColumnType("int");         
 
             builder.Property(c => c.StatusId)
                  .IsRequired()

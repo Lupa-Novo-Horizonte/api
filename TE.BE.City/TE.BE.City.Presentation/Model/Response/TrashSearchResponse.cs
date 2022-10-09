@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TE.BE.City.Presentation.Model.Response
 {
-    public class TrashSearchResponse : BaseResponse
+    public class TrashSearchResponse
     {
         public TrashSearchResponse()
         {

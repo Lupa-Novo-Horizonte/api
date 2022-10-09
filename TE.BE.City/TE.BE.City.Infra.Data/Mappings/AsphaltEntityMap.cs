@@ -14,13 +14,15 @@ namespace TE.BE.City.Infra.Data.Mappings
                 .HasName("id");
 
             builder.Property(c => c.Latitude)
-               .IsRequired()
                .HasColumnName("latitude")
                .HasColumnType("varchar(24)");
 
             builder.Property(c => c.Longitude)
-                .IsRequired()
                 .HasColumnName("longitude")
+                .HasColumnType("varchar(24)");
+
+            builder.Property(c => c.Path)
+                .HasColumnName("path")
                 .HasColumnType("varchar(24)");
 
             builder.Property(c => c.IsPaved)

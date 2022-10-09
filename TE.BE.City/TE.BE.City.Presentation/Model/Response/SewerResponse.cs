@@ -9,6 +9,6 @@ namespace TE.BE.City.Presentation.Model.Response
         // Sua casa possui fossa?
         public bool HasHomeCesspool { get; set; }
         //A prefeitura limpa os esgotos?
-        public bool DoesCityHallCleanTheSewer { get; set; }
+        public bool HasSanitationProject { get; set; }
     }
 }

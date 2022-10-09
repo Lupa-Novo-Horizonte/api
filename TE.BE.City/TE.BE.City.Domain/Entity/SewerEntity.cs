@@ -17,7 +17,7 @@ namespace TE.BE.City.Domain.Entity
         public bool HasHomeSewer { get; set; }
         // Sua casa possui fossa?
         public bool HasHomeCesspool { get; set; }
-        //A prefeitura limpa os esgotos?
-        public bool DoesCityHallCleanTheSewer { get; set; }
+        // A profeitura estáexecutando algum projeto de saneamento
+        public bool HasSanitationProject { get; set; }
     }
 }

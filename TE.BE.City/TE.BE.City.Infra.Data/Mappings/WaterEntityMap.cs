@@ -38,6 +38,10 @@ namespace TE.BE.City.Infra.Data.Mappings
                 .HasColumnName("hasWell")
                 .HasColumnType("bool");
 
+            builder.Property(c => c.HasSanitationProject)
+                .HasColumnName("hasSanitationProject")
+                .HasColumnType("bool");
+
             builder.Property(c => c.StatusId)
                 .IsRequired()
                 .HasColumnName("status")

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TE.BE.City.Presentation.Model.Response
 {
-    public class CollectSearchResponse : BaseResponse
+    public class CollectSearchResponse
     {
         public CollectSearchResponse()
         {

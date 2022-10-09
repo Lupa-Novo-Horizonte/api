@@ -11,7 +11,5 @@ namespace TE.BE.City.Presentation.Model.Response
         public bool HasCollect { get; set; }
         // Qual a frequencia semanal?
         public int HowManyTimes { get; set; }
-        // Existe coleta seletiva?
-        public bool HasSelectiveCollect { get; set; }
     }
 }

@@ -41,8 +41,8 @@ namespace TE.BE.City.Presentation.Controllers
             sewerEntity.Latitude = request.Latitude;
             sewerEntity.HasHomeSewer = request.HasHomeSewer;
             sewerEntity.HasHomeCesspool = request.HasHomeCesspool;
-            sewerEntity.DoesCityHallCleanTheSewer = request.DoesCityHallCleanTheSewer;
-            sewerEntity.CreatedAt = DateTime.Now.ToLocalTime();
+            sewerEntity.HasSanitationProject = request.HasSanitationProject;
+            sewerEntity.CreatedAt = DateTime.UtcNow;
             sewerEntity.UserId = userId;
             sewerEntity.StatusId = 1; // request.StatusId;
 
@@ -95,8 +95,8 @@ namespace TE.BE.City.Presentation.Controllers
             sewerEntity.Latitude = request.Latitude;
             sewerEntity.HasHomeSewer = request.HasHomeSewer;
             sewerEntity.HasHomeCesspool = request.HasHomeCesspool;
-            sewerEntity.DoesCityHallCleanTheSewer = request.DoesCityHallCleanTheSewer;
-            sewerEntity.CreatedAt = DateTime.Now.ToLocalTime();
+            sewerEntity.HasSanitationProject = request.HasSanitationProject;
+            sewerEntity.CreatedAt = DateTime.UtcNow;
             sewerEntity.UserId = request.UserId;
             sewerEntity.StatusId = request.StatusId;
 

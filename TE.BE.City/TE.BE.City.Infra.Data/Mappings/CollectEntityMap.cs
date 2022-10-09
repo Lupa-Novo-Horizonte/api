@@ -33,11 +33,6 @@ namespace TE.BE.City.Infra.Data.Mappings
                 .HasColumnName("howManyTimes")
                 .HasColumnType("int");
 
-            builder.Property(c => c.HasSelectiveCollect)
-                .IsRequired()
-                .HasColumnName("hasSelectiveCollect")
-                .HasColumnType("bool");
-
             builder.Property(c => c.StatusId)
                  .IsRequired()
                  .HasColumnName("status")
