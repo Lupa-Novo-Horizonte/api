@@ -78,8 +78,9 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Light,
-                    Latitude = float.Parse(item.Latitude),
-                    Longitude = float.Parse(item.Longitude),
+                    Latitude = string.IsNullOrEmpty(item.Latitude) ? null : float.Parse(item.Latitude),
+                    Longitude = string.IsNullOrEmpty(item.Longitude) ? null : float.Parse(item.Longitude),
+                    Path = item.Path,
                     Title = "Iluminação Pública",
                     Description = $"- Possui poste? {item.HasLight.ToSimNao()} |- As luzes estão funcionando? {item.IsItWorking.ToSimNao()} |- Há fios elétricos soltos? {item.HasLosesCable.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
@@ -126,8 +127,9 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Asphalt,
-                    Latitude = float.Parse(item.Latitude),
-                    Longitude = float.Parse(item.Longitude),
+                    Latitude = string.IsNullOrEmpty(item.Latitude) ? null : float.Parse(item.Latitude),
+                    Longitude = string.IsNullOrEmpty(item.Longitude) ? null : float.Parse(item.Longitude),
+                    Path = item.Path,
                     Title = "Calçadas e Asfalto",
                     Description = $"- A via é asfaltada? {item.IsPaved.ToSimNao()} |- A via possui buracos ou crateras? {item.HasHoles.ToSimNao()} |- Há calçadas pavimentadas de acordo com os requisitos municipais? {item.HasPavedSidewalks.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });

@@ -76,7 +76,7 @@ namespace TE.BE.City.Presentation.Controllers
             asphaltEntity.IsPaved = request.IsPaved;
             asphaltEntity.HasHoles = request.HasHoles;
             asphaltEntity.HasPavedSidewalks = request.HasPavedSidewalks;
-            asphaltEntity.CreatedAt = DateTime.UtcNow;
+            asphaltEntity.CreatedAt = DateTime.Now;
             asphaltEntity.UserId = userId; // request.UserId;
             asphaltEntity.StatusId = 1; // request.StatusId;
 
@@ -94,7 +94,7 @@ namespace TE.BE.City.Presentation.Controllers
         {
             var asphaltEntity = new AsphaltEntity();
             asphaltEntity.Id = request.Id;
-            asphaltEntity.CreatedAt = DateTime.UtcNow;
+            asphaltEntity.CreatedAt = DateTime.Now;
 
             var result = await _asphaltService.Put(asphaltEntity);
 

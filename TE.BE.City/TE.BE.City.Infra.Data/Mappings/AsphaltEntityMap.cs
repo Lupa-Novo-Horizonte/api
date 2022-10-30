@@ -23,7 +23,7 @@ namespace TE.BE.City.Infra.Data.Mappings
 
             builder.Property(c => c.Path)
                 .HasColumnName("path")
-                .HasColumnType("varchar(24)");
+                .HasColumnType("json");
 
             builder.Property(c => c.IsPaved)
                 .IsRequired()

@@ -26,8 +26,9 @@ namespace TE.BE.City.Presentation.Model.Response
     }
 
     public class Issues {
-        public float Longitude { get; set; }
-        public float Latitude { get; set; }
+        public float? Longitude { get; set; }
+        public float? Latitude { get; set; }
+        public string? Path { get; set; }
         public string Title { get; set; }
         public TypeIssue Type { get; set; }
         public string Description { get; set; }

@@ -9,6 +9,6 @@
         // Há calçadas pavimentadas?
         public bool HasPavedSidewalks { get; set; }
         // Armazena pontos de um reta no mapa
-        public string Path { get; set; }
+        public string? Path { get; set; }
     }
 }

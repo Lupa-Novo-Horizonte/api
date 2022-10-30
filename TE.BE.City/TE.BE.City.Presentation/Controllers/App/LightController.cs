@@ -56,7 +56,7 @@ namespace TE.BE.City.Presentation.Controllers
             lightEntity.IsItWorking = request.IsItWorking;
             lightEntity.HasLosesCable = request.HasLosesCable;
             lightEntity.Path = request.Path;
-            lightEntity.CreatedAt = DateTime.UtcNow;
+            lightEntity.CreatedAt = DateTime.Now;
             lightEntity.UserId = userId;
             lightEntity.StatusId = 1; // request.StatusId;
 
@@ -80,7 +80,7 @@ namespace TE.BE.City.Presentation.Controllers
             lightEntity.IsItWorking = request.IsItWorking;
             lightEntity.HasLosesCable = request.HasLosesCable;
             lightEntity.Path = request.Path;
-            lightEntity.CreatedAt = DateTime.UtcNow;
+            lightEntity.CreatedAt = DateTime.Now;
             lightEntity.UserId = request.UserId;
             lightEntity.StatusId = request.StatusId;
 

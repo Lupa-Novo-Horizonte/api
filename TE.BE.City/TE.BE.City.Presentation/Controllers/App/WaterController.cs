@@ -47,7 +47,7 @@ namespace TE.BE.City.Presentation.Controllers
             waterEntity.HomeWithWater = request.HomeWithWater;
             waterEntity.WaterMissedInAWeek = request.WaterMissedInAWeek;
             waterEntity.HasSanitationProject = request.HasSanitationProject;
-            waterEntity.CreatedAt = DateTime.UtcNow;
+            waterEntity.CreatedAt = DateTime.Now;
                 
             var result = await _waterService.Post(waterEntity);
              
@@ -106,7 +106,7 @@ namespace TE.BE.City.Presentation.Controllers
             waterEntity.HasSanitationProject = request.HasSanitationProject;
             waterEntity.UserId = request.UserId;
             waterEntity.StatusId = request.StatusId;
-            waterEntity.CreatedAt = DateTime.UtcNow;
+            waterEntity.CreatedAt = DateTime.Now;
 
             var result = await _waterService.Put(waterEntity);
 

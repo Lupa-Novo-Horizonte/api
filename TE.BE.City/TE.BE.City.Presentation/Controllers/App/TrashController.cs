@@ -75,7 +75,7 @@ namespace TE.BE.City.Presentation.Controllers
             trashEntity.HowManyTimes = request.HowManyTimes;
             trashEntity.HasAccumulatedTrash = request.HasAccumulatedTrash;
             trashEntity.HasLandWeeding = request.HasLandWeeding;
-            trashEntity.CreatedAt = DateTime.UtcNow;
+            trashEntity.CreatedAt = DateTime.Now;
             trashEntity.UserId = userId;
             trashEntity.StatusId = 1; //request.StatusId;
 

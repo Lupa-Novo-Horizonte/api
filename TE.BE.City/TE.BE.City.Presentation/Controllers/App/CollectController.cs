@@ -67,7 +67,7 @@ namespace TE.BE.City.Presentation.Controllers
             collectEntity.Latitude = request.Latitude;
             collectEntity.HasCollect = request.HasCollect;
             collectEntity.HowManyTimes = request.HowManyTimes;
-            collectEntity.CreatedAt = DateTime.UtcNow;
+            collectEntity.CreatedAt = DateTime.Now;
             collectEntity.UserId = userId;
             collectEntity.StatusId = 1; // request.StatusId;
 
@@ -89,7 +89,7 @@ namespace TE.BE.City.Presentation.Controllers
             collectEntity.Latitude = request.Latitude;
             collectEntity.HasCollect = request.HasCollect;
             collectEntity.HowManyTimes = request.HowManyTimes;
-            collectEntity.CreatedAt = DateTime.UtcNow;
+            collectEntity.CreatedAt = DateTime.Now;
             collectEntity.UserId = request.UserId;
             collectEntity.StatusId = request.StatusId;
 

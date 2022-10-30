@@ -8,8 +8,8 @@ namespace TE.BE.City.Presentation.Model
         public DateTime CreatedAt { get; set; }
         public DateTime EndDate { get; set; }
 
-        public string Longitude { get; set; }
-        public string Latitude { get; set; }
+        public string? Longitude { get; set; }
+        public string? Latitude { get; set; }
 
         public int StatusId { get; set; }
         public int UserId { get; set; }

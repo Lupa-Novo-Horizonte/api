@@ -73,7 +73,7 @@ namespace TE.BE.City.Presentation.Controllers
             publicServiceEntity.Longitude = request.Longitude;
             publicServiceEntity.Latitude = request.Latitude;
             publicServiceEntity.Service = request.Service;
-            publicServiceEntity.CreatedAt = DateTime.UtcNow;
+            publicServiceEntity.CreatedAt = DateTime.Now;
             publicServiceEntity.UserId = userId; // request.UserId;
             publicServiceEntity.StatusId = 1; // request.StatusId;
 
@@ -94,7 +94,7 @@ namespace TE.BE.City.Presentation.Controllers
             publicServiceEntity.Latitude = request.Latitude;
             publicServiceEntity.Longitude = request.Longitude;
             publicServiceEntity.Service = request.Service;
-            publicServiceEntity.CreatedAt = DateTime.UtcNow;
+            publicServiceEntity.CreatedAt = DateTime.Now;
 
             var result = await _publicServiceService.Put(publicServiceEntity);
 
