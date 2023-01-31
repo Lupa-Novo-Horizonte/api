@@ -1,9 +1,12 @@
 ﻿using System;
+using TE.BE.City.Infra.CrossCutting.Enum;
 
 namespace TE.BE.City.Presentation.Model.Response
 {
     public class TrashResponse : BaseResponse
     {
+        public string Title { get { return "Limpeza Urbana"; } }
+        public TypeIssue Type { get { return TypeIssue.Trash; } }
         // Existe limpeza da prefeitura na sua rua?
         public bool HasRoadcleanUp { get; set; }
         // Se sim, qual a frequencia?

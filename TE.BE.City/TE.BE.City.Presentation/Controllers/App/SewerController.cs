@@ -56,7 +56,7 @@ namespace TE.BE.City.Presentation.Controllers
         /// </summary>
         /// <param name="id"></param>
         [HttpGet]
-        public async Task<SewerSearchResponse> Get(bool? closed, int skip=0, int limit=10, int id = 0)
+        public async Task<SewerSearchResponse> Get(int skip=0, int limit=10, int id = 0)
         {
             var sewerSearchResponse = new SewerSearchResponse();
             
@@ -64,20 +64,14 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 var userEntity = await _sewerService.GetById(id);
                 _mapper.Map(userEntity, sewerSearchResponse.Contacts);
-            }
-            else if (closed != null)
-            {
-                var userEntity = await _sewerService.GetClosed((bool)closed, skip, limit);
-                _mapper.Map(userEntity, sewerSearchResponse.Contacts);
+                sewerSearchResponse.Total= sewerSearchResponse.Contacts.Count;
             }
             else
             {
                 var usersEntity = await _sewerService.GetAll(skip, limit);
                 _mapper.Map(usersEntity, sewerSearchResponse.Contacts);
+                sewerSearchResponse.Total = sewerSearchResponse.Contacts.Count;
             }
-
-            sewerSearchResponse.Page = skip / limit;
-            sewerSearchResponse.Total = await _sewerService.GetCount(closed);
 
             return sewerSearchResponse;
         }

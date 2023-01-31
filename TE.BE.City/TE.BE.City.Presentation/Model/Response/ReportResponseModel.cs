@@ -1,33 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using TE.BE.City.Infra.CrossCutting;
 
 namespace TE.BE.City.Presentation.Model.Response
 {
     /// <summary>
     /// Model responsable for itens on the user interface. It represent the user interface. Not related to the database tables or domain layer.
     /// </summary>
-    public class ReportResponseModel : BaseResponse
+    public class ReportResponseModel
     {
         public ReportResponseModel()
         {
-            NumberOcorrencyXday = new Dictionary<string, int>();
-            NumberOcorrencyXstatusXday = new Dictionary<string, Dictionary<string, int>>();
-            NumberOcorrencyXtype = new Dictionary<string, int>();
-            LastIncomes = new List<WaterResponse>();
-            LastUpdates = new List<WaterResponse>();
+            AsphaltList = new List<AsphaltResponse>();
+            WaterList = new List<WaterResponse>();
+            CollectList = new List<CollectResponse>();
+            TrashList = new List<TrashResponse>();
+            LightList = new List<LightResponse>();
+            SewerList = new List<SewerResponse>();
+            PublicServiceList = new List<PublicServiceResponse>();
         }
-        // total of ocorrency peer type. Ex. Sawage=20, Lights=30
-        public Dictionary<string, int> NumberOcorrencyXtype { get; set; }
+        public List<AsphaltResponse> AsphaltList { get; set; }
+        public List<WaterResponse> WaterList { get; set; }
+        public List<CollectResponse> CollectList { get; set; }
+        public List<TrashResponse> TrashList { get; set; }
+        public List<LightResponse> LightList { get; set; }
+        public List<SewerResponse> SewerList { get; set; }
+        public List<PublicServiceResponse> PublicServiceList { get; set; }
 
-        // total of ocorrency peer day. Ex. 01/01/2021=20, 01/02/2021=30
-        public Dictionary<string, int> NumberOcorrencyXday{ get; set; }
+        public int Count { get; set; }
+        public int CountAsphalt { get; set; }
+        public int CountWater { get; set; }
+        public int CountCollect { get; set; }
+        public int CountTrash { get; set; }
+        public int CountLight { get; set; }
+        public int CountSewer { get; set; }
+        public int CountPublicService { get; set; }
 
-        // total of ocorrency peer type. Ex. 01/02/2021|pendent=30,open=10,inExection=5
-        public Dictionary<string, Dictionary<string, int>> NumberOcorrencyXstatusXday { get; set; }
-
-        public List<WaterResponse> LastIncomes { get; set; }
-
-        public List<WaterResponse> LastUpdates { get; set; }
+        public ErrorDetail Error { get; set; }
     }   
 }

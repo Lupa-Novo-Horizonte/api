@@ -32,7 +32,7 @@ namespace TE.BE.City.Presentation.Controllers
         /// </summary>
         /// <param name="id"></param>
         [HttpGet]
-        public async Task<TrashSearchResponse> Get(bool? closed, int skip = 0, int limit = 10, int id = 0)
+        public async Task<TrashSearchResponse> Get(int skip = 0, int limit = 10, int id = 0)
         {
             var trashSearchResponse = new TrashSearchResponse();
 
@@ -40,20 +40,14 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 var userEntity = await _trashService.GetById(id);
                 _mapper.Map(userEntity, trashSearchResponse.TrashList);
-            }
-            else if (closed != null)
-            {
-                var userEntity = await _trashService.GetClosed((bool)closed, skip, limit);
-                _mapper.Map(userEntity, trashSearchResponse.TrashList);
+                trashSearchResponse.Total = trashSearchResponse.TrashList.Count;
             }
             else
             {
                 var usersEntity = await _trashService.GetAll(skip, limit);
                 _mapper.Map(usersEntity, trashSearchResponse.TrashList);
+                trashSearchResponse.Total = trashSearchResponse.TrashList.Count;
             }
-
-            trashSearchResponse.Page = skip / limit;
-            trashSearchResponse.Total = await _trashService.GetCount(closed);
 
             return trashSearchResponse;
         }

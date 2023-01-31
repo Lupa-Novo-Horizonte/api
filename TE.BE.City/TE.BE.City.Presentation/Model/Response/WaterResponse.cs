@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using TE.BE.City.Infra.CrossCutting.Enum;
 
 namespace TE.BE.City.Presentation.Model.Response
 {
@@ -8,6 +9,8 @@ namespace TE.BE.City.Presentation.Model.Response
     /// </summary>
     public class WaterResponse : BaseResponse
     {
+        public string Title { get { return "Água Potável"; } }
+        public TypeIssue Type { get { return TypeIssue.Water; } }
         // Possui água encanada em casa?
         public bool HomeWithWater { get; set; }
         // Quantos dias faltam água na semana?

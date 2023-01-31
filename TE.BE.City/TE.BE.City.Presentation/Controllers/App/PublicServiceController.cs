@@ -26,14 +26,13 @@ namespace TE.BE.City.Presentation.Controllers
         }
 
         /// <summary>
-        /// Get all item.
+        /// Get by ID or 0 for all item.
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="ocorrencyId"></param>
         /// <param name="skip"></param>
         /// <param name="limit"></param>
         [HttpGet]
-        public async Task<PublicServiceSearchResponse> Get(int id, int ocorrencyId, int skip = 0, int limit = 50)
+        public async Task<PublicServiceSearchResponse> Get(int id, int skip = 0, int limit = 50)
         {
             var publicServiceSearchResponse = new PublicServiceSearchResponse();
 
@@ -43,17 +42,11 @@ namespace TE.BE.City.Presentation.Controllers
                 _mapper.Map(publicServiceEntity, publicServiceSearchResponse.PublicServiceList);
                 publicServiceSearchResponse.Total = publicServiceEntity.Count();
             }
-            else if (ocorrencyId > 0)
-            {
-                var publicServiceEntity = await _publicServiceService.GetByOcorrencyId(false, ocorrencyId);
-                _mapper.Map(publicServiceEntity, publicServiceSearchResponse.PublicServiceList);
-                publicServiceSearchResponse.Total = publicServiceEntity.Count();
-            }
             else
             {
                 var publicServiceEntity = await _publicServiceService.GetAll(skip, limit);
                 _mapper.Map(publicServiceEntity, publicServiceSearchResponse.PublicServiceList);
-                publicServiceSearchResponse.Total = await _publicServiceService.GetCount(false);
+                publicServiceSearchResponse.Total = publicServiceEntity.Count();
             }
 
             return publicServiceSearchResponse;

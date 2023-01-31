@@ -7,6 +7,7 @@ using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting;
 using System.Linq;
 using TE.BE.City.Infra.CrossCutting.Enum;
+using LinqKit;
 
 namespace TE.BE.City.Service.Services
 {
@@ -160,6 +161,25 @@ namespace TE.BE.City.Service.Services
             catch (ExecptionHelper.ExceptionService ex)
             {
                 throw new ExecptionHelper.ExceptionService(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<LightEntity>> GetFilter(DateTime? startDate, DateTime? endDate)
+        {
+            try
+            {
+                var predicate = PredicateBuilder.New<LightEntity>(true);
+
+                if (startDate != null && startDate > DateTime.MinValue)
+                    predicate.And(model => model.CreatedAt.Date >= startDate);
+                if (endDate != null && endDate > DateTime.MinValue)
+                    predicate.And(model => model.CreatedAt.Date <= endDate);
+
+                return await _repository.Filter(predicate);
+            }
+            catch
+            {
+                throw new Exception();
             }
         }
     }

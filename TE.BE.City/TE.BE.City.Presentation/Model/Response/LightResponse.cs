@@ -1,9 +1,12 @@
 ﻿using System;
+using TE.BE.City.Infra.CrossCutting.Enum;
 
 namespace TE.BE.City.Presentation.Model.Response
 {
     public class LightResponse : BaseResponse
     {
+        public string Title { get { return "Iluminação Pública"; } }
+        public TypeIssue Type { get { return TypeIssue.Light; } }
         // Possui poste?
         public bool HasLight { get; set; }
         // As luzes estão funcionanod?

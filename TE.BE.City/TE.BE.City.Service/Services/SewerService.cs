@@ -8,6 +8,7 @@ using TE.BE.City.Infra.CrossCutting;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TE.BE.City.Infra.CrossCutting.Enum;
+using LinqKit;
 
 namespace TE.BE.City.Service.Services
 {
@@ -153,21 +154,22 @@ namespace TE.BE.City.Service.Services
             }
         }
 
-        public async Task<int> GetCount(bool? closed)
+        public async Task<IEnumerable<SewerEntity>> GetFilter(DateTime? startDate, DateTime? endDate)
         {
             try
             {
-                if (closed != null)
-                {
-                    var result = await _repository.Filter(c => c.EndDate <= DateTime.Today);
-                    return result.Count();
-                }
-                else
-                    return await _repository.SelectCount();
+                var predicate = PredicateBuilder.New<SewerEntity>(true);
+
+                if (startDate != null && startDate > DateTime.MinValue)
+                    predicate.And(model => model.CreatedAt.Date >= startDate);
+                if (endDate != null && endDate > DateTime.MinValue)
+                    predicate.And(model => model.CreatedAt.Date <= endDate);
+
+                return await _repository.Filter(predicate);
             }
-            catch (ExecptionHelper.ExceptionService ex)
+            catch
             {
-                throw new ExecptionHelper.ExceptionService(ex.Message);
+                throw new Exception();
             }
         }
 

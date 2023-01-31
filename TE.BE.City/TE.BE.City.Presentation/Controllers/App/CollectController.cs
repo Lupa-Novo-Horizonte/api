@@ -26,7 +26,7 @@ namespace TE.BE.City.Presentation.Controllers
         }
 
         /// <summary>
-        /// Get all item.
+        /// Get item by id or 0 for all.
         /// </summary>
         /// <param name="skip"></param>
         /// <param name="limit"></param>
@@ -44,7 +44,7 @@ namespace TE.BE.City.Presentation.Controllers
             else
             {
                 collectEntity = await _collectService.GetAll(skip, limit);
-                collectSearchResponse.Total = await _collectService.GetCount(false);
+                collectSearchResponse.Total = collectEntity.Count();
             }
 
             _mapper.Map(collectEntity, collectSearchResponse.CollectList);

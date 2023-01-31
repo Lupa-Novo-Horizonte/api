@@ -8,6 +8,7 @@ using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Presentation.Model.Request;
 using TE.BE.City.Presentation.Model.Response;
+using TE.BE.City.Service.Services;
 
 namespace TE.BE.City.Presentation.Controllers
 {
@@ -55,38 +56,30 @@ namespace TE.BE.City.Presentation.Controllers
         }
 
         /// <summary>
-        /// Get all items based on filter.
+        /// Get item by id or send 0 for all.
         /// </summary>
         /// <param name="id"></param>
-        [HttpPatch]
-        public async Task<WaterSearchResponse> Patch([FromBody] WaterSearchRequest request)
+        /// <param name="skip"></param>
+        /// <param name="limit"></param>
+        [HttpGet]
+        public async Task<WaterSearchResponse> Get(int id, int skip = 0, int limit = 50)
         {
-            var waterSearchResponseModel = new WaterSearchResponse();
-            var waterEntity = new WaterEntity();
-            waterEntity.Id = request.Id;
+            var waterSearchResponse = new WaterSearchResponse();
 
-            if (waterEntity.Id > 0)
+            if (id > 0)
             {
-                var userEntity = await _waterService.GetById(waterEntity.Id);
-                var waterResponseModel = new WaterResponse();
-                _mapper.Map(userEntity, waterResponseModel);
-                waterSearchResponseModel.WaterList.Add(waterResponseModel);
+                var waterEntity = await _waterService.GetById(id);
+                _mapper.Map(waterEntity, waterSearchResponse.WaterList);
+                waterSearchResponse.Total = waterSearchResponse.WaterList.Count();
             }
             else
             {
-                waterEntity.StatusId = request.StatusId;
-                waterEntity.CreatedAt = request.StartDate;
-                waterEntity.EndDate = request.EndDate;
-
-                var usersEntity = await _waterService.GetAll(request.Skip, request.Limit);
-                _mapper.Map(usersEntity, waterSearchResponseModel.WaterList);
+                var waterEntity = await _waterService.GetAll(skip, limit);
+                _mapper.Map(waterEntity, waterSearchResponse.WaterList);
+                waterSearchResponse.Total = waterEntity.Count();
             }
 
-            int limit = request.Limit == 0 ? WaterSearchRequest.LIMIT : request.Limit;
-            waterSearchResponseModel.Page = request.Skip / limit;
-            waterSearchResponseModel.Total = await _waterService.GetCount(waterEntity);
-
-            return waterSearchResponseModel;
+            return waterSearchResponse;
         }
 
         /// <summary>

@@ -14,6 +14,6 @@ namespace TE.BE.City.Domain.Interfaces
         Task<IEnumerable<SewerEntity>> GetAll(int skip, int limit);
         Task<IEnumerable<SewerEntity>> GetClosed(bool closed, int skip, int limit);
         Task <IEnumerable<SewerEntity>> GetById(int id);
-        Task<int> GetCount(bool? closed);
+        Task<IEnumerable<SewerEntity>> GetFilter(DateTime? startDate, DateTime? endDate);
     }
 }

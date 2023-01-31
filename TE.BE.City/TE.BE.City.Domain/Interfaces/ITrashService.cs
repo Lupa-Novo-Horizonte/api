@@ -11,7 +11,7 @@ namespace TE.BE.City.Domain.Interfaces
         Task<IEnumerable<TrashEntity>> GetAll(int skip, int limit);
         Task<IEnumerable<TrashEntity>> GetClosed(bool closed, int skip, int limit);
         Task<IEnumerable<TrashEntity>> GetById(int id);
-        Task<int> GetCount(bool? closed);
+        Task<IEnumerable<TrashEntity>> GetFilter(DateTime? startDate, DateTime? endDate);
         Task<TrashEntity> Post(TrashEntity request);
         Task<TrashEntity> Put(TrashEntity request);
         Task<TrashEntity> Delete(int id);

@@ -6,7 +6,7 @@ namespace TE.BE.City.Presentation.Model
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public string? Longitude { get; set; }
         public string? Latitude { get; set; }

@@ -1,16 +1,20 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting;
+using TE.BE.City.Infra.CrossCutting.Enum;
 using TE.BE.City.Presentation.Model.Response;
 
-namespace TE.BE.City.Presentation.Controllers
+namespace TE.BE.City.Presentation.Controllers.Site
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/site/[controller]")]
     public class MapController : BaseController
     {
         private readonly IMapper _mapper;
@@ -22,10 +26,10 @@ namespace TE.BE.City.Presentation.Controllers
         private readonly IWaterService _waterService;
         private readonly IPublicServiceService _publicServiceService;
 
-        public MapController(IMapper mapper, 
-            IAsphaltService asphaltService, 
-            ICollectService collectService, 
-            ILightService lightService, 
+        public MapController(IMapper mapper,
+            IAsphaltService asphaltService,
+            ICollectService collectService,
+            ILightService lightService,
             ISewerService sewerService,
             ITrashService trashService,
             IWaterService waterService,
@@ -34,7 +38,7 @@ namespace TE.BE.City.Presentation.Controllers
             _mapper = mapper;
             _asphaltService = asphaltService;
             _collectService = collectService;
-            _lightService = lightService;   
+            _lightService = lightService;
             _sewerService = sewerService;
             _trashService = trashService;
             _waterService = waterService;
@@ -47,19 +51,44 @@ namespace TE.BE.City.Presentation.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
-        public async Task<MapResponse> Get()
+        public async Task<MapResponse> Get([FromQuery] string longStartDate, [FromQuery] string longEndDate, [FromQuery] TypeIssue typeIssue)
         {
             var mapResponse = new MapResponse();
 
-            var watersEntity = await _waterService.GetAll(0, 0);
-            var lightEntity = await _lightService.GetAll(0, 0);
-            var trashEntity = await _trashService.GetAll(0,0);
-            var collectEntity = await _collectService.GetAll(0, 0);
-            var sewerEntity = await _sewerService.GetAll(0, 0);
-            var asphaltEntity = await _asphaltService.GetAll(0, 0);
-            var publicServiceEntity = await _publicServiceService.GetAll(0, 0);
+            DateTime? startDate = long.Parse(longStartDate) > 0 ? new DateTime(long.Parse(longStartDate)) : DateTime.MinValue;
+            DateTime? endDate = long.Parse(longEndDate) > 0 ? new DateTime(long.Parse(longEndDate)) : DateTime.MinValue;
+            
+            IEnumerable<WaterEntity> waterEntity = new List<WaterEntity>();
+            IEnumerable<LightEntity> lightEntity = new List<LightEntity>();
+            IEnumerable<TrashEntity> trashEntity = new List<TrashEntity>();
+            IEnumerable<CollectEntity> collectEntity = new List<CollectEntity>();
+            IEnumerable<SewerEntity> sewerEntity = new List<SewerEntity>();
+            IEnumerable<AsphaltEntity> asphaltEntity = new List<AsphaltEntity>();
+            IEnumerable<PublicServiceEntity> publicServiceEntity = new List<PublicServiceEntity>();
 
-            foreach (var item in watersEntity.ToList())
+            if (typeIssue == TypeIssue.All || typeIssue == TypeIssue.Water)
+                waterEntity = await _waterService.GetFilter(startDate, endDate);
+
+            if (typeIssue == TypeIssue.All || typeIssue == TypeIssue.Light)
+                lightEntity = await _lightService.GetFilter(startDate, endDate);
+
+            if (typeIssue == TypeIssue.All || typeIssue == TypeIssue.Trash)
+                trashEntity = await _trashService.GetFilter(startDate, endDate);
+
+            if (typeIssue == TypeIssue.All || typeIssue == TypeIssue.Collect)
+                collectEntity = await _collectService.GetFilter(startDate, endDate);
+
+            if (typeIssue == TypeIssue.All || typeIssue == TypeIssue.Sewer)
+                sewerEntity = await _sewerService.GetFilter(startDate, endDate);
+
+            if (typeIssue == TypeIssue.All || typeIssue == TypeIssue.Asphalt)
+                asphaltEntity = await _asphaltService.GetFilter(startDate, endDate);
+
+            if (typeIssue == TypeIssue.All || typeIssue == TypeIssue.PublicService)
+                publicServiceEntity = await _publicServiceService.GetFilter(startDate, endDate);
+            
+
+            foreach (var item in waterEntity.ToList())
             {
                 mapResponse.Regions.Add(new Issues()
                 {

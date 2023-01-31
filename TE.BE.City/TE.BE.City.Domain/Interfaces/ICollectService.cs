@@ -13,6 +13,6 @@ namespace TE.BE.City.Domain.Interfaces
         Task<CollectEntity> Delete(int id);
         Task<IEnumerable<CollectEntity>> GetAll(int skip, int limit);
         Task<IEnumerable<CollectEntity>> GetById(int id);
-        Task<int> GetCount(bool? closed);
+        Task<IEnumerable<CollectEntity>> GetFilter(DateTime? startDate, DateTime? endDate);
     }
 }

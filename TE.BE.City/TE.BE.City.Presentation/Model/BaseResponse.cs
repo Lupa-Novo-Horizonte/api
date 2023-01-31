@@ -9,7 +9,7 @@ namespace TE.BE.City.Presentation.Model
         public string Longitude { get; set; }
         public string Latitude { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public ErrorDetail Error { get; set; }
     }
 }
