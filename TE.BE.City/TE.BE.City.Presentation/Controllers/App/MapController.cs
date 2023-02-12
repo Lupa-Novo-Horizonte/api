@@ -45,7 +45,6 @@ namespace TE.BE.City.Presentation.Controllers
         /// Return list of all entries for all issues
         /// </summary>
         /// <returns></returns>
-        [AllowAnonymous]
         [HttpGet]
         public async Task<MapResponse> Get()
         {

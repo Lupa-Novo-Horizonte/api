@@ -52,7 +52,6 @@ namespace TE.BE.City.Presentation.Controllers
         /// <summary>
         /// Get all charts data
         /// </summary>
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ReportResponseModel> Get([FromQuery]string longStartDate, [FromQuery] string longEndDate)
         {

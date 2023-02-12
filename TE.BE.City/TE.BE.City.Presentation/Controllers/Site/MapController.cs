@@ -49,7 +49,6 @@ namespace TE.BE.City.Presentation.Controllers.Site
         /// Return list of all entries for all issues
         /// </summary>
         /// <returns></returns>
-        [AllowAnonymous]
         [HttpGet]
         public async Task<MapResponse> Get([FromQuery] string longStartDate, [FromQuery] string longEndDate, [FromQuery] TypeIssue typeIssue)
         {
