@@ -1,0 +1,146 @@
+﻿/* MAIN BODY */
+.body {
+    position: relative;
+    min-height: 100vh;
+    font-family: "Roboto", "Sans-serif";
+    font-size: 13px;
+    margin: 20%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+/* HEADER */
+.navbar.is-info {
+    background-color: #092654;
+    color: #fff;
+    font-size: 15px;
+    font-family: "Montserrat", "Sans-serif";
+}
+
+.navbar-item.space:hover {
+    background-color: #092654 !important;
+    color: #3298dc !important;
+    font-size: 15px;
+}
+
+.navbar-item.space:focus {
+    background-color: #092654 !important;
+}
+
+.navbar-item img {
+    max-height: 100px;
+    height: 130px;
+}
+
+.center {
+    margin: auto;
+}
+
+.space {
+    width: 250px;
+}
+
+
+/* FOOTER */
+.footer {
+    padding: 16px;
+    background-color: #092654;
+    color: #fff;
+    bottom: 0;
+    width: 100%;
+}
+
+    .footer a {
+        color: #fff;
+    }
+
+
+/* FORM */
+.pagination {
+    justify-content: flex-end;
+    margin: .50rem;
+}
+
+.pagination-text {
+    margin-right: 8px;
+}
+
+.select {
+    width: 100%;
+    font-size: 1rem;
+}
+
+    .select select:not([multiple]) {
+        width: 100%;
+    }
+
+.button.is-info {
+    width: 100%;
+}
+
+.message-body {
+    padding: 0.75em 1.5em;
+}
+
+.icon-print {
+    width: 37px;
+    height: 37px;
+    cursor: pointer;
+    background-image: url("../images/printing_reverso.png") !important;
+    background-size: cover;
+}
+
+    .icon-print:hover {
+        scale: 1.05;
+    }
+
+
+/* MAP */
+.map {
+    margin-top: 20px;
+    height: 800px !important;
+}
+
+.legend {
+    padding: 10px;
+    background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+}
+
+.legend-img {
+    width: 16px;
+    height: 16px;
+}
+
+.legend-text {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+
+/* SHARING */
+.sharing-step1-img {
+    width: 800px;
+    height: 421px;
+}
+
+.sharing-step2-img {
+    /* Empty */
+}
+
+.sharing-step3-img {
+    /* Empty */
+}
+
+.sharing-step4-img {
+    width: 300px;
+    height: 85.57px;
+}
+
+/* table */
+.table-title {
+    margin-top: 20px;
+}

@@ -13,15 +13,34 @@ namespace TE.BE.City.Presentation.Mappings
         public MappingProfile()
         {
             CreateMap<UserEntity, UserResponse>();
+            CreateMap<UserResponse, UserEntity>();
+
             CreateMap<LightEntity, LightResponse>();
+            CreateMap<LightResponse, LightEntity>();
+
             CreateMap<SewerEntity, SewerResponse>();
+            CreateMap<SewerResponse, SewerEntity>();
+
             CreateMap<UserEntity, AuthenticateResponse>();
+            CreateMap<AuthenticateResponse, UserEntity>();
+
             CreateMap<TrashEntity, TrashResponse>();
+            CreateMap<TrashResponse, TrashEntity>();
+
             CreateMap<CollectEntity, CollectResponse>();
+            CreateMap<CollectResponse, CollectEntity>();
+
             CreateMap<AsphaltEntity, AsphaltResponse>();
+            CreateMap<AsphaltResponse, AsphaltEntity>();
+
             CreateMap<StatusEntity, StatusResponseModel>();
+            CreateMap<StatusResponseModel, StatusEntity>();
+
             CreateMap<WaterEntity, WaterResponse>();
+            CreateMap<WaterResponse, WaterEntity>();
+
             CreateMap<PublicServiceEntity, PublicServiceResponse>();
+            CreateMap<PublicServiceResponse, PublicServiceEntity>();
         }
     }
 }

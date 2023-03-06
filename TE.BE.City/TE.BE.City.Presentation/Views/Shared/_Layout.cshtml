@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link type="text/css" rel="stylesheet" href="~/css/site.css" />
+    <title>Projeto Lupa NH</title>
+</head>
+<body>
+    
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiDCTCM55kP4mIJpEtrTuH8TP_ZSJ4ONQ"></script>
+    <script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <span class="navbar-item center">
+            <img src="~/images/logo.png">
+        </span>
+    </nav>
+    <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+        <div class="navbar-start center">
+            <a class="navbar-item space" href="/site/home">
+                <div class="center">VISUALIZAÇÃO</div>
+            </a>
+            <a class="navbar-item space" href="/site/sharing">
+                <div class="center">COMPARTILHAMENTO</div>
+            </a>
+            <a class="navbar-item space" href="http://lupa.tecccog.net" target="_blank">
+                <div class="center">SOBRE</div>
+            </a>
+        </div>
+    </nav>
+
+
+    <div class="body">
+        @RenderBody()
+    </div>
+
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                PROJETO LUPA NH - Grupo TECCCOG
+            </p>
+        </div>
+    </footer>
+
+
+</body>
+</html>

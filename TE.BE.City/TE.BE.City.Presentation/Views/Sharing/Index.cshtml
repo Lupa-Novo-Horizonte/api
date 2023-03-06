@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    <div class="content">
+        <h3>COMPARTILHAMENTO</h3>
+    </div>
+
+    <div class="content is-normal">
+        <h2>Acesso a API</h2>
+        <p>Para ter acesso as APIs do projeto e utilizar os dados em tempo real direto do banco de dados, envie um e-mail requisitando um login. Através deste login será possível autenticar e gerar o token para as requisições.</p>
+        <p>Abaixo listamos o passo a passo:</p>
+        <ol>
+            <li>Acesse a aba SOBRE e logo após a aba CONTATO. Envie uma mensagem requisitando o acesso e retornaremos a mensagem com um usuário e senha.</li>
+            <li>Execute a API de login utilizando os dados de acesso compartilhado.</li>
+            <li>Utilize o token gerado na API de login nas demais APIs</li>
+        </ol>
+
+        <h3>Passo 1</h3>
+        <p>Formulário para requisiçãode acesso.</p>
+        <img class="sharing-step1-img" src="~/images/swagger_contato.JPG">
+
+        <h3>Passo 2</h3>
+        <p>Na API login utilize o usuário e senha para gerar o token. Guarde o número gerado no campo TOKEN para demais requisições.</p>
+        <img class="sharing-step2-img" src="~/images/swagger_login.JPG">
+
+        <h3>Passo 3</h3>
+        <p>Nas demais APIs utilize o token no cabeçalho enviando o valor na propriedade authorization. Veja os exemplos abaixo.</p>
+
+        <ul>
+            <li>
+                <p>Exemplo Postman tool</p>
+                <img class="sharing-step3-img" src="~/images/swagger_postman.JPG">
+            </li>
+            <li>
+                <p>Exemplo Fiddler tool</p>
+                <img class="sharing-step3-img" src="~/images/swagger_fiddler.JPG">
+            </li>
+        </ul>
+
+        <h3>Acesse a página do OpenAPI (Swagger)</h3>
+        <p>Clique na imagem e acesse a página em tempo real das APIs. Através dela você terá acesso a todas as url, parametros de envio e respostas. Recomendamos o uso de uma das ferramentas acima para melhor experiência.</p>
+        <a href="/swagger/index.html" target="_blank"><img class="sharing-step4-img" src="~/images/swagger.png"></a>
+    </div>
+}

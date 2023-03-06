@@ -14,32 +14,95 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\**" />
     <Compile Remove="wwwroot\**" />
+    <Content Remove="Views\**" />
     <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Views\**" />
     <EmbeddedResource Remove="wwwroot\**" />
+    <EntityDeploy Remove="Views\**" />
+    <None Remove="Views\**" />
     <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Pages\politica-de-privacidade.html" />
     <None Remove="Pages\Recovery.html" />
-    <None Remove="Views\User\Recovery.html" />
+    <None Remove="Pages\tale.html" />
+    <None Remove="Pages\tcle.html" />
+    <None Remove="Pages\termos-de-uso.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Pages\politica-de-privacidade.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Pages\Recovery.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Pages\tale.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\tcle.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\termos-de-uso.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\css\site.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\images\add_reverse.png" />
+    <Content Include="wwwroot\images\arrowDown.png" />
+    <Content Include="wwwroot\images\bad.png" />
+    <Content Include="wwwroot\images\banner.png" />
+    <Content Include="wwwroot\images\check.png" />
+    <Content Include="wwwroot\images\edit.png" />
+    <Content Include="wwwroot\images\edit_reverse.png" />
+    <Content Include="wwwroot\images\facebook.png" />
+    <Content Include="wwwroot\images\instagram.png" />
+    <Content Include="wwwroot\images\linkedin.png" />
+    <Content Include="wwwroot\images\location.png" />
+    <Content Include="wwwroot\images\location_reverse.png" />
+    <Content Include="wwwroot\images\logo.png" />
+    <Content Include="wwwroot\images\logo_reverse.png" />
+    <Content Include="wwwroot\images\logo_reverse_small.png" />
+    <Content Include="wwwroot\images\lupin.png" />
+    <Content Include="wwwroot\images\lupin_reverse.png" />
+    <Content Include="wwwroot\images\printing.png" />
+    <Content Include="wwwroot\images\printing_reverso.png" />
+    <Content Include="wwwroot\images\swagger.png" />
+    <Content Include="wwwroot\images\swagger_contato.JPG" />
+    <Content Include="wwwroot\images\swagger_fiddler.JPG" />
+    <Content Include="wwwroot\images\swagger_login.JPG" />
+    <Content Include="wwwroot\images\swagger_postman.JPG" />
+    <Content Include="wwwroot\images\telephone.png" />
+    <Content Include="wwwroot\images\telephone_reverse.png" />
+    <Content Include="wwwroot\images\twitter.png" />
+    <Content Include="wwwroot\images\warning.png" />
+    <Content Include="wwwroot\images\youtube.png" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+    <Content Include="wwwroot\lib\jquery\LICENSE.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="ClosedXML" Version="0.100.3" />
+    <PackageReference Include="ClosedXML.Extensions.WebApi" Version="0.3.0" />
+    <PackageReference Include="Enums.NET" Version="4.0.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.12" />
     <PackageReference Include="Moq" Version="4.12.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+	<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,13 +110,43 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="Views\User\Recovery.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TE.BE.City.Domain\TE.BE.City.Domain.csproj" />
     <ProjectReference Include="..\TE.BE.City.Infra.Data\TE.BE.City.Infra.Data.csproj" />
     <ProjectReference Include="..\TE.BE.City.Service\TE.BE.City.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Sharing\Index.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+    <Content Include="wwwroot\js\site.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="wwwroot\images\swagger.svg" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
   </ItemGroup>
 
 </Project>

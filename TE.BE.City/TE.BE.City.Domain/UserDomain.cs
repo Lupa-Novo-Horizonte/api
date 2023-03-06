@@ -13,7 +13,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
-using TE.BE.City.Infra.CrossCutting;
 
 namespace TE.BE.City.Domain
 {

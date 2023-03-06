@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
 
@@ -14,5 +15,6 @@ namespace TE.BE.City.Domain.Interfaces
         Task<IEnumerable<PublicServiceEntity>> GetById(int id);
         Task<IEnumerable<PublicServiceEntity>> GetFilter(DateTime? startDate, DateTime? endDate);
         Task<IEnumerable<PublicServiceEntity>> GetByOcorrencyId(bool closed, int ocorrencyId);
+        DataTable GetDataTable(IEnumerable<PublicServiceEntity> asphaltEntities);
     }
 }

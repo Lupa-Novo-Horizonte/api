@@ -9,8 +9,12 @@ namespace TE.BE.City.Presentation.Model.Response
         {
             Regions = new List<Issues>();
         }
-        
+
+        public float InitialLongitude { get; set; }
+        public float InitialLatitude { get; set; }
+        public float InitialZoom { get; set; }
         public List<Issues> Regions { get; set; }
+        public string RegionsSerialized { get; set; }
     }
 
     public class Issues {

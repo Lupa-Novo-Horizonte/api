@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using TE.BE.City.Infra.CrossCutting;
+using TE.BE.City.Presentation.Model.Response;
 
-namespace TE.BE.City.Presentation.Model.Response
+namespace TE.BE.City.Presentation.Model.ViewModel
 {
     /// <summary>
     /// Model responsable for itens on the user interface. It represent the user interface. Not related to the database tables or domain layer.
     /// </summary>
-    public class ReportResponseModel
+    public class HomeResponseModel
     {
-        public ReportResponseModel()
+        public HomeResponseModel()
         {
             AsphaltList = new List<AsphaltResponse>();
             WaterList = new List<WaterResponse>();
@@ -19,6 +18,8 @@ namespace TE.BE.City.Presentation.Model.Response
             LightList = new List<LightResponse>();
             SewerList = new List<SewerResponse>();
             PublicServiceList = new List<PublicServiceResponse>();
+            DataViewState = new DataViewState();
+            Map = new MapResponse();
         }
         public List<AsphaltResponse> AsphaltList { get; set; }
         public List<WaterResponse> WaterList { get; set; }
@@ -36,7 +37,9 @@ namespace TE.BE.City.Presentation.Model.Response
         public int CountLight { get; set; }
         public int CountSewer { get; set; }
         public int CountPublicService { get; set; }
-
+        public DataViewState DataViewState { get; set; }
         public ErrorDetail Error { get; set; }
-    }   
+
+        public MapResponse Map { get; set; }
+    }
 }

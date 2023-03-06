@@ -8,6 +8,7 @@ using TE.BE.City.Infra.CrossCutting;
 using System.Linq;
 using TE.BE.City.Infra.CrossCutting.Enum;
 using LinqKit;
+using System.Data;
 
 namespace TE.BE.City.Service.Services
 {
@@ -181,6 +182,60 @@ namespace TE.BE.City.Service.Services
             {
                 throw new Exception();
             }
+        }
+
+        public DataTable GetDataTable(IEnumerable<LightEntity> asphaltEntities)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn column = null;
+
+            column = new DataColumn();
+            column.ColumnName = "ID";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Latitude";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Longitude";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Trecho";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Possui poste?";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "As luzes estão funcionando?";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Há fios elétricos soltos?";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Criado em";
+            dataTable.Columns.Add(column);
+
+            foreach (var entity in asphaltEntities)
+            {
+                var row = dataTable.NewRow();
+                row[0] = entity.Id.ToString();
+                row[1] = entity.Longitude?.ToString();
+                row[2] = entity.Latitude?.ToString();
+                row[3] = entity.Path?.ToString();
+                row[4] = entity.HasLight.ToSimNao();
+                row[5] = entity.IsItWorking.ToString();
+                row[6] = entity.HasLosesCable.ToString();
+                row[7] = entity.CreatedAt.ToShortDateString();
+
+                dataTable.Rows.Add(row);
+            }
+            return dataTable;
         }
     }
 }

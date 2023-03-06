@@ -8,6 +8,7 @@ using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting.Enum;
 using TE.BE.City.Infra.CrossCutting;
 using LinqKit;
+using System.Data;
 
 namespace TE.BE.City.Service.Services
 {
@@ -227,6 +228,45 @@ namespace TE.BE.City.Service.Services
             {
                 throw new ExecptionHelper.ExceptionService(ex.Message);
             }
+        }
+
+        public DataTable GetDataTable(IEnumerable<PublicServiceEntity> asphaltEntities)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn column = null;
+
+            column = new DataColumn();
+            column.ColumnName = "ID";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Latitude";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Longitude";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Serviço?";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Criado em";
+            dataTable.Columns.Add(column);
+
+            foreach (var entity in asphaltEntities)
+            {
+                var row = dataTable.NewRow();
+                row[0] = entity.Id.ToString();
+                row[1] = entity.Longitude.ToString();
+                row[2] = entity.Latitude.ToString();
+                row[3] = entity.Service.ToString();
+                row[4] = entity.CreatedAt.ToShortDateString();
+
+                dataTable.Rows.Add(row);
+            }
+            return dataTable;
         }
     }
 }

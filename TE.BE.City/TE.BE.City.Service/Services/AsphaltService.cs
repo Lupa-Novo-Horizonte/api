@@ -1,13 +1,12 @@
-﻿using System;
+﻿using LinqKit;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Data;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting;
-using System.Linq;
 using TE.BE.City.Infra.CrossCutting.Enum;
-using LinqKit;
 
 namespace TE.BE.City.Service.Services
 {
@@ -89,36 +88,59 @@ namespace TE.BE.City.Service.Services
             }
         }
 
-        public async Task<IEnumerable<AsphaltEntity>> GetByOcorrencyId(bool closed, int ocorrencyId)
+        public DataTable GetDataTable(IEnumerable<AsphaltEntity> asphaltEntities)
         {
-            var ocorrencyDetailEntity = new List<AsphaltEntity>();
+            DataTable dataTable = new DataTable();
+            DataColumn column = null;
+            
+            column = new DataColumn();
+            column.ColumnName = "ID";
+            dataTable.Columns.Add(column);
 
-            try
+            column = new DataColumn();
+            column.ColumnName = "Latitude";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Longitude";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Trecho";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "A via é asfaltada?";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "A via possui buracos ou crateras?";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Há calçadas pavimentadas de acordo com os requisitos municipais?";
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = "Criado em";
+            dataTable.Columns.Add(column);
+
+            foreach (var entity in asphaltEntities)
             {
-                var result = await _repository.Filter(c => c.EndDate <= DateTime.Today);
+                var row = dataTable.NewRow();
+                row[0] = entity.Id.ToString();
+                row[1] = entity.Longitude?.ToString();
+                row[2] = entity.Latitude?.ToString();
+                row[3] = entity.Path?.ToString();
+                row[4] = entity.IsPaved.ToSimNao();
+                row[5] = entity.HasHoles.ToSimNao();
+                row[6] = entity.HasPavedSidewalks.ToSimNao();
+                row[7] = entity.CreatedAt.ToShortDateString();
 
-                if (result != null)
-                    return result;
-                else
-                {
-                    var contactEntity = new AsphaltEntity()
-                    {
-                        Error = new ErrorDetail()
-                        {
-                            Code = (int)ErrorCode.SearchHasNoResult,
-                            Type = ErrorCode.SearchHasNoResult.ToString(),
-                            Message = ErrorCode.SearchHasNoResult.GetDescription()
-                        }
-                    };
-                    ocorrencyDetailEntity.Add(contactEntity);
-                }
+                dataTable.Rows.Add(row);
+            }
 
-                return ocorrencyDetailEntity;
-            }
-            catch (ExecptionHelper.ExceptionService ex)
-            {
-                throw new ExecptionHelper.ExceptionService(ex.Message);
-            }
+            return dataTable;
         }
 
         public async Task<IEnumerable<AsphaltEntity>> GetFilter(DateTime? startDate, DateTime? endDate)

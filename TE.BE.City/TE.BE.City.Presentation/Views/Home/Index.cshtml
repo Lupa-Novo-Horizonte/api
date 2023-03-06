@@ -1,0 +1,339 @@
+﻿@model TE.BE.City.Presentation.Model.ViewModel.HomeResponseModel
+@using TE.BE.City.Presentation.Model.Response
+
+<div class="content">
+    <h1>VISUALIZAÇÃO</h1>
+</div>
+
+<!--Filter-->
+<form method="post" asp-controller="Home" asp-action="Index" runat="server">
+    <table class="table is-fullwidth">
+        <thead>
+            <tr>
+                <th>
+                    <div class="select">
+                        @Html.DropDownListFor(model => model.DataViewState.DdlViewType, new SelectList(Model.DataViewState.DdlViewTypeItems, "Value", "Text"))
+                    </div>
+                </th>
+                <th>
+                    <div class="select">
+                        @Html.DropDownListFor(model => model.DataViewState.DdlIssueType, new SelectList(Model.DataViewState.DdlIssueTypeItems, "Value", "Text"))
+                    </div>
+                </th>
+                <th>
+                    <div class="control">
+                        @Html.EditorFor(m => m.DataViewState.StartDate, new { htmlAttributes = new { @class = "input is-hovered"} })
+                    </div>
+                </th>
+                <th>
+                    <div class="control">
+                        @Html.EditorFor(m => m.DataViewState.EndDate, new { htmlAttributes = new { @class = "input is-hovered"} })
+                    </div>
+                </th>
+                <th>
+                    <div class="buttons">
+                        <button type="submit" class="button is-info">Filtrar</button>
+                    </div>
+                </th>
+                <th>
+                    <a class="buttons icon-print" target="_blank" href='./home/Export?ddlIssueType=@(Model.DataViewState.DdlIssueType)&startDate=@(Model.DataViewState.StartDate)&endDate=@(Model.DataViewState.EndDate)' />
+                </th>
+            </tr>
+        </thead>
+    </table>
+</form>
+
+
+@{
+    if (Model.Error != null)
+    {
+        <!-- Alert -->
+        <div class="message is-warning">
+            <div class="message-body">
+                @Model.Error.Message
+            </div>
+    </div>
+    }
+}
+
+
+<!--Map-->
+@{
+    if (Model.DataViewState.DdlViewType == "map")
+    {
+        <div class="map" id="map" ></div>
+
+        <script type="text/javascript">            
+            window.onload = function () {
+                var mapOptions = {
+                    center: new google.maps.LatLng(@(Model.Map.InitialLatitude), @(Model.Map.InitialLongitude)),
+                    zoom: @(Model.Map.InitialZoom),
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+
+                var infoWindow = new google.maps.InfoWindow();
+                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+                
+                var markers = @Html.Raw(Model.Map.RegionsSerialized);
+                for (i = 0; i < markers.length; i++) {
+                    var data = markers[i];
+                    var myLatlng = new google.maps.LatLng(data.Latitude, data.Longitude);
+                    var marker = new google.maps.Marker({
+                        position: myLatlng,
+                        map: map,
+                        title: data.Title
+                    });
+                    (function (marker, data) {
+                        google.maps.event.addListener(marker, "click", function (e) {
+                            var content = "<div><h4>" + data.Title + "</h4>";
+                            
+                            var arrayDescription = data.Description.split("|");
+                            for (p = 0; p < arrayDescription.length; p++) {
+                                content += "<p>" + arrayDescription[p] + "</p>"
+                            }
+                            content += "</div>";
+
+                            infoWindow.setContent(content);
+                            infoWindow.open(map, marker);
+                        });
+                    })(marker, data);
+                }
+            }
+        </script>
+
+        <div class="legend" [style.display]="ddlView==0 ? 'flex' : 'none'">
+            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/purple-dot.png'><p class="legend-text">Calçadas e Asfalto</p>
+            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/orange-dot.png'><p class="legend-text">Coleta de Lixo</p>
+            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'><p class="legend-text">Iluminação Pública</p>
+            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/ltblue-dot.png'><p class="legend-text">Água Potável</p>
+            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/red-dot.png'><p class="legend-text">Tratamento de Esgoto</p>
+            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/green-dot.png'><p class="legend-text">Limpeza Urbana</p>
+        </div>
+    }
+}
+
+
+<!--Content grid - Light-->
+@{
+    if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Light" || Model.DataViewState.DdlIssueType == "All"))
+    {
+        <h3 class="table-title">ILUMINAÇÃO PÚBLICA</h3>
+        <table #searchTableLight class="table is-fullwidth">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Título</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Possui poste?</th>
+                <th>As luzes estão funcionando?</th>
+                <th>Há fios elétricos soltos?</th>
+                <th>Criado em</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (LightResponse lightResponse in Model.LightList)
+            {
+                <tr>
+                    <td>@lightResponse.Id</td>
+                    <td>@lightResponse.Title</td>
+                    <td>@lightResponse.Latitude</td>
+                    <td>@lightResponse.Longitude</td>
+                    @if (lightResponse.HasLight.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    @if (lightResponse.IsItWorking.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    @if (lightResponse.HasLosesCable.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    <td>@lightResponse.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+    }
+}
+
+<!--Content grid - Asphalt-->
+@{
+    if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Asphalt" || Model.DataViewState.DdlIssueType == "All"))
+    {
+        <h3 class="table-title">CALÇADAS E ASFALTO</h3>
+        <table #searchTableAsphalt class="table is-fullwidth" [style.display]="ddlTypeIssue==0 && ddlView==1 ? 'block' : 'none'">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Título</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>A via é asfaltada?</th>
+                <th>A via possui buracos ou crateras?</th>
+                <th>Há calçadas pavimentadas de acordo com os requisitos municipais?</th>
+                <th>Criado em</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (AsphaltResponse asphaltResponse in Model.AsphaltList)
+            {
+                <tr>
+                    <td>@asphaltResponse.Id</td>
+                    <td>@asphaltResponse.Title</td>
+                    <td>@asphaltResponse.Latitude</td>
+                    <td>@asphaltResponse.Longitude</td>
+                    @if (asphaltResponse.IsPaved.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    @if (asphaltResponse.HasHoles.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    @if (asphaltResponse.HasPavedSidewalks.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    <td>@asphaltResponse.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+    }
+}
+
+<!--Content grid - Collect-->
+@{
+    if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Collect" || Model.DataViewState.DdlIssueType == "All"))
+    {
+        <h3 class="table-title">COLETA DE LIXO</h3>
+        <table #searchTableCollect class="table is-fullwidth" [style.display]="ddlTypeIssue==1 && ddlView==1 ? 'block' : 'none'">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Título</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Há coleta de lixo?</th>
+                <th>Qual a frequência semanal?</th>
+                <th>Criado em</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (CollectResponse collectResponse in Model.CollectList)
+            {
+                <tr>
+                    <td>@collectResponse.Id</td>
+                    <td>@collectResponse.Title</td>
+                    <td>@collectResponse.Latitude</td>
+                    <td>@collectResponse.Longitude</td>
+                    @if (collectResponse.HasCollect.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    <td>@collectResponse.HowManyTimes</td>
+                    <td>@collectResponse.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+    }
+}
+
+<!--Content grid - Sewer-->
+@{
+    if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Sewer" || Model.DataViewState.DdlIssueType == "All"))
+    {
+        <h3 class="table-title">TRATAMENTO DE ESGOTO</h3>
+        <table #searchTableSewer class="table is-fullwidth" [style.display]="ddlTypeIssue==4 && ddlView==1 ? 'block' : 'none'">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Título</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Há coleta ou tratamento de esgoto?</th>
+                <th>Possui fossa?</th>
+                <th>Alguma obra de saneamento está sendo executada?</th>
+                <th>Criado em</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SewerResponse sewerResponse in Model.SewerList)
+            {
+                <tr>
+                    <td>@sewerResponse.Id</td>
+                    <td>@sewerResponse.Title</td>
+                    <td>@sewerResponse.Latitude</td>
+                    <td>@sewerResponse.Longitude</td>
+                    @if (sewerResponse.HasHomeSewer.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    @if (sewerResponse.HasHomeCesspool.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    @if (sewerResponse.HasSanitationProject.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    <td>@sewerResponse.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+    }
+}
+
+<!--Content grid - Trash-->
+@{
+    if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Trash" || Model.DataViewState.DdlIssueType == "All"))
+    {
+        <h3 class="table-title">LIMPEZA URBANA</h3>
+        <table #searchTableTrash class="table is-fullwidth" [style.display]="ddlTypeIssue==5 && ddlView==1 ? 'block' : 'none'">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Título</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>A prefeitura faz a limpeza?</th>
+                <th>Qual a frequência?</th>
+                <th>Existe lixo acumulado?</th>
+                <th>A prefeitura faz a capinagem?</th>
+                <th>Criado em</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (TrashResponse trashResponse in Model.TrashList)
+            {
+                <tr>
+                    <td>@trashResponse.Id</td>
+                    <td>@trashResponse.Title</td>
+                    <td>@trashResponse.Latitude</td>
+                    <td>@trashResponse.Longitude</td>
+                    @if (trashResponse.HasRoadcleanUp.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    <td>@trashResponse.HowManyTimes</td>
+                    @if (trashResponse.HasAccumulatedTrash.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    @if (trashResponse.HasLandWeeding.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    <td>@trashResponse.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+    }
+}
+
+<!--Content grid - Water-->
+@{
+    if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Water" || Model.DataViewState.DdlIssueType == "All"))
+    {
+        <h3 class="table-title">ÁGUA POTÁVEL</h3>
+        <table #searchTableWater class="table is-fullwidth" [style.display]="ddlTypeIssue==6 && ddlView==1 ? 'block' : 'none'">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Título</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Possui poço amazônico?</th>
+                <th>Há água encanada?</th>
+                <th>Quantos dias faltam água na semana?</th>
+                <th>Alguma obra de saneamento está sendo executada?</th>
+                <th>Criado em</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (WaterResponse waterResponse in Model.WaterList)
+            {
+                <tr>
+                    <td>@waterResponse.Id</td>
+                    <td>@waterResponse.Title</td>
+                    <td>@waterResponse.Latitude</td>
+                    <td>@waterResponse.Longitude</td>
+                    @if (waterResponse.HasWell.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    @if (waterResponse.HomeWithWater.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
+                    <td>@waterResponse.WaterMissedInAWeek</td>
+                    @if (waterResponse.HasSanitationProject.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }    
+                    <td>@waterResponse.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+    }
+}
+

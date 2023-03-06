@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
@@ -14,5 +15,6 @@ namespace TE.BE.City.Domain.Interfaces
         Task<LightEntity> Get();
         Task<IEnumerable<LightEntity>> GetAll(int skip, int limit);
         Task<IEnumerable<LightEntity>> GetFilter(DateTime? startDate, DateTime? endDate);
+        DataTable GetDataTable(IEnumerable<LightEntity> asphaltEntities);
     }
 }

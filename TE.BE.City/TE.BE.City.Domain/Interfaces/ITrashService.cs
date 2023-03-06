@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
@@ -15,5 +16,6 @@ namespace TE.BE.City.Domain.Interfaces
         Task<TrashEntity> Post(TrashEntity request);
         Task<TrashEntity> Put(TrashEntity request);
         Task<TrashEntity> Delete(int id);
+        DataTable GetDataTable(IEnumerable<TrashEntity> asphaltEntities);
     }
 }

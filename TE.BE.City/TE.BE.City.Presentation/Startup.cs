@@ -98,12 +98,12 @@ namespace TE.BE.City.Presentation
             services.AddScoped(typeof(ITrashService), typeof(TrashService));
             services.AddScoped(typeof(ICollectService), typeof(CollectService));
             services.AddScoped(typeof(IAsphaltService), typeof(AsphaltService));
-            services.AddScoped(typeof(IReportService), typeof(ReportService));
             services.AddScoped(typeof(IPublicServiceService), typeof(PublicServiceService));
 
             services.AddScoped(typeof(IUserDomain), typeof(UserDomain));
 
             services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
         /// <summary>
@@ -144,6 +144,8 @@ namespace TE.BE.City.Presentation
                 RequestPath = "/Pages",
                 EnableDefaultFiles = true
             });
+
+            app.UseStaticFiles();
         }
     }
 }
