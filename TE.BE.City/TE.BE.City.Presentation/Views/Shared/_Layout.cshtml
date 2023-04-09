@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link type="text/css" rel="stylesheet" href="~/css/site.css" />
     <title>Projeto Lupa NH</title>
@@ -15,21 +17,20 @@
     @RenderSection("Scripts", required: false)
 
 
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <span class="navbar-item center">
-            <img src="~/images/logo.png">
-        </span>
-    </nav>
+    <div class="hr"></div>
     <nav class="navbar is-info" role="navigation" aria-label="main navigation">
-        <div class="navbar-start center">
+        <div class="navbar-start">
+            <span class="navbar-item">
+                <img src="~/images/logo-lupa-nh-b.webp">
+            </span>
             <a class="navbar-item space" href="/site/home">
-                <div class="center">VISUALIZAÇÃO</div>
+                <div class="">Mapa</div>
             </a>
-            <a class="navbar-item space" href="/site/sharing">
-                <div class="center">COMPARTILHAMENTO</div>
+            <a class="navbar-item space" href="/site/survey">
+                <div class="">De Sua Opinião</div>
             </a>
             <a class="navbar-item space" href="http://lupa.tecccog.net" target="_blank">
-                <div class="center">SOBRE</div>
+                <div class="">Nosso Site</div>
             </a>
         </div>
     </nav>

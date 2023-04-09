@@ -56,10 +56,10 @@ namespace TE.BE.City.Presentation.Controllers
         /// Get all charts data
         /// </summary>
         [ApiExplorerSettings(IgnoreApi = true)]
-        [HttpGet]
+        
         public IActionResult Index()
         {
-            HomeResponseModel reportResponseModel = Execute();
+            HomeViewModel reportResponseModel = Execute();
             reportResponseModel.Map = Map(reportResponseModel);
 
             return View(model: reportResponseModel);
@@ -72,7 +72,7 @@ namespace TE.BE.City.Presentation.Controllers
         [HttpPost]
         public IActionResult Filter(DataViewState dataViewState)
         {
-            HomeResponseModel reportResponseModel = new HomeResponseModel(){
+            HomeViewModel reportResponseModel = new HomeViewModel(){
                 DataViewState = dataViewState,
                 Error = ValidateModel(dataViewState)
             };
@@ -133,7 +133,7 @@ namespace TE.BE.City.Presentation.Controllers
         /// </summary>
         /// <param name="homeResponseModel"></param>
         /// <returns></returns>
-        private MapResponse Map(HomeResponseModel homeResponseModel)
+        private MapResponse Map(HomeViewModel homeResponseModel)
         {
             var mapResponse = new MapResponse();
             mapResponse.InitialLatitude = float.Parse(_config["DefaultLocation:latitude"]);
@@ -239,9 +239,9 @@ namespace TE.BE.City.Presentation.Controllers
         /// <param name="sDate"></param>
         /// <param name="eDate"></param>
         /// <returns></returns>
-        private HomeResponseModel Execute(string ddlIssueType = default, DateTime startDate = default, DateTime endDate = default)
+        private HomeViewModel Execute(string ddlIssueType = default, DateTime startDate = default, DateTime endDate = default)
         {
-            HomeResponseModel reportResponseModel = new HomeResponseModel();
+            HomeViewModel reportResponseModel = new HomeViewModel();
 
             if (ddlIssueType == TypeIssue.All.ToString() || ddlIssueType == TypeIssue.Water.ToString())
             {

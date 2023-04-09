@@ -1,8 +1,8 @@
-﻿@model TE.BE.City.Presentation.Model.ViewModel.HomeResponseModel
+﻿@model TE.BE.City.Presentation.Model.ViewModel.HomeViewModel
 @using TE.BE.City.Presentation.Model.Response
 
 <div class="content">
-    <h1>VISUALIZAÇÃO</h1>
+    <h1 class="h1">Mapa</h1>
 </div>
 
 <!--Filter-->
@@ -73,30 +73,99 @@
 
                 var infoWindow = new google.maps.InfoWindow();
                 var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                
                 var markers = @Html.Raw(Model.Map.RegionsSerialized);
+
                 for (i = 0; i < markers.length; i++) {
                     var data = markers[i];
-                    var myLatlng = new google.maps.LatLng(data.Latitude, data.Longitude);
-                    var marker = new google.maps.Marker({
-                        position: myLatlng,
-                        map: map,
-                        title: data.Title
-                    });
-                    (function (marker, data) {
-                        google.maps.event.addListener(marker, "click", function (e) {
-                            var content = "<div><h4>" + data.Title + "</h4>";
-                            
-                            var arrayDescription = data.Description.split("|");
-                            for (p = 0; p < arrayDescription.length; p++) {
-                                content += "<p>" + arrayDescription[p] + "</p>"
-                            }
-                            content += "</div>";
-
-                            infoWindow.setContent(content);
-                            infoWindow.open(map, marker);
+                    
+                    // marker
+                    if (data.Latitude != null && data.Longitude != null){
+                        var myLatlng = new google.maps.LatLng(data.Latitude, data.Longitude);
+                        var marker = new google.maps.Marker({
+                            position: myLatlng,
+                            map: map,
+                            title: data.Title,
+                            icon: getIcon(data.Type)
                         });
-                    })(marker, data);
+                        (function (marker, data) {
+                            google.maps.event.addListener(marker, "click", function (e) {
+                                var content = "<div><h4>" + data.Title + "</h4>";
+                            
+                                var arrayDescription = data.Description.split("|");
+                                for (p = 0; p < arrayDescription.length; p++) {
+                                    content += "<p>" + arrayDescription[p] + "</p>"
+                                }
+                                content += "</div>";
+
+                                infoWindow.setContent(content);
+                                infoWindow.open(map, marker);
+                            });
+                        })(marker, data);
+                    }
+
+                    // polyline
+                    if (data.Path != null){
+                        const path = [];
+                        var jsonPath = JSON.parse(data.Path);
+                        for (var i = 0; i < jsonPath.length; i++) {
+                            var point = new google.maps.LatLng(jsonPath[i].latitude, jsonPath[i].longitude);
+                            path.push(point);
+                        }
+                        
+                        const pathObj = new google.maps.Polyline({
+                            path: path,
+                            geodesic: true,
+                            strokeColor: getColor(data.Type),
+                            strokeWeight: 5,
+                        });
+                        pathObj.setMap(map);
+                    }
+                }
+            }
+
+            function getColor(type) {
+                switch (type) {
+                    case 0:
+                        return "purple";
+                        break;
+                    case 1:
+                        return "orange";
+                        break;
+                    case 2:
+                        return "yellow";
+                        break;
+                    case 6:
+                        return "ltblue";
+                        break;
+                    case 4:
+                        return "red";
+                        break;
+                    case 5:
+                        return "green";
+                        break;
+                }
+            }
+
+            function getIcon(type) {
+                switch (type) {
+                    case 0:
+                        return "http://maps.google.com/mapfiles/ms/icons/purple-dot.png";
+                        break;
+                    case 1:
+                        return "http://maps.google.com/mapfiles/ms/icons/orange-dot.png";
+                        break;
+                    case 2:
+                        return "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
+                        break;
+                    case 6:
+                        return "http://maps.google.com/mapfiles/ms/icons/ltblue-dot.png";
+                        break;
+                    case 4:
+                        return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+                        break;
+                    case 5:
+                        return "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
+                        break;
                 }
             }
         </script>
@@ -117,7 +186,7 @@
 @{
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Light" || Model.DataViewState.DdlIssueType == "All"))
     {
-        <h3 class="table-title">ILUMINAÇÃO PÚBLICA</h3>
+        <h3 class="table-title">Iluminação Pública</h3>
         <table #searchTableLight class="table is-fullwidth">
         <thead>
             <tr>
@@ -154,7 +223,7 @@
 @{
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Asphalt" || Model.DataViewState.DdlIssueType == "All"))
     {
-        <h3 class="table-title">CALÇADAS E ASFALTO</h3>
+        <h3 class="table-title">Calçadas e Asfalto</h3>
         <table #searchTableAsphalt class="table is-fullwidth" [style.display]="ddlTypeIssue==0 && ddlView==1 ? 'block' : 'none'">
             <thead>
             <tr>
@@ -191,7 +260,7 @@
 @{
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Collect" || Model.DataViewState.DdlIssueType == "All"))
     {
-        <h3 class="table-title">COLETA DE LIXO</h3>
+        <h3 class="table-title">Coleta de Lixo</h3>
         <table #searchTableCollect class="table is-fullwidth" [style.display]="ddlTypeIssue==1 && ddlView==1 ? 'block' : 'none'">
             <thead>
             <tr>
@@ -226,7 +295,7 @@
 @{
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Sewer" || Model.DataViewState.DdlIssueType == "All"))
     {
-        <h3 class="table-title">TRATAMENTO DE ESGOTO</h3>
+        <h3 class="table-title">Tratamento de Esgoto</h3>
         <table #searchTableSewer class="table is-fullwidth" [style.display]="ddlTypeIssue==4 && ddlView==1 ? 'block' : 'none'">
             <thead>
             <tr>
@@ -263,7 +332,7 @@
 @{
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Trash" || Model.DataViewState.DdlIssueType == "All"))
     {
-        <h3 class="table-title">LIMPEZA URBANA</h3>
+        <h3 class="table-title">Limpeza Urbana</h3>
         <table #searchTableTrash class="table is-fullwidth" [style.display]="ddlTypeIssue==5 && ddlView==1 ? 'block' : 'none'">
             <thead>
             <tr>
@@ -302,7 +371,7 @@
 @{
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Water" || Model.DataViewState.DdlIssueType == "All"))
     {
-        <h3 class="table-title">ÁGUA POTÁVEL</h3>
+        <h3 class="table-title">Água Potável</h3>
         <table #searchTableWater class="table is-fullwidth" [style.display]="ddlTypeIssue==6 && ddlView==1 ? 'block' : 'none'">
             <thead>
             <tr>
@@ -337,3 +406,16 @@
     }
 }
 
+<div class="lightbox">
+    <a href="./survey">
+    <article class="message is-link">
+        <div class="message-header">
+            <p>De Sua Opinião</p>
+            <img class="icon-edit" src="~/images/edit.png" />
+        </div>
+        <div class="message-body">
+                <b>Leva menos de 1 minuto.</b> Responsa nossa pesquisa e ajude a entendermos a relevancia do conteúdo deste site.
+        </div>
+    </article>
+    </a>
+</div>

@@ -99,6 +99,7 @@ namespace TE.BE.City.Presentation
             services.AddScoped(typeof(ICollectService), typeof(CollectService));
             services.AddScoped(typeof(IAsphaltService), typeof(AsphaltService));
             services.AddScoped(typeof(IPublicServiceService), typeof(PublicServiceService));
+            services.AddScoped(typeof(ISurveyService), typeof(SurveyService));
 
             services.AddScoped(typeof(IUserDomain), typeof(UserDomain));
 
@@ -122,7 +123,11 @@ namespace TE.BE.City.Presentation
                     .AllowAnyHeader());
                 app.UseHttpsRedirection();
             }
-            
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -146,6 +151,13 @@ namespace TE.BE.City.Presentation
             });
 
             app.UseStaticFiles();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }

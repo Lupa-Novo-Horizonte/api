@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using System.Collections.Generic;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Presentation.Model.Response;
+using TE.BE.City.Presentation.Model.ViewModel;
 
 namespace TE.BE.City.Presentation.Mappings
 {
@@ -41,6 +41,8 @@ namespace TE.BE.City.Presentation.Mappings
 
             CreateMap<PublicServiceEntity, PublicServiceResponse>();
             CreateMap<PublicServiceResponse, PublicServiceEntity>();
+
+            CreateMap<SurveyViewModel, SurveyEntity>();
         }
     }
 }

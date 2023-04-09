@@ -56,9 +56,15 @@
     <Content Include="wwwroot\images\arrowDown.png" />
     <Content Include="wwwroot\images\bad.png" />
     <Content Include="wwwroot\images\banner.png" />
-    <Content Include="wwwroot\images\check.png" />
-    <Content Include="wwwroot\images\edit.png" />
-    <Content Include="wwwroot\images\edit_reverse.png" />
+    <Content Include="wwwroot\images\check.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\images\edit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\images\edit_reverse.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="wwwroot\images\facebook.png" />
     <Content Include="wwwroot\images\instagram.png" />
     <Content Include="wwwroot\images\linkedin.png" />
@@ -122,10 +128,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Shared\Error.cshtml" />
-    <None Include="Views\Shared\_Layout.cshtml" />
-    <None Include="Views\Sharing\Index.cshtml" />
-    <None Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\_Layout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Survey\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="wwwroot\js\site.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

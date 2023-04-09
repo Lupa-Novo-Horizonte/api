@@ -17,5 +17,7 @@ namespace TE.BE.City.Infra.CrossCutting.Enum
         InsertContactFail = 1003,
         [Description("Tente novamente mais tarde.")]
         GenericError = 1004,
+        [Description("Erro ao salvar pesquisa.")]
+        SurveyError = 1005,
     }
 }

@@ -1,0 +1,172 @@
+﻿@model TE.BE.City.Presentation.Model.ViewModel.SurveyViewModel
+
+<div class="content">
+    <h1 class="h1">De Sua Opinião</h1>
+</div>
+
+<div class="content is-normal">
+    @{
+        if (Model.Error != null)
+        {
+            <!-- Alert -->
+            <div class="message is-warning">
+                <div class="message-body">
+                    @Model.Error.Message
+                </div>
+            </div>
+        }
+    }
+
+    @{
+        if (Model.ShowConfirmation)
+        {
+            <div class="wrap">
+                <p>
+                    <img class="icon-confirmation" src="/images/check.png" />
+                    Obrigado por responder nosso pesquisa!
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="wrap">
+
+        <p>Sua colaboração é anônima!</p>
+        <p>Para cada uma das afirmações abaixo, selecione de 1 a 5 o quanto você concorda com elas. <b>(Onde 1 = pouco e 5 = muito)</b></p>
+        
+        <form method="post" asp-controller="Survey" asp-action="Index" runat="server">
+            <label class="statement">
+                Eu não tinha conhecimento dos problemas de infraestrutura presentes no bairro.
+            </label>
+            <ul class='likert'>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question01,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question01,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question01,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question01,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question01,"5")
+                    <label>5</label>
+                </li>
+            </ul>
+            <label class="statement">
+                Eu concorda que a população pode colaborar com o monitoramento da qualidade dos serviços.
+            </label>
+            <ul class='likert'>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question02,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question02,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question02,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question02,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question02,"5")
+                    <label>5</label>
+                </li>
+            </ul>
+            <label class="statement">
+                Eu acredito que expondo esses problemas pode ajudar na sua resolução pelos orgãos responsáveis.
+            </label>
+            <ul class='likert'>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question03,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question03,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question03,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question03,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question03,"5")
+                    <label>5</label>
+                </li>
+            </ul>
+            <label class="statement">
+                Considero relevante as informações contidas nesse site.
+            </label>
+            <ul class='likert'>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question04,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question04,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question04,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question04,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question04,"5")
+                    <label>5</label>
+                </li>
+            </ul>
+            <label class="statement">
+                Eu usária as informações deste site com algum próposito escolar, trabalho ou post em rede social.
+            </label>
+            <ul class='likert'>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question05,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question05,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question05,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question05,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                            @Html.RadioButtonFor(m => m.Question05,"5")
+                    <label>5</label>
+                </li>
+            </ul>
+            <div class="buttons">
+                <button type="submit" class="button survey is-info">Enviar</button>
+                <button type="reset" class="button survey">Limpar</button>
+            </div>
+        </form>
+    </div>
+        }
+    }
+</div>
+
