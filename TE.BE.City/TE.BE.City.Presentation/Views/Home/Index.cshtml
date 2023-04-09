@@ -107,8 +107,8 @@
                     if (data.Path != null){
                         const path = [];
                         var jsonPath = JSON.parse(data.Path);
-                        for (var i = 0; i < jsonPath.length; i++) {
-                            var point = new google.maps.LatLng(jsonPath[i].latitude, jsonPath[i].longitude);
+                        for (var j = 0; j < jsonPath.length; j++) {
+                            var point = new google.maps.LatLng(jsonPath[j].latitude, jsonPath[j].longitude);
                             path.push(point);
                         }
                         
