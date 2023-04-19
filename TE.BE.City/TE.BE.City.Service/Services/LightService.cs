@@ -229,8 +229,8 @@ namespace TE.BE.City.Service.Services
                 row[2] = entity.Latitude?.ToString();
                 row[3] = entity.Path?.ToString();
                 row[4] = entity.HasLight.ToSimNao();
-                row[5] = entity.IsItWorking.ToString();
-                row[6] = entity.HasLosesCable.ToString();
+                row[5] = entity.IsItWorking.ToSimNao();
+                row[6] = entity.HasLosesCable.ToSimNao();
                 row[7] = entity.CreatedAt.ToShortDateString();
 
                 dataTable.Rows.Add(row);

@@ -281,7 +281,7 @@ namespace TE.BE.City.Service.Services
                 row[2] = entity.Latitude.ToString();
                 row[3] = entity.HasRoadCleanUp.ToSimNao();
                 row[4] = entity.HowManyTimes.ToString();
-                row[5] = entity.HasAccumulatedTrash.ToString();
+                row[5] = entity.HasAccumulatedTrash.ToSimNao();
                 row[6] = entity.CreatedAt.ToShortDateString();
 
                 dataTable.Rows.Add(row);

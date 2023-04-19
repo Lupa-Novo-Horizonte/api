@@ -7,7 +7,7 @@
 
 <!--Filter-->
 <form method="post" asp-controller="Home" asp-action="Index" runat="server">
-    <table class="table is-fullwidth">
+    <table class="table search is-fullwidth">
         <thead>
             <tr>
                 <th>
@@ -187,7 +187,7 @@
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Light" || Model.DataViewState.DdlIssueType == "All"))
     {
         <h3 class="table-title">Iluminação Pública</h3>
-        <table #searchTableLight class="table is-fullwidth">
+        <table #searchTableLight class="table result is-fullwidth">
         <thead>
             <tr>
                 <th>Id</th>
@@ -224,7 +224,7 @@
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Asphalt" || Model.DataViewState.DdlIssueType == "All"))
     {
         <h3 class="table-title">Calçadas e Asfalto</h3>
-        <table #searchTableAsphalt class="table is-fullwidth" [style.display]="ddlTypeIssue==0 && ddlView==1 ? 'block' : 'none'">
+        <table #searchTableAsphalt class="table result is-fullwidth" [style.display]="ddlTypeIssue==0 && ddlView==1 ? 'block' : 'none'">
             <thead>
             <tr>
                 <th>Id</th>
@@ -261,7 +261,7 @@
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Collect" || Model.DataViewState.DdlIssueType == "All"))
     {
         <h3 class="table-title">Coleta de Lixo</h3>
-        <table #searchTableCollect class="table is-fullwidth" [style.display]="ddlTypeIssue==1 && ddlView==1 ? 'block' : 'none'">
+        <table #searchTableCollect class="table result is-fullwidth" [style.display]="ddlTypeIssue==1 && ddlView==1 ? 'block' : 'none'">
             <thead>
             <tr>
                 <th>Id</th>
@@ -296,7 +296,7 @@
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Sewer" || Model.DataViewState.DdlIssueType == "All"))
     {
         <h3 class="table-title">Tratamento de Esgoto</h3>
-        <table #searchTableSewer class="table is-fullwidth" [style.display]="ddlTypeIssue==4 && ddlView==1 ? 'block' : 'none'">
+        <table #searchTableSewer class="table result is-fullwidth" [style.display]="ddlTypeIssue==4 && ddlView==1 ? 'block' : 'none'">
             <thead>
             <tr>
                 <th>Id</th>
@@ -333,7 +333,7 @@
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Trash" || Model.DataViewState.DdlIssueType == "All"))
     {
         <h3 class="table-title">Limpeza Urbana</h3>
-        <table #searchTableTrash class="table is-fullwidth" [style.display]="ddlTypeIssue==5 && ddlView==1 ? 'block' : 'none'">
+        <table #searchTableTrash class="table result is-fullwidth" [style.display]="ddlTypeIssue==5 && ddlView==1 ? 'block' : 'none'">
             <thead>
             <tr>
                 <th>Id</th>
@@ -372,7 +372,7 @@
     if (Model.DataViewState.DdlViewType == "table" && (Model.DataViewState.DdlIssueType == "Water" || Model.DataViewState.DdlIssueType == "All"))
     {
         <h3 class="table-title">Água Potável</h3>
-        <table #searchTableWater class="table is-fullwidth" [style.display]="ddlTypeIssue==6 && ddlView==1 ? 'block' : 'none'">
+        <table #searchTableWater class="table result is-fullwidth" [style.display]="ddlTypeIssue==6 && ddlView==1 ? 'block' : 'none'">
             <thead>
             <tr>
                 <th>Id</th>

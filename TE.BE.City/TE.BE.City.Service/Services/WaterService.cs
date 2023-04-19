@@ -238,9 +238,9 @@ namespace TE.BE.City.Service.Services
                 row[1] = entity.Longitude.ToString();
                 row[2] = entity.Latitude.ToString();
                 row[3] = entity.HasWell.ToSimNao();
-                row[4] = entity.HomeWithWater.ToString();
+                row[4] = entity.HomeWithWater.ToSimNao();
                 row[5] = entity.WaterMissedInAWeek.ToString();
-                row[6] = entity.HasSanitationProject.ToString();
+                row[6] = entity.HasSanitationProject.ToSimNao();
                 row[7] = entity.CreatedAt.ToShortDateString();
 
                 dataTable.Rows.Add(row);
