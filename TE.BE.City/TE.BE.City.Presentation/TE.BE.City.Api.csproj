@@ -143,6 +143,9 @@
     <Content Include="wwwroot\js\site.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="wwwroot\images\logo-lupa-nh-b.webp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="wwwroot\images\swagger.svg" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
