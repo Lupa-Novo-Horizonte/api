@@ -37,6 +37,7 @@ namespace TE.BE.City.Presentation.Model.ViewModel
         public int CountLight { get; set; }
         public int CountSewer { get; set; }
         public int CountPublicService { get; set; }
+        public bool IsFrameView { get; set; }
         public DataViewState DataViewState { get; set; }
         public ErrorDetail Error { get; set; }
 

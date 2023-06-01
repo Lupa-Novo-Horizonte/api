@@ -58,9 +58,12 @@ namespace TE.BE.City.Presentation.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         
         public IActionResult Index()
-        {
+        {   
             HomeViewModel reportResponseModel = Execute();
             reportResponseModel.Map = Map(reportResponseModel);
+
+            if (HttpContext.Request.QueryString.HasValue && HttpContext.Request.QueryString.Value.Contains("iframe=true"))
+                reportResponseModel.IsFrameView = true;
 
             return View(model: reportResponseModel);
         }
@@ -83,6 +86,9 @@ namespace TE.BE.City.Presentation.Controllers
             reportResponseModel = Execute(dataViewState.DdlIssueType, dataViewState.StartDate, dataViewState.EndDate);
             reportResponseModel.DataViewState = dataViewState;
             reportResponseModel.Map = Map(reportResponseModel);
+
+            if (HttpContext.Request.QueryString.HasValue && HttpContext.Request.QueryString.Value.Contains("iframe=true"))
+                reportResponseModel.IsFrameView = true;
 
             return View("Index", model: reportResponseModel);
         }
