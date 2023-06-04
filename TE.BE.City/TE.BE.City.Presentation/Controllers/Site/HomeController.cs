@@ -257,12 +257,12 @@ namespace TE.BE.City.Presentation.Controllers
             chartResponse.ChartQuantitySerialized = JsonSerializer.Serialize(chartResponse.ChartQuantity);
 
             
-            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Água Potável", y = Convert.ToDouble(homeResponseModel.CountWater) / homeResponseModel.Count });
-            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Iluminação Pública", y = Convert.ToDouble(homeResponseModel.CountLight) / homeResponseModel.Count });
-            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Limpeza Urbana", y = Convert.ToDouble(homeResponseModel.CountTrash) / homeResponseModel.Count });
-            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Coleta de Lixo", y = Convert.ToDouble(homeResponseModel.CountCollect) / homeResponseModel.Count });
-            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Tratamento de Esgoto", y = Convert.ToDouble(homeResponseModel.CountSewer) / homeResponseModel.Count });
-            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Calçadas e Asfalto", y = Convert.ToDouble(homeResponseModel.CountAsphalt) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Água Potável", y = (homeResponseModel.Count == 0) ? 0 : Convert.ToDouble(homeResponseModel.CountWater) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Iluminação Pública", y = (homeResponseModel.Count == 0) ? 0 : Convert.ToDouble(homeResponseModel.CountLight) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Limpeza Urbana", y = (homeResponseModel.Count == 0) ? 0 : Convert.ToDouble(homeResponseModel.CountTrash) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Coleta de Lixo", y = (homeResponseModel.Count == 0) ? 0 : Convert.ToDouble(homeResponseModel.CountCollect) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Tratamento de Esgoto", y = (homeResponseModel.Count == 0) ? 0 : Convert.ToDouble(homeResponseModel.CountSewer) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Calçadas e Asfalto", y = (homeResponseModel.Count == 0) ? 0 : Convert.ToDouble(homeResponseModel.CountAsphalt) / homeResponseModel.Count });
             chartResponse.ChartProportionSerialized = JsonSerializer.Serialize(chartResponse.ChartProportion);
 
             return chartResponse;

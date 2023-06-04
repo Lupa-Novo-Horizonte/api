@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TE.BE.City.Presentation.Model.Response
 {
@@ -13,14 +14,14 @@ namespace TE.BE.City.Presentation.Model.Response
 
     public class ChartObject {
         public string label { get; set; }
-        public double y { get; set; }
+        public double y { get; set; } = 0;
         public string indexLabel { get { return y.ToString(); } }
     }
 
     public class ChartProportionObject
     {
         public string label { get; set; }
-        public double y { get; set; }
-        public string indexLabel { get { return (y * 100).ToString() + "%"; } }
+        public double y { get; set; } = 0;
+        public string indexLabel { get { return (Math.Round(y * 100, 2)).ToString() + "%"; } }
     }
 }
