@@ -257,7 +257,17 @@ form .likert {
     width: 100px !important;
 }
 
+.chart {
+    margin-top:20px;
+    display:flex;
+}
 
+.chartContainer {
+    height: 400px;
+    width: 40%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
 
 
 /* LIGHT BOX*/
@@ -265,8 +275,7 @@ form .likert {
     position: fixed;
     bottom: 0px;
     right: 0px;
-    width: 230px;
-    
+    width: 230px;    
     z-index: 1000;
 }
 

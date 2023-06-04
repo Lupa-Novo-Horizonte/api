@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text.Json;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
@@ -86,6 +88,7 @@ namespace TE.BE.City.Presentation.Controllers
             reportResponseModel = Execute(dataViewState.DdlIssueType, dataViewState.StartDate, dataViewState.EndDate);
             reportResponseModel.DataViewState = dataViewState;
             reportResponseModel.Map = Map(reportResponseModel);
+            reportResponseModel.Chart = Chart(reportResponseModel);
 
             if (HttpContext.Request.QueryString.HasValue && HttpContext.Request.QueryString.Value.Contains("iframe=true"))
                 reportResponseModel.IsFrameView = true;
@@ -235,6 +238,34 @@ namespace TE.BE.City.Presentation.Controllers
             mapResponse.RegionsSerialized = JsonSerializer.Serialize(mapResponse.Regions); 
 
             return mapResponse;
+        }
+
+        /// <summary>
+        /// Internal method to structure data for map component.
+        /// </summary>
+        /// <param name="homeResponseModel"></param>
+        /// <returns></returns>
+        private ChartResponse Chart(HomeViewModel homeResponseModel)
+        {
+            var chartResponse = new ChartResponse();
+            chartResponse.ChartQuantity.Add(new ChartObject { label = "Água Potável", y = homeResponseModel.CountWater });
+            chartResponse.ChartQuantity.Add(new ChartObject { label = "Iluminação Pública", y = homeResponseModel.CountLight });
+            chartResponse.ChartQuantity.Add(new ChartObject { label = "Limpeza Urbana", y = homeResponseModel.CountTrash });
+            chartResponse.ChartQuantity.Add(new ChartObject { label = "Coleta de Lixo", y = homeResponseModel.CountCollect });
+            chartResponse.ChartQuantity.Add(new ChartObject { label = "Tratamento de Esgoto", y = homeResponseModel.CountSewer });
+            chartResponse.ChartQuantity.Add(new ChartObject { label = "Calçadas e Asfalto", y = homeResponseModel.CountAsphalt });
+            chartResponse.ChartQuantitySerialized = JsonSerializer.Serialize(chartResponse.ChartQuantity);
+
+            
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Água Potável", y = Convert.ToDouble(homeResponseModel.CountWater) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Iluminação Pública", y = Convert.ToDouble(homeResponseModel.CountLight) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Limpeza Urbana", y = Convert.ToDouble(homeResponseModel.CountTrash) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Coleta de Lixo", y = Convert.ToDouble(homeResponseModel.CountCollect) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Tratamento de Esgoto", y = Convert.ToDouble(homeResponseModel.CountSewer) / homeResponseModel.Count });
+            chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Calçadas e Asfalto", y = Convert.ToDouble(homeResponseModel.CountAsphalt) / homeResponseModel.Count });
+            chartResponse.ChartProportionSerialized = JsonSerializer.Serialize(chartResponse.ChartProportion);
+
+            return chartResponse;
         }
 
         /// <summary>

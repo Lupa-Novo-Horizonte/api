@@ -422,6 +422,79 @@
 </div>
 -->
 
+<!-- Charts -->
+@{
+    if (Model.DataViewState.DdlViewType == "chart")
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+
+                // Quantity
+                var chartQuantity = new CanvasJS.Chart("ChartQuantityContainer", {
+                    title: {
+                        text: "Quantidade",
+                        fontSize: 16,
+                        fontColor: "#092654",
+                        fontFamily: "Roboto"
+                    },
+                    axisY: {
+                        labelFontSize: 14,
+                        fontFamily: "Roboto",
+                        labelFontColor: "#7A7A7A"
+                    },
+                    axisX: {
+                        labelAngle: -35,
+                        labelFontSize: 10,
+                        fontFamily: "Roboto",
+                        labelFontColor: "#7A7A7A"
+                    },
+                    data: [
+                        {
+                            type: "column",
+                            indexLabelPlacement: "outside",
+                            dataPoints: @Html.Raw(Model.Chart.ChartQuantitySerialized)
+                            
+                        }
+                    ]
+                });
+                chartQuantity.render();
+
+
+                // Proportion
+                var chartProportion = new CanvasJS.Chart("ChartProportionContainer", {
+                    title: {
+                        text: "Proporção",
+                        fontSize: 16,
+                        fontColor: "#092654",
+                        fontFamily: "Roboto"
+                    },
+                    legend: {
+                        horizontalAlign: "center",
+                        fontSize: 10,
+                        fontColor: "#7A7A7A",
+                        fontFamily: "Roboto"
+                    },
+                    data: [
+                        {
+                            type: "pie",
+                            toolTipContent: "{label}: #percent %",
+                            showInLegend: true,
+                            legendText: "{label}",
+                            dataPoints: @Html.Raw(Model.Chart.ChartProportionSerialized)
+                        }
+                    ]
+                });
+                chartProportion.render();
+            }
+        </script>
+
+        <div class="chart">
+            <div id="ChartQuantityContainer" class="chartContainer"></div>
+            <div id="ChartProportionContainer" class="chartContainer"></div>
+        </div>
+    }
+}
+
 <!-- Counter visitors -->
 <div id="sfc7tesdlw4jrfdzr4klj3hwj9fwwdwaa9y"></div>
 <script type="text/javascript" src="https://counter10.optistats.ovh/private/counter.js?c=7tesdlw4jrfdzr4klj3hwj9fwwdwaa9y&down=async" async></script>

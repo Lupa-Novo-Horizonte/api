@@ -20,6 +20,7 @@ namespace TE.BE.City.Presentation.Model.ViewModel
             PublicServiceList = new List<PublicServiceResponse>();
             DataViewState = new DataViewState();
             Map = new MapResponse();
+            Chart = new ChartResponse();
         }
         public List<AsphaltResponse> AsphaltList { get; set; }
         public List<WaterResponse> WaterList { get; set; }
@@ -42,5 +43,6 @@ namespace TE.BE.City.Presentation.Model.ViewModel
         public ErrorDetail Error { get; set; }
 
         public MapResponse Map { get; set; }
+        public ChartResponse Chart { get; set; }
     }
 }

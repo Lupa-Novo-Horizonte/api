@@ -19,7 +19,8 @@ namespace TE.BE.City.Presentation.Model.ViewModel
             DdlViewTypeItems = new List<SelectListItem>
             {
                 new SelectListItem(){Value = "map", Text = "Mapa"},
-                new SelectListItem(){Value = "table", Text = "Tabela"}
+                new SelectListItem(){Value = "table", Text = "Tabela"},
+                new SelectListItem(){Value = "chart", Text = "Gráfico"}
             };
 
             DdlIssueTypeItems = new List<SelectListItem>
