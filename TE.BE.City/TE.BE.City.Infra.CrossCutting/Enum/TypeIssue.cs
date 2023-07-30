@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace TE.BE.City.Infra.CrossCutting.Enum
 {
@@ -8,6 +6,7 @@ namespace TE.BE.City.Infra.CrossCutting.Enum
     {
         [Description("Todos")]
         All = -1,
+
         [Description("Calçadas e Asfalto")]
         Asphalt = 0,
         [Description("Coleta de Lixo")]

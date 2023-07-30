@@ -31,12 +31,17 @@
                     </div>
                 </th>
                 <th>
+                    <div class="select">
+                        @Html.DropDownListFor(model => model.DataViewState.DdlIsProblem, new SelectList(Model.DataViewState.DdlIsProblemItems, "Value", "Text"))
+                    </div>
+                </th>
+                <th>
                     <div class="buttons">
                         <button type="submit" class="button is-info">Filtrar</button>
                     </div>
                 </th>
                 <th>
-                    <a class="buttons icon-print" target="_blank" href='./home/Export?ddlIssueType=@(Model.DataViewState.DdlIssueType)&startDate=@(Model.DataViewState.StartDate)&endDate=@(Model.DataViewState.EndDate)' />
+                    <a class="buttons icon-print" target="_blank" href='./home/Export?ddlIssueType=@(Model.DataViewState.DdlIssueType)&startDate=@(Model.DataViewState.StartDate)&endDate=@(Model.DataViewState.EndDate)&ddlIsProblem=@(Model.DataViewState.DdlIsProblem)' />
                 </th>
             </tr>
         </thead>
@@ -61,9 +66,10 @@
 @{
     if (Model.DataViewState.DdlViewType == "map")
     {
-        <div class="map" id="map" ></div>
-
-        <script type="text/javascript">            
+        <div class="screen-full">
+            <div class="screen-map">
+                <div class="map" id="map"></div>
+                <script type="text/javascript">            
             window.onload = function () {
                 var mapOptions = {
                     center: new google.maps.LatLng(@(Model.Map.InitialLatitude), @(Model.Map.InitialLongitude)),
@@ -71,7 +77,6 @@
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
 
-                var infoWindow = new google.maps.InfoWindow();
                 var map = new google.maps.Map(document.getElementById("map"), mapOptions);
                 var markers = @Html.Raw(Model.Map.RegionsSerialized);
 
@@ -80,16 +85,17 @@
                     
                     // marker
                     if (data.Latitude != null && data.Longitude != null){
+                        var infoWindow = new google.maps.InfoWindow();
                         var myLatlng = new google.maps.LatLng(data.Latitude, data.Longitude);
                         var marker = new google.maps.Marker({
                             position: myLatlng,
                             map: map,
                             title: data.Title,
-                            icon: getIcon(data.Type)
+                            icon: data.IsProblem ? getIconBad(data.Type) : getIconGood(data.Type) 
                         });
                         (function (marker, data) {
                             google.maps.event.addListener(marker, "click", function (e) {
-                                var content = "<div><h4>" + data.Title + "</h4>";
+                                var content = "<div><h4>Moradia: " + data.Title + "</h4>";
                             
                                 var arrayDescription = data.Description.split("|");
                                 for (p = 0; p < arrayDescription.length; p++) {
@@ -105,6 +111,7 @@
 
                     // polyline
                     if (data.Path != null){
+                        var infoWindowPoly = new google.maps.InfoWindow();
                         const path = [];
                         var jsonPath = JSON.parse(data.Path);
                         for (var j = 0; j < jsonPath.length; j++) {
@@ -115,68 +122,86 @@
                         const pathObj = new google.maps.Polyline({
                             path: path,
                             geodesic: true,
-                            strokeColor: getColor(data.Type),
+                            strokeColor: data.IsProblem ? '#faba01' : '#092654',
                             strokeWeight: 5,
                         });
+                        (function (pathObj, data) {
+                            google.maps.event.addListener(pathObj, "click", function (e) {
+                                console.log('clicked ' + path[0]);
+                                var content = "<div><h4> Via: " + data.Title + "</h4></dev>";
+                            
+                                var arrayDescription = data.Description.split("|");
+                                for (p = 0; p < arrayDescription.length; p++) {
+                                    content += "<p>" + arrayDescription[p] + "</p>"
+                                }
+                                content += "</div>";
+                            
+                                infoWindowPoly.setContent(content);
+                                infoWindowPoly.setPosition(path[Math.floor(path.length/2)]);
+                                infoWindowPoly.open(map);
+                            });
+                        })(pathObj, data);
                         pathObj.setMap(map);
                     }
                 }
             }
-
-            function getColor(type) {
+            
+            function getIconGood(type) {
                 switch (type) {
                     case 0:
-                        return "purple";
+                        return "../images/street-good.png"; //http://maps.google.com/mapfiles/ms/icons/purple-dot.png
                         break;
                     case 1:
-                        return "orange";
+                        return "../images/collect-good.png"; //http://maps.google.com/mapfiles/ms/icons/orange-dot.png
                         break;
                     case 2:
-                        return "yellow";
+                        return "../images/light-good.png"; //http://maps.google.com/mapfiles/ms/icons/yellow-dot.png
                         break;
                     case 6:
-                        return "ltblue";
+                        return "../images/water-good.png"; //http://maps.google.com/mapfiles/ms/icons/ltblue-dot.png
                         break;
                     case 4:
-                        return "red";
+                        return "../images/sewer-good.png"; //http://maps.google.com/mapfiles/ms/icons/red-dot.png
                         break;
                     case 5:
-                        return "green";
+                        return "../images/trash-good.png"; //http://maps.google.com/mapfiles/ms/icons/green-dot.png
                         break;
                 }
             }
-
-            function getIcon(type) {
-                switch (type) {
-                    case 0:
-                        return "http://maps.google.com/mapfiles/ms/icons/purple-dot.png";
-                        break;
-                    case 1:
-                        return "http://maps.google.com/mapfiles/ms/icons/orange-dot.png";
-                        break;
-                    case 2:
-                        return "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
-                        break;
-                    case 6:
-                        return "http://maps.google.com/mapfiles/ms/icons/ltblue-dot.png";
-                        break;
-                    case 4:
-                        return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
-                        break;
-                    case 5:
-                        return "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
-                        break;
-                }
-            }
+            
+            function getIconBad(type) {
+                            switch (type) {
+                                case 0:
+                                    return "../images/street-bad.png"; //http://maps.google.com/mapfiles/ms/icons/purple-dot.png
+                                    break;
+                                case 1:
+                                    return "../images/collect-bad.png"; //http://maps.google.com/mapfiles/ms/icons/orange-dot.png
+                                    break;
+                                case 2:
+                                    return "../images/light-bad.png"; //http://maps.google.com/mapfiles/ms/icons/yellow-dot.png
+                                    break;
+                                case 6:
+                                    return "../images/water-bad.png"; //http://maps.google.com/mapfiles/ms/icons/ltblue-dot.png
+                                    break;
+                                case 4:
+                                    return "../images/sewer-bad.png"; //http://maps.google.com/mapfiles/ms/icons/red-dot.png
+                                    break;
+                                case 5:
+                                    return "../images/trash-bad.png"; //http://maps.google.com/mapfiles/ms/icons/green-dot.png
+                                    break;
+                            }
+                        }
         </script>
-
-        <div class="legend" [style.display]="ddlView==0 ? 'flex' : 'none'">
-            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/purple-dot.png'><p class="legend-text">Calçadas e Asfalto</p>
-            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/orange-dot.png'><p class="legend-text">Coleta de Lixo</p>
-            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'><p class="legend-text">Iluminação Pública</p>
-            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/ltblue-dot.png'><p class="legend-text">Água Potável</p>
-            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/red-dot.png'><p class="legend-text">Tratamento de Esgoto</p>
-            <img class="legend-img" src='http://maps.google.com/mapfiles/ms/icons/green-dot.png'><p class="legend-text">Limpeza Urbana</p>
+                <div class="legend" [style.display]="ddlView==0 ? 'flex' : 'none'">
+                    <div class="square-blue"></div>
+                    <p class="legend-text">Ocorrências em conformidade</p>
+                    <div class="square-yellow"></div>
+                    <p class="legend-text">Ocorrências identificado com problema</p>
+                </div>
+            </div>
+            <div class="screen-news">
+                <iframe class="news-iframe" src="/site/news"></iframe>
+            </div>
         </div>
     }
 }
@@ -192,6 +217,7 @@
             <tr>
                 <th>Id</th>
                 <th>Título</th>
+                <th>Problema</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
                 <th>Possui poste?</th>
@@ -206,6 +232,7 @@
                 <tr>
                     <td>@lightResponse.Id</td>
                     <td>@lightResponse.Title</td>
+                    @if (lightResponse.IsProblem.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
                     <td>@lightResponse.Latitude</td>
                     <td>@lightResponse.Longitude</td>
                     @if (lightResponse.HasLight.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
@@ -229,6 +256,7 @@
             <tr>
                 <th>Id</th>
                 <th>Título</th>
+                <th>Problema</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
                 <th>A via é asfaltada?</th>
@@ -243,6 +271,7 @@
                 <tr>
                     <td>@asphaltResponse.Id</td>
                     <td>@asphaltResponse.Title</td>
+                    @if (asphaltResponse.IsProblem.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
                     <td>@asphaltResponse.Latitude</td>
                     <td>@asphaltResponse.Longitude</td>
                     @if (asphaltResponse.IsPaved.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
@@ -266,6 +295,7 @@
             <tr>
                 <th>Id</th>
                 <th>Título</th>
+                <th>Problema</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
                 <th>Há coleta de lixo?</th>
@@ -279,6 +309,7 @@
                 <tr>
                     <td>@collectResponse.Id</td>
                     <td>@collectResponse.Title</td>
+                    @if (collectResponse.IsProblem.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
                     <td>@collectResponse.Latitude</td>
                     <td>@collectResponse.Longitude</td>
                     @if (collectResponse.HasCollect.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
@@ -301,6 +332,7 @@
             <tr>
                 <th>Id</th>
                 <th>Título</th>
+                <th>Problema</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
                 <th>Há coleta ou tratamento de esgoto?</th>
@@ -315,6 +347,7 @@
                 <tr>
                     <td>@sewerResponse.Id</td>
                     <td>@sewerResponse.Title</td>
+                    @if (sewerResponse.IsProblem.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
                     <td>@sewerResponse.Latitude</td>
                     <td>@sewerResponse.Longitude</td>
                     @if (sewerResponse.HasHomeSewer.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
@@ -338,6 +371,7 @@
             <tr>
                 <th>Id</th>
                 <th>Título</th>
+                <th>Problema</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
                 <th>A prefeitura faz a limpeza?</th>
@@ -353,6 +387,7 @@
                 <tr>
                     <td>@trashResponse.Id</td>
                     <td>@trashResponse.Title</td>
+                    @if (trashResponse.IsProblem.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
                     <td>@trashResponse.Latitude</td>
                     <td>@trashResponse.Longitude</td>
                     @if (trashResponse.HasRoadcleanUp.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
@@ -377,6 +412,7 @@
             <tr>
                 <th>Id</th>
                 <th>Título</th>
+                <th>Problema</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
                 <th>Possui poço amazônico?</th>
@@ -392,6 +428,7 @@
                 <tr>
                     <td>@waterResponse.Id</td>
                     <td>@waterResponse.Title</td>
+                    @if (waterResponse.IsProblem.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }
                     <td>@waterResponse.Latitude</td>
                     <td>@waterResponse.Longitude</td>
                     @if (waterResponse.HasWell.Equals(true)){ <td>Sim</td> } else { <td>Não</td> }

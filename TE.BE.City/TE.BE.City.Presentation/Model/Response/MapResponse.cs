@@ -24,5 +24,6 @@ namespace TE.BE.City.Presentation.Model.Response
         public string Title { get; set; }
         public TypeIssue Type { get; set; }
         public string Description { get; set; }
+        public bool IsProblem { get; set; }
     }
 }

@@ -200,6 +200,21 @@ td {
     color: #7a7a7a;
 }
 
+.square-yellow{
+    background-color: #faba01;
+    width: 30px;
+    height: 10px;
+    margin: 5px;
+    border-radius: 3px;
+}
+
+.square-blue{
+    background-color: #092654;
+    width: 30px;
+    height: 10px;
+    margin: 5px;
+    border-radius: 3px;
+}
 
 
 /* SURVEY */
@@ -257,6 +272,8 @@ form .likert {
     width: 100px !important;
 }
 
+
+/* CHART */
 .chart {
     margin-top:30px;
     display:flex;
@@ -269,13 +286,17 @@ form .likert {
     margin-right: 5%;
 }
 
+.canvasjs-chart-credit{
+    display:none;
+}
+
 
 /* LIGHT BOX*/
 .lightbox {
     position: fixed;
     bottom: 0px;
     right: 0px;
-    width: 230px;    
+    width: 230px;
     z-index: 1000;
 }
 
@@ -299,6 +320,37 @@ form .likert {
     margin: 0px;
 }
 
+html{
+/*    overflow-y: hidden !important; */
+}
+
+.news-iframe{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.news-text{
+    text-align: justify;
+    padding-right: 5px
+}
+
+.screen-full{
+    display: flex;
+    flex-direction: row;
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+}
+
+.screen-map{
+    flex-grow: 7;
+}
+
+.screen-news{
+    flex-grow: 3;
+}
 
 /* MOBILE */
 @media (max-width: 767px) {
@@ -322,6 +374,21 @@ form .likert {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
+    }
+    .chart {
+        display: block;
+    }
+    .chartContainer {
+        margin: 0%;
+    }
+
+    .screen-full{
+        flex-direction: column;
+    }
+
+    .news-iframe{
+        margin-right: 0px;
+        margin-left: 0px;
     }
 }
 

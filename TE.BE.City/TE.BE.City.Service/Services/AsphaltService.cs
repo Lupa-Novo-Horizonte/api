@@ -1,8 +1,9 @@
-﻿using LinqKit;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
+using LinqKit;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting;
@@ -13,10 +14,12 @@ namespace TE.BE.City.Service.Services
     public class AsphaltService : IAsphaltService
     {
         private readonly IRepository<AsphaltEntity> _repository;
+        private readonly IGoogleMapsWebProvider _googleMapsWebProvider;
 
-        public AsphaltService(IRepository<AsphaltEntity> repository)
+        public AsphaltService(IRepository<AsphaltEntity> repository, IGoogleMapsWebProvider googleMapsWebProvider)
         {
             _repository = repository;
+            _googleMapsWebProvider = googleMapsWebProvider;
         }
 
         public async Task<IEnumerable<AsphaltEntity>> GetAll(int skip, int limit)
@@ -56,16 +59,14 @@ namespace TE.BE.City.Service.Services
             }
         }
 
-        public async Task<IEnumerable<AsphaltEntity>> GetById(int id)
+        public async Task<AsphaltEntity> GetById(int id)
         {
-            var ocorrencyDetailEntity = new List<AsphaltEntity>();
-
             try
             {
                 var result = await _repository.SelectById(id);
 
                 if (result != null)
-                    ocorrencyDetailEntity.Add(result);
+                    return result;
                 else
                 {
                     var contactEntity = new AsphaltEntity()
@@ -77,10 +78,8 @@ namespace TE.BE.City.Service.Services
                             Message = ErrorCode.SearchHasNoResult.GetDescription()
                         }
                     };
-                    ocorrencyDetailEntity.Add(contactEntity);
+                    return contactEntity;
                 }
-
-                return ocorrencyDetailEntity;
             }
             catch (ExecptionHelper.ExceptionService ex)
             {
@@ -143,7 +142,7 @@ namespace TE.BE.City.Service.Services
             return dataTable;
         }
 
-        public async Task<IEnumerable<AsphaltEntity>> GetFilter(DateTime? startDate, DateTime? endDate)
+        public async Task<IEnumerable<AsphaltEntity>> GetFilter(DateTime? startDate, DateTime? endDate, IsProblem isProblem)
         {
             try
             {
@@ -154,7 +153,14 @@ namespace TE.BE.City.Service.Services
                 if (endDate != null && endDate > DateTime.MinValue)
                     predicate.And(model => model.CreatedAt.Date <= endDate);
 
-                return await _repository.Filter(predicate);
+                var result = await _repository.Filter(predicate);
+                
+                return isProblem switch
+                {
+                    IsProblem.All => result,
+                    IsProblem.Problem => result.Where(c => c.IsProblem),
+                    _ => result.Where(c => c.IsProblem == false)
+                };
             }
             catch
             {
@@ -241,6 +247,24 @@ namespace TE.BE.City.Service.Services
                 }
 
                 return asphaltEntity;
+            }
+            catch (ExecptionHelper.ExceptionService ex)
+            {
+                throw new ExecptionHelper.ExceptionService(ex.Message);
+            }
+        }
+
+        public async Task<string> GetLocationAddress(int id)
+        {
+            string address = string.Empty;
+            try
+            {
+                var item = await GetById(id);
+                
+                if(! string.IsNullOrEmpty(item.Latitude) && ! string.IsNullOrEmpty(item.Longitude))
+                    address = await _googleMapsWebProvider.GetAddress(item.Latitude, item.Longitude);
+                
+                return address;
             }
             catch (ExecptionHelper.ExceptionService ex)
             {

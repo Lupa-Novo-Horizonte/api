@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting;
-using System.Linq;
 using TE.BE.City.Infra.CrossCutting.Enum;
 using LinqKit;
 using System.Data;
+using System.Linq;
 
 namespace TE.BE.City.Service.Services
 {
     public class TrashService : ITrashService
     {
         private readonly IRepository<TrashEntity> _repository;
+        private readonly IGoogleMapsWebProvider _googleMapsWebProvider;
 
-        public TrashService(IRepository<TrashEntity> repository)
+        public TrashService(IRepository<TrashEntity> repository, IGoogleMapsWebProvider googleMapsWebProvider)
         {
             _repository = repository;
+            _googleMapsWebProvider = googleMapsWebProvider;
         }
 
         public async Task<IEnumerable<TrashEntity>> GetAll(int skip, int limit)
@@ -58,16 +59,14 @@ namespace TE.BE.City.Service.Services
             }
         }
 
-        public async Task<IEnumerable<TrashEntity>> GetById(int id)
+        public async Task<TrashEntity> GetById(int id)
         {
-            var newsEntity = new List<TrashEntity>();
-
             try
             {
                 var result = await _repository.SelectById(id);
 
                 if (result != null)
-                    newsEntity.Add(result);
+                    return result;
                 else
                 {
                     var contactEntity = new TrashEntity()
@@ -79,10 +78,8 @@ namespace TE.BE.City.Service.Services
                             Message = ErrorCode.SearchHasNoResult.GetDescription()
                         }
                     };
-                    newsEntity.Add(contactEntity);
+                    return contactEntity;
                 }
-
-                return newsEntity;
             }
             catch (ExecptionHelper.ExceptionService ex)
             {
@@ -127,7 +124,7 @@ namespace TE.BE.City.Service.Services
             }
         }
 
-        public async Task<IEnumerable<TrashEntity>> GetFilter(DateTime? startDate, DateTime? endDate)
+        public async Task<IEnumerable<TrashEntity>> GetFilter(DateTime? startDate, DateTime? endDate, IsProblem isProblem)
         {
             try
             {
@@ -138,7 +135,14 @@ namespace TE.BE.City.Service.Services
                 if (endDate != null && endDate > DateTime.MinValue)
                     predicate.And(model => model.CreatedAt.Date <= endDate);
 
-                return await _repository.Filter(predicate);
+                var result = await _repository.Filter(predicate);
+                
+                return isProblem switch
+                {
+                    IsProblem.All => result,
+                    IsProblem.Problem => result.Where(c => c.IsProblem),
+                    _ => result.Where(c => c.IsProblem == false)
+                };
             }
             catch
             {
@@ -287,6 +291,24 @@ namespace TE.BE.City.Service.Services
                 dataTable.Rows.Add(row);
             }
             return dataTable;
+        }
+        
+        public async Task<string> GetLocationAddress(int id)
+        {
+            string address = string.Empty;
+            try
+            {
+                var item = await GetById(id);
+                
+                if(! string.IsNullOrEmpty(item.Latitude) && ! string.IsNullOrEmpty(item.Longitude))
+                    address = await _googleMapsWebProvider.GetAddress(item.Latitude, item.Longitude);
+                
+                return address;
+            }
+            catch (ExecptionHelper.ExceptionService ex)
+            {
+                throw new ExecptionHelper.ExceptionService(ex.Message);
+            }
         }
     }
 }

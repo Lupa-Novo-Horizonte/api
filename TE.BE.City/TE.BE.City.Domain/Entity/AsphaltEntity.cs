@@ -20,5 +20,7 @@ namespace TE.BE.City.Domain.Entity
         public bool HasPavedSidewalks { get; set; }
         // Armazena pontos de um reta no mapa
         public string Path { get; set; }
+        // Informa se o item é considerado um poblem ou apenas um mapeamento
+        public bool IsProblem => !IsPaved || !HasPavedSidewalks || HasHoles;
     }
 }

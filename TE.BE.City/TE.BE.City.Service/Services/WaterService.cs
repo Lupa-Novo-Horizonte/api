@@ -1,9 +1,9 @@
-﻿using LinqKit;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using LinqKit;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting;
@@ -15,16 +15,18 @@ namespace TE.BE.City.Service.Services
     {
         private readonly IRepository<WaterEntity> _waterRepository;
         private readonly IRepository<StatusEntity> _StatusRepository;
+        private readonly IGoogleMapsWebProvider _googleMapsWebProvider;
         
         /// <summary>
         /// Iniciate my dependy injection
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="token"></param>
-        public WaterService(IRepository<WaterEntity> orderRepository, IRepository<StatusEntity> StatusRepository)
+        public WaterService(IRepository<WaterEntity> orderRepository, IRepository<StatusEntity> StatusRepository, IGoogleMapsWebProvider googleMapsWebProvider)
         {
             _waterRepository = orderRepository;
             _StatusRepository = StatusRepository;
+            _googleMapsWebProvider = googleMapsWebProvider;
         }
 
         /// <summary>
@@ -141,7 +143,7 @@ namespace TE.BE.City.Service.Services
             }
         }
 
-        public async Task<IEnumerable<WaterEntity>> GetFilter(DateTime? startDate, DateTime? endDate)
+        public async Task<IEnumerable<WaterEntity>> GetFilter(DateTime? startDate, DateTime? endDate, IsProblem isProblem)
         {
             try
             {
@@ -152,7 +154,14 @@ namespace TE.BE.City.Service.Services
                 if (endDate != null && endDate > DateTime.MinValue)
                     predicate.And(model => model.CreatedAt.Date <= endDate);
 
-                return await _waterRepository.Filter(predicate);
+                var result =  await _waterRepository.Filter(predicate);
+
+                return isProblem switch
+                {
+                    IsProblem.All => result,
+                    IsProblem.Problem => result.Where(c => c.IsProblem),
+                    _ => result.Where(c => c.IsProblem == false)
+                };
             }
             catch
             {
@@ -246,6 +255,24 @@ namespace TE.BE.City.Service.Services
                 dataTable.Rows.Add(row);
             }
             return dataTable;
+        }
+        
+        public async Task<string> GetLocationAddress(int id)
+        {
+            string address = string.Empty;
+            try
+            {
+                var item = await GetById(id);
+
+                if(! string.IsNullOrEmpty(item.Latitude) && ! string.IsNullOrEmpty(item.Longitude))
+                    address = await _googleMapsWebProvider.GetAddress(item.Latitude, item.Longitude);
+                
+                return address;
+            }
+            catch (ExecptionHelper.ExceptionService ex)
+            {
+                throw new ExecptionHelper.ExceptionService(ex.Message);
+            }
         }
     }
 }

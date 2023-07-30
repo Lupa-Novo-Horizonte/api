@@ -16,6 +16,7 @@ using TE.BE.City.Presentation.Mappings;
 using System;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using TE.BE.City.Domain.Entity;
 
 namespace TE.BE.City.Presentation
 {
@@ -100,9 +101,14 @@ namespace TE.BE.City.Presentation
             services.AddScoped(typeof(IAsphaltService), typeof(AsphaltService));
             services.AddScoped(typeof(IPublicServiceService), typeof(PublicServiceService));
             services.AddScoped(typeof(ISurveyService), typeof(SurveyService));
+            services.AddScoped(typeof(INewsService), typeof(NewsService));
 
             services.AddScoped(typeof(IUserDomain), typeof(UserDomain));
+            services.AddScoped(typeof(INewsDomain<NewsPriorityEntity>), typeof(NewsDomain<NewsPriorityEntity>));
 
+            services.AddScoped(typeof(IGoogleMapsWebProvider), typeof(GoogleMapsWebWebProvider));
+            services.AddScoped(typeof(IOpenAIWebProvider), typeof(OpenAIWebProvider));
+            
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddRazorPages().AddRazorRuntimeCompilation();
         }

@@ -34,21 +34,21 @@ namespace TE.BE.City.Presentation.Controllers
         public async Task<CollectSearchResponse> Get(int id, int skip = 0, int limit = 50)
         {
             var collectSearchResponse = new CollectSearchResponse();
-            IEnumerable<CollectEntity> collectEntity;
+            //IEnumerable<CollectEntity> collectEntity;
 
             if (id > 0)
             {
-                collectEntity = await _collectService.GetById(id);
-                collectSearchResponse.Total = collectEntity.Count();
+                var collectEntity = await _collectService.GetById(id);
+                _mapper.Map(collectEntity, collectSearchResponse.CollectList);
+                collectSearchResponse.Total = collectSearchResponse.CollectList.Count();
             }
             else
             {
-                collectEntity = await _collectService.GetAll(skip, limit);
-                collectSearchResponse.Total = collectEntity.Count();
+                var collectEntity = await _collectService.GetAll(skip, limit);
+                _mapper.Map(collectEntity, collectSearchResponse.CollectList);
+                collectSearchResponse.Total = collectSearchResponse.CollectList.Count;
             }
-
-            _mapper.Map(collectEntity, collectSearchResponse.CollectList);
-
+            
             return collectSearchResponse;
         }
 

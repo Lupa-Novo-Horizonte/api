@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-
-namespace TE.BE.City.Domain.Entity
+﻿namespace TE.BE.City.Domain.Entity
 {
     public class SewerEntity : BaseEntity
     {
@@ -19,5 +14,7 @@ namespace TE.BE.City.Domain.Entity
         public bool HasHomeCesspool { get; set; }
         // A profeitura estáexecutando algum projeto de saneamento
         public bool HasSanitationProject { get; set; }
+        // Informa se o item é considerado um poblem ou apenas um mapeamento
+        public bool IsProblem => !HasHomeSewer;
     }
 }

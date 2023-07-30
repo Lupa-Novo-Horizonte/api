@@ -14,5 +14,7 @@ namespace TE.BE.City.Presentation.Model.Response
         public bool HasCollect { get; set; }
         // Qual a frequencia semanal?
         public int HowManyTimes { get; set; }
+        // Informa se o item é considerado um poblem ou apenas um mapeamento
+        public bool IsProblem { get; set; }
     }
 }

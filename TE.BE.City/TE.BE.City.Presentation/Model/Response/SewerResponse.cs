@@ -13,5 +13,7 @@ namespace TE.BE.City.Presentation.Model.Response
         public bool HasHomeCesspool { get; set; }
         //A prefeitura limpa os esgotos?
         public bool HasSanitationProject { get; set; }
+        // Informa se o item é considerado um poblem ou apenas um mapeamento
+        public bool IsProblem { get; set; }
     }
 }

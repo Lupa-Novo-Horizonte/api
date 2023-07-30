@@ -15,5 +15,7 @@ namespace TE.BE.City.Presentation.Model.Response
         public bool HasLosesCable { get; set; }
         // Armazena ontas de um reta no mapa
         public string Path { get; set; }
+        // Informa se o item é considerado um poblem ou apenas um mapeamento
+        public bool IsProblem { get; set; }
     }
 }

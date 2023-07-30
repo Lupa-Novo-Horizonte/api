@@ -15,5 +15,7 @@ namespace TE.BE.City.Presentation.Model.Response
         public bool HasAccumulatedTrash { get; set; }
         // A prefeitura faz a limpeza/capinagem dos matos?
         public string HasLandWeeding { get; set; }
+        // Informa se o item é considerado um poblem ou apenas um mapeamento
+        public bool IsProblem { get; set; }
     }
 }

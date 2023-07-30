@@ -63,6 +63,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Water,
+                    IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Água Potável",
@@ -75,6 +76,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Light,
+                    IsProblem = item.IsProblem,
                     Latitude = string.IsNullOrEmpty(item.Latitude) ? null : float.Parse(item.Latitude),
                     Longitude = string.IsNullOrEmpty(item.Longitude) ? null : float.Parse(item.Longitude),
                     Path = item.Path,
@@ -88,6 +90,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Trash,
+                    IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Limpeza Urbana",
@@ -100,6 +103,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Collect,
+                    IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Coleta de Lixo",
@@ -112,6 +116,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Sewer,
+                    IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Tratamento de Esgoto",
@@ -124,6 +129,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Asphalt,
+                    IsProblem = item.IsProblem,
                     Latitude = string.IsNullOrEmpty(item.Latitude) ? null : float.Parse(item.Latitude),
                     Longitude = string.IsNullOrEmpty(item.Longitude) ? null : float.Parse(item.Longitude),
                     Path = item.Path,

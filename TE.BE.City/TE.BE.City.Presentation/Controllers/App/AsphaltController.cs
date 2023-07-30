@@ -40,7 +40,7 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 var asphaltEntity = await _asphaltService.GetById(id);
                 _mapper.Map(asphaltEntity, asphaltSearchResponse.AsphaltList);
-                asphaltSearchResponse.Total = asphaltEntity.Count();
+                asphaltSearchResponse.Total = asphaltSearchResponse.AsphaltList.Count();
             }
             else
             {

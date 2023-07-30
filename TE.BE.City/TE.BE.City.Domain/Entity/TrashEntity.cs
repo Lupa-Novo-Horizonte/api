@@ -19,5 +19,7 @@ namespace TE.BE.City.Domain.Entity
         public bool HasAccumulatedTrash { get; set; }
         // A prefeitura faz a limpeza/capinagem dos matos?
         public bool HasLandWeeding { get; set; }
+        // Informa se o item é considerado um poblem ou apenas um mapeamento
+        public bool IsProblem => !HasRoadCleanUp || HasAccumulatedTrash || HasLandWeeding;
     }
 }

@@ -62,6 +62,7 @@ namespace TE.BE.City.Presentation.Controllers
         public IActionResult Index()
         {   
             HomeViewModel reportResponseModel = Execute();
+            reportResponseModel.ApiKey = _config["GoogleMapsKey"];
             reportResponseModel.Map = Map(reportResponseModel);
 
             if (HttpContext.Request.QueryString.HasValue && HttpContext.Request.QueryString.Value.Contains("iframe=true"))
@@ -78,14 +79,15 @@ namespace TE.BE.City.Presentation.Controllers
         public IActionResult Filter(DataViewState dataViewState)
         {
             HomeViewModel reportResponseModel = new HomeViewModel(){
+                ApiKey = _config["GoogleMapsKey"],
                 DataViewState = dataViewState,
                 Error = ValidateModel(dataViewState)
             };
 
             if (reportResponseModel.Error != null)
                 return View("Index", model: reportResponseModel);
-            
-            reportResponseModel = Execute(dataViewState.DdlIssueType, dataViewState.StartDate, dataViewState.EndDate);
+
+            reportResponseModel = Execute(dataViewState.DdlIssueType, dataViewState.StartDate, dataViewState.EndDate, (IsProblem)Enum.Parse(typeof(IsProblem),dataViewState.DdlIsProblem, true));
             reportResponseModel.DataViewState = dataViewState;
             reportResponseModel.Map = Map(reportResponseModel);
             reportResponseModel.Chart = Chart(reportResponseModel);
@@ -106,9 +108,9 @@ namespace TE.BE.City.Presentation.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
         [Route("export")]
-        public ActionResult Export(string ddlIssueType, string startDate, string endDate)
+        public ActionResult Export(string ddlIssueType, string startDate, string endDate, string ddlIsProblem)
         { 
-            var reportResponseModel = Execute(ddlIssueType, Convert.ToDateTime(startDate), Convert.ToDateTime(endDate));
+            var reportResponseModel = Execute(ddlIssueType, Convert.ToDateTime(startDate), Convert.ToDateTime(endDate), (IsProblem)Enum.Parse(typeof(IsProblem),ddlIsProblem, true));
 
             var wb = new XLWorkbook();
 
@@ -154,6 +156,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Water,
+                    IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Água Potável",
@@ -166,6 +169,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Light,
+                    IsProblem = item.IsProblem,
                     Latitude = string.IsNullOrEmpty(item.Latitude) ? null : float.Parse(item.Latitude),
                     Longitude = string.IsNullOrEmpty(item.Longitude) ? null : float.Parse(item.Longitude),
                     Path = item.Path,
@@ -179,6 +183,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Trash,
+                    IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Limpeza Urbana",
@@ -191,6 +196,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Collect,
+                    IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Coleta de Lixo",
@@ -203,6 +209,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Sewer,
+                    IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
                     Title = "Tratamento de Esgoto",
@@ -215,6 +222,7 @@ namespace TE.BE.City.Presentation.Controllers
                 mapResponse.Regions.Add(new Issues()
                 {
                     Type = Infra.CrossCutting.Enum.TypeIssue.Asphalt,
+                    IsProblem = item.IsProblem,
                     Latitude = string.IsNullOrEmpty(item.Latitude) ? null : float.Parse(item.Latitude),
                     Longitude = string.IsNullOrEmpty(item.Longitude) ? null : float.Parse(item.Longitude),
                     Path = item.Path,
@@ -276,48 +284,49 @@ namespace TE.BE.City.Presentation.Controllers
         /// <param name="sDate"></param>
         /// <param name="eDate"></param>
         /// <returns></returns>
-        private HomeViewModel Execute(string ddlIssueType = default, DateTime startDate = default, DateTime endDate = default)
+        private HomeViewModel Execute(string ddlIssueType = default, DateTime startDate = default, DateTime endDate = default, IsProblem ddlIsProblem = default)
         {
             HomeViewModel reportResponseModel = new HomeViewModel();
+            reportResponseModel.ApiKey = _config["GoogleMapsKey"];
 
             if (ddlIssueType == TypeIssue.All.ToString() || ddlIssueType == TypeIssue.Water.ToString())
             {
-                var watersEntity = _waterService.GetFilter(startDate, endDate).Result;
+                var watersEntity = _waterService.GetFilter(startDate, endDate, ddlIsProblem).Result;
                 reportResponseModel.WaterList = _mapper.Map<List<WaterResponse>>(watersEntity);
                 reportResponseModel.CountWater = reportResponseModel.WaterList.Count();
             }
 
             if (ddlIssueType == TypeIssue.All.ToString() || ddlIssueType == TypeIssue.Light.ToString())
             {
-                var lightEntity = _lightService.GetFilter(startDate, endDate).Result;
+                var lightEntity = _lightService.GetFilter(startDate, endDate, ddlIsProblem).Result;
                 reportResponseModel.LightList = _mapper.Map<List<LightResponse>>(lightEntity);
                 reportResponseModel.CountLight = reportResponseModel.LightList.Count();
             }
 
             if (ddlIssueType == TypeIssue.All.ToString() || ddlIssueType == TypeIssue.Trash.ToString())
             {
-                var trashEntity = _trashService.GetFilter(startDate, endDate).Result;
+                var trashEntity = _trashService.GetFilter(startDate, endDate, ddlIsProblem).Result;
                 reportResponseModel.TrashList = _mapper.Map<List<TrashResponse>>(trashEntity);
                 reportResponseModel.CountTrash = reportResponseModel.TrashList.Count();
             }
 
             if (ddlIssueType == TypeIssue.All.ToString() || ddlIssueType == TypeIssue.Collect.ToString())
             {
-                var collectEntity = _collectService.GetFilter(startDate, endDate).Result;
+                var collectEntity = _collectService.GetFilter(startDate, endDate, ddlIsProblem).Result;
                 reportResponseModel.CollectList = _mapper.Map<List<CollectResponse>>(collectEntity);
                 reportResponseModel.CountCollect = reportResponseModel.CollectList.Count();
             }
 
             if (ddlIssueType == TypeIssue.All.ToString() || ddlIssueType == TypeIssue.Sewer.ToString())
             {
-                var sewerEntity = _sewerService.GetFilter(startDate, endDate).Result;
+                var sewerEntity = _sewerService.GetFilter(startDate, endDate, ddlIsProblem).Result;
                 reportResponseModel.SewerList = _mapper.Map<List<SewerResponse>>(sewerEntity);
                 reportResponseModel.CountSewer = reportResponseModel.SewerList.Count();
             }
 
             if (ddlIssueType == TypeIssue.All.ToString() || ddlIssueType == TypeIssue.Asphalt.ToString())
             {
-                var asphaltEntity = _asphaltService.GetFilter(startDate, endDate).Result;
+                var asphaltEntity = _asphaltService.GetFilter(startDate, endDate, ddlIsProblem).Result;
                 reportResponseModel.AsphaltList = _mapper.Map<List<AsphaltResponse>>(asphaltEntity);
                 reportResponseModel.CountAsphalt = reportResponseModel.AsphaltList.Count();
             }

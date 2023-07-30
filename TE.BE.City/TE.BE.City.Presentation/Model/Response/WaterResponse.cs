@@ -19,5 +19,7 @@ namespace TE.BE.City.Presentation.Model.Response
         public bool HasWell { get; set; }
         // A prefeitura está excutando algum projetode saneamento?
         public bool HasSanitationProject { get; set; }
+        // Informa se o item é considerado um poblem ou apenas um mapeamento
+        public bool IsProblem { get; set; }
     }   
 }

@@ -1,0 +1,13 @@
+﻿@model TE.BE.City.Presentation.Model.ViewModel.NewsViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutClean.cshtml";
+}
+
+<div class="content">
+    <h1 class="h1">Recomendação de notícia</h1>
+</div>
+
+<div>
+    <p class="news-text">@Html.DisplayFor(model => model.News)</p>
+</div>

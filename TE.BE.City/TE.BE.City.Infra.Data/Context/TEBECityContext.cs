@@ -22,6 +22,8 @@ namespace TE.BE.City.Infra.Data
         public DbSet<StatusEntity> Status { get; set; }
         public DbSet<PublicServiceEntity> PublicService { get; set; }
         public DbSet<SurveyEntity> Survey { get; set; }
+        public DbSet<NewsPriorityEntity> NewsPriority { get; set; }
+        public DbSet<NewsTextEntity> NewsText { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +38,8 @@ namespace TE.BE.City.Infra.Data
             modelBuilder.Entity<StatusEntity>(new StatusEntityMap().Configure);
             modelBuilder.Entity<PublicServiceEntity>(new PublicServiceEntityMap().Configure);
             modelBuilder.Entity<SurveyEntity>(new SurveyEntityMap().Configure);
+            modelBuilder.Entity<NewsPriorityEntity>(new NewsPriorityEntityMap().Configure);
+            modelBuilder.Entity<NewsTextEntity>(new NewsTextEntityMap().Configure);
             base.OnModelCreating(modelBuilder);
         }
     }

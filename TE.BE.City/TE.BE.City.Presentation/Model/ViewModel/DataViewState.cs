@@ -15,6 +15,7 @@ namespace TE.BE.City.Presentation.Model.ViewModel
             EndDate = DateTime.Now;
             DdlViewType = "map";
             DdlIssueType = "all";
+            DdlIsProblem = "all";
 
             DdlViewTypeItems = new List<SelectListItem>
             {
@@ -33,6 +34,13 @@ namespace TE.BE.City.Presentation.Model.ViewModel
                 new SelectListItem(){Value = TypeIssue.Trash.ToString(), Text = (TypeIssue.Trash).AsString(EnumFormat.Description)},
                 new SelectListItem(){Value = TypeIssue.Water.ToString(), Text = (TypeIssue.Water).AsString(EnumFormat.Description)}
             };
+            
+            DdlIsProblemItems = new List<SelectListItem>
+            {
+                new SelectListItem(){Value = IsProblem.All.ToString(), Text = (TypeIssue.All).AsString(EnumFormat.Description)},
+                new SelectListItem(){Value = IsProblem.Problem.ToString(), Text = (IsProblem.Problem).AsString(EnumFormat.Description)},
+                new SelectListItem(){Value = IsProblem.NoProblem.ToString(), Text = (IsProblem.NoProblem).AsString(EnumFormat.Description)}
+            };
         }
 
         public string DdlViewType { get; set; }
@@ -41,6 +49,9 @@ namespace TE.BE.City.Presentation.Model.ViewModel
         public string DdlIssueType { get; set; }
         public IEnumerable<SelectListItem> DdlIssueTypeItems { get; set; }
 
+        public string DdlIsProblem { get; set; }
+        public List<SelectListItem> DdlIsProblemItems { get; set; }
+        
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime StartDate { get; set; }
