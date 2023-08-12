@@ -75,13 +75,16 @@ namespace TE.BE.City.Service.Services
             {
                 IEnumerable<WaterEntity> result;
 
+                var predicate = PredicateBuilder.New<WaterEntity>(true);
+                predicate.And(model => model.StatusId == 1);
+                
                 if (skip == 0 && limit == 0)
-                    result = await _waterRepository.Select();
+                    result = await _waterRepository.Filter(predicate);
                 else
-                    result = await _waterRepository.SelectWithPagination(skip, limit);
+                    result = await _waterRepository.FilterWithPagination(predicate, skip, limit);
 
                 if (result != null)
-                    return result;
+                    return result.Where(model => model.StatusId == 1);
                 else
                 {
                     var orderEntity = new WaterEntity()
@@ -148,6 +151,7 @@ namespace TE.BE.City.Service.Services
             try
             {
                 var predicate = PredicateBuilder.New<WaterEntity>(true);
+                predicate.And(model => model.StatusId == 1);
 
                 if (startDate != null && startDate > DateTime.MinValue)
                     predicate.And(model => model.CreatedAt.Date >= startDate);
@@ -178,7 +182,11 @@ namespace TE.BE.City.Service.Services
         {
             try
             {
-                return await _waterRepository.Edit(request);
+                var waterEntity = await _waterRepository.SelectById(request.Id);
+                
+                waterEntity.StatusId = request.StatusId;
+                
+                return await _waterRepository.Edit(waterEntity);
             }
             catch
             {
@@ -191,7 +199,7 @@ namespace TE.BE.City.Service.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> Delete(int id)
+        /*public async Task<bool> Delete(int id)
         {
             try
             {
@@ -201,7 +209,7 @@ namespace TE.BE.City.Service.Services
             {
                 throw new Exception();
             }
-        }
+        }*/
 
         public DataTable GetDataTable(IEnumerable<WaterEntity> asphaltEntities)
         {
@@ -240,6 +248,10 @@ namespace TE.BE.City.Service.Services
             column.ColumnName = "Criado em";
             dataTable.Columns.Add(column);
 
+            column = new DataColumn();
+            column.ColumnName = "Ocorrência de problema?";
+            dataTable.Columns.Add(column);
+            
             foreach (var entity in asphaltEntities)
             {
                 var row = dataTable.NewRow();
@@ -251,6 +263,7 @@ namespace TE.BE.City.Service.Services
                 row[5] = entity.WaterMissedInAWeek.ToString();
                 row[6] = entity.HasSanitationProject.ToSimNao();
                 row[7] = entity.CreatedAt.ToShortDateString();
+                row[8] = entity.IsProblem.ToSimNao();
 
                 dataTable.Rows.Add(row);
             }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,15 +19,17 @@ namespace TE.BE.City.Presentation.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IWaterService _waterService;
+        private readonly IBackgroundService _backgroundService;
 
         /// <summary>
         /// Dependency injection to access Service layer.
         /// </summary>
         /// <param name="Service"></param>
-        public WaterController(IWaterService Service, IMapper mapper) : base()
+        public WaterController(IWaterService Service, IMapper mapper, IBackgroundService backgroundService) : base()
         {
             _mapper = mapper;
             _waterService = Service;
+            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -51,7 +54,10 @@ namespace TE.BE.City.Presentation.Controllers
             waterEntity.CreatedAt = DateTime.Now;
                 
             var result = await _waterService.Post(waterEntity);
-             
+
+            // Fire and forget
+            _backgroundService.ExecuteAsync();
+
             return Response(result.IsSuccess, null);
         }
 
@@ -91,16 +97,8 @@ namespace TE.BE.City.Presentation.Controllers
         {
             WaterEntity waterEntity = new WaterEntity();
             waterEntity.Id = request.Id;
-            waterEntity.Latitude = request.Latitude;
-            waterEntity.Longitude = request.Longitude;
-            waterEntity.HasWell = request.HasWell;
-            waterEntity.HomeWithWater = request.HomeWithWater;
-            waterEntity.WaterMissedInAWeek = request.WaterMissedInAWeek;
-            waterEntity.HasSanitationProject = request.HasSanitationProject;
-            waterEntity.UserId = request.UserId;
             waterEntity.StatusId = request.StatusId;
-            waterEntity.CreatedAt = DateTime.Now;
-
+            
             var result = await _waterService.Put(waterEntity);
 
             return Response(result, null);
@@ -110,12 +108,12 @@ namespace TE.BE.City.Presentation.Controllers
         /// delete one item.
         /// </summary>
         /// <param name="id"></param>
-        [HttpDelete]
+        /*[HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _waterService.Delete(id);
 
             return Response(result, null);    
-        }
+        }*/
     }
 }

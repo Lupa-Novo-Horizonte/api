@@ -18,11 +18,13 @@ namespace TE.BE.City.Presentation.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IAsphaltService _asphaltService;
+        private readonly IBackgroundService _backgroundService;
 
-        public AsphaltController(IAsphaltService asphaltService, IMapper mapper)
+        public AsphaltController(IAsphaltService asphaltService, IMapper mapper, IBackgroundService backgroundService)
         {
             _asphaltService = asphaltService;
             _mapper = mapper;
+            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -75,6 +77,9 @@ namespace TE.BE.City.Presentation.Controllers
 
             var result = await _asphaltService.Post(asphaltEntity);
 
+            // Fire and forget
+            _backgroundService.ExecuteAsync();
+
             return Response(result.IsSuccess, null);
         }
 
@@ -87,7 +92,7 @@ namespace TE.BE.City.Presentation.Controllers
         {
             var asphaltEntity = new AsphaltEntity();
             asphaltEntity.Id = request.Id;
-            asphaltEntity.CreatedAt = DateTime.Now;
+            asphaltEntity.StatusId = request.StatusId;
 
             var result = await _asphaltService.Put(asphaltEntity);
 
@@ -98,12 +103,12 @@ namespace TE.BE.City.Presentation.Controllers
         /// delete one item.
         /// </summary>
         /// <param name="id"></param>
-        [HttpDelete]
+        /*[HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _asphaltService.Delete(id);
 
             return Response(result.IsSuccess, null);
-        }
+        }*/
     }
 }

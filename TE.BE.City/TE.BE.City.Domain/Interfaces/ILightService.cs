@@ -12,8 +12,8 @@ namespace TE.BE.City.Domain.Interfaces
     {
         Task<LightEntity> Post(LightEntity request);
         Task<LightEntity> Put(LightEntity request);
-        Task<LightEntity> Delete(int id);
-        Task<LightEntity> Get();
+        //Task<LightEntity> Delete(int id);
+        //Task<LightEntity> Get();
         Task<IEnumerable<LightEntity>> GetAll(int skip, int limit);
         Task<IEnumerable<LightEntity>> GetFilter(DateTime? startDate, DateTime? endDate, IsProblem isProblem);
         DataTable GetDataTable(IEnumerable<LightEntity> asphaltEntities);

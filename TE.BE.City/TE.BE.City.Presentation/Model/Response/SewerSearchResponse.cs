@@ -7,11 +7,11 @@ namespace TE.BE.City.Presentation.Model.Response
     {
         public SewerSearchResponse()
         {
-            Contacts = new List<SewerResponse>();
+            SewerList = new List<SewerResponse>();
         }
 
         public int Total { get; set; }
         public int Page { get; set; }
-        public List<SewerResponse> Contacts { get; set; }
+        public List<SewerResponse> SewerList { get; set; }
     }
 }

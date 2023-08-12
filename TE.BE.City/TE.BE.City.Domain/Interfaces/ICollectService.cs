@@ -12,7 +12,7 @@ namespace TE.BE.City.Domain.Interfaces
     {
         Task<CollectEntity> Post(CollectEntity request);
         Task<CollectEntity> Put(CollectEntity request);
-        Task<CollectEntity> Delete(int id);
+        //Task<CollectEntity> Delete(int id);
         Task<IEnumerable<CollectEntity>> GetAll(int skip, int limit);
         Task<CollectEntity> GetById(int id);
         Task<IEnumerable<CollectEntity>> GetFilter(DateTime? startDate, DateTime? endDate, IsProblem isProblem);

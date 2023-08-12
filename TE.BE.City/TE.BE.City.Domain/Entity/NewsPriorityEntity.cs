@@ -7,6 +7,7 @@ namespace TE.BE.City.Domain.Entity
         public int OccurrenceId { get; set; }
         public TypeIssue OccurrenceType { get; set; }
         public int Weight { get; set; }
+        public int Score { get; set; }
         public string Address { get; set; }
     }
 }

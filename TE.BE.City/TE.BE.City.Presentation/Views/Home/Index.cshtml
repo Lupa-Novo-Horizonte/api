@@ -95,7 +95,7 @@
                         });
                         (function (marker, data) {
                             google.maps.event.addListener(marker, "click", function (e) {
-                                var content = "<div><h4>Moradia: " + data.Title + "</h4>";
+                                var content = "<div><h4>" + data.Title + "</h4>";
                             
                                 var arrayDescription = data.Description.split("|");
                                 for (p = 0; p < arrayDescription.length; p++) {
@@ -128,7 +128,7 @@
                         (function (pathObj, data) {
                             google.maps.event.addListener(pathObj, "click", function (e) {
                                 console.log('clicked ' + path[0]);
-                                var content = "<div><h4> Via: " + data.Title + "</h4></dev>";
+                                var content = "<div><h4>" + data.Title + "</h4></dev>";
                             
                                 var arrayDescription = data.Description.split("|");
                                 for (p = 0; p < arrayDescription.length; p++) {

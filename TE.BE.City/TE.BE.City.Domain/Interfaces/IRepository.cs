@@ -10,6 +10,10 @@ namespace TE.BE.City.Domain.Interfaces
     public interface IRepository<T> where T : BaseEntity
     {
         Task<bool> Insert(T request);
+        
+        Task<bool> InsertRange(IEnumerable<T> request);
+
+        Task<bool> DeleteRange(IEnumerable<T>obj);
 
         Task<bool> Delete(int id);
 

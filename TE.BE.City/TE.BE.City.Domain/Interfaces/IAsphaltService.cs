@@ -11,7 +11,7 @@ namespace TE.BE.City.Domain.Interfaces
     {
         Task<AsphaltEntity> Post(AsphaltEntity request);
         Task<AsphaltEntity> Put(AsphaltEntity request);
-        Task<AsphaltEntity> Delete(int id);
+        //Task<AsphaltEntity> Delete(int id);
         Task<IEnumerable<AsphaltEntity>> GetAll(int skip, int limit);
         Task<AsphaltEntity> GetById(int id);
         Task<IEnumerable<AsphaltEntity>> GetFilter(DateTime? startDate, DateTime? endDate, IsProblem isProblem);

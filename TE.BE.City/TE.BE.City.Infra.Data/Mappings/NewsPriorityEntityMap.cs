@@ -40,6 +40,7 @@ namespace TE.BE.City.Infra.Data.Mappings
             builder.Ignore(c => c.Status);
             builder.Ignore(c => c.User);
             builder.Ignore(c => c.Error);
+            builder.Ignore(c => c.Score);
         }
     }
 }

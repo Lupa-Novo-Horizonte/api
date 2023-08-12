@@ -19,11 +19,13 @@ namespace TE.BE.City.Presentation.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ISewerService _sewerService;
+        private readonly IBackgroundService _backgroundService;
 
-        public SewerController(ISewerService sewerService, IMapper mapper)
+        public SewerController(ISewerService sewerService, IMapper mapper, IBackgroundService backgroundService)
         {
             _sewerService = sewerService;
             _mapper = mapper;
+            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -48,6 +50,9 @@ namespace TE.BE.City.Presentation.Controllers
 
             var result = await _sewerService.Post(sewerEntity);
 
+            // Fire and forget
+            _backgroundService.ExecuteAsync();
+
             return Response(result.IsSuccess, null);
         }
 
@@ -63,14 +68,14 @@ namespace TE.BE.City.Presentation.Controllers
             if (id > 0)
             {
                 var userEntity = await _sewerService.GetById(id);
-                _mapper.Map(userEntity, sewerSearchResponse.Contacts);
-                sewerSearchResponse.Total= sewerSearchResponse.Contacts.Count;
+                _mapper.Map(userEntity, sewerSearchResponse.SewerList);
+                sewerSearchResponse.Total= sewerSearchResponse.SewerList.Count;
             }
             else
             {
                 var usersEntity = await _sewerService.GetAll(skip, limit);
-                _mapper.Map(usersEntity, sewerSearchResponse.Contacts);
-                sewerSearchResponse.Total = sewerSearchResponse.Contacts.Count;
+                _mapper.Map(usersEntity, sewerSearchResponse.SewerList);
+                sewerSearchResponse.Total = sewerSearchResponse.SewerList.Count;
             }
 
             return sewerSearchResponse;
@@ -85,13 +90,6 @@ namespace TE.BE.City.Presentation.Controllers
         {
             var sewerEntity = new SewerEntity();
             sewerEntity.Id = request.Id;
-            sewerEntity.Longitude = request.Longitude;
-            sewerEntity.Latitude = request.Latitude;
-            sewerEntity.HasHomeSewer = request.HasHomeSewer;
-            sewerEntity.HasHomeCesspool = request.HasHomeCesspool;
-            sewerEntity.HasSanitationProject = request.HasSanitationProject;
-            sewerEntity.CreatedAt = DateTime.Now;
-            sewerEntity.UserId = request.UserId;
             sewerEntity.StatusId = request.StatusId;
 
             var result = await _sewerService.Put(sewerEntity);
@@ -103,12 +101,12 @@ namespace TE.BE.City.Presentation.Controllers
         /// delete one item.
         /// </summary>
         /// <param name="id"></param>
-        [HttpDelete]
+        /*[HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _sewerService.Delete(id);
 
             return Response(result.IsSuccess,null);
-        }
+        }*/
     }
 }

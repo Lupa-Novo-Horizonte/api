@@ -22,7 +22,7 @@ namespace TE.BE.City.Service.Services
             _googleMapsWebProvider = googleMapsWebProvider;
         }
         
-        public async Task<SewerEntity> Delete(int id)
+        /*public async Task<SewerEntity> Delete(int id)
         {
             var contactEntity = new SewerEntity();
 
@@ -47,7 +47,7 @@ namespace TE.BE.City.Service.Services
             {
                 throw new ExecptionHelper.ExceptionService(ex.Message);
             }
-        }
+        }*/
 
         public async Task<IEnumerable<SewerEntity>> GetAll(int skip, int limit)
         {
@@ -56,11 +56,13 @@ namespace TE.BE.City.Service.Services
             try
             {
                 IEnumerable<SewerEntity> result;
+                var predicate = PredicateBuilder.New<SewerEntity>(true);
+                predicate.And(model => model.StatusId == 1);
 
                 if (skip == 0 && limit == 0)
-                    result = await _repository.Select();
+                    result = await _repository.Filter(predicate);
                 else
-                    result = await _repository.SelectWithPagination(skip, limit);
+                    result = await _repository.FilterWithPagination(predicate, skip, limit);
 
                 if (result != null)
                     return result;
@@ -156,6 +158,7 @@ namespace TE.BE.City.Service.Services
             try
             {
                 var predicate = PredicateBuilder.New<SewerEntity>(true);
+                predicate.And(model => model.StatusId == 1);
 
                 if (startDate != null && startDate > DateTime.MinValue)
                     predicate.And(model => model.CreatedAt.Date >= startDate);
@@ -215,13 +218,6 @@ namespace TE.BE.City.Service.Services
 
                 if (sewerEntity != null)
                 {
-                    sewerEntity.Longitude = request.Longitude;
-                    sewerEntity.Latitude = request.Latitude;
-                    sewerEntity.HasHomeSewer = request.HasHomeSewer;
-                    sewerEntity.HasHomeCesspool = request.HasHomeCesspool;
-                    sewerEntity.HasSanitationProject = request.HasSanitationProject;
-                    sewerEntity.CreatedAt = request.CreatedAt;
-                    sewerEntity.UserId = request.UserId;
                     sewerEntity.StatusId = request.StatusId;
 
                     var result = await _repository.Edit(sewerEntity);
@@ -288,6 +284,10 @@ namespace TE.BE.City.Service.Services
             column = new DataColumn();
             column.ColumnName = "Criado em";
             dataTable.Columns.Add(column);
+            
+            column = new DataColumn();
+            column.ColumnName = "Ocorrência de problema?";
+            dataTable.Columns.Add(column);
 
             foreach (var entity in asphaltEntities)
             {
@@ -299,6 +299,7 @@ namespace TE.BE.City.Service.Services
                 row[4] = entity.HasHomeCesspool.ToSimNao();
                 row[5] = entity.HasSanitationProject.ToSimNao();
                 row[6] = entity.CreatedAt.ToShortDateString();
+                row[7] = entity.IsProblem.ToSimNao();
 
                 dataTable.Rows.Add(row);
             }

@@ -29,6 +29,26 @@ namespace TE.BE.City.Infra.Data.Repository
                 return false;
         }
 
+        public async Task<bool> InsertRange(IEnumerable<T> obj)
+        {
+            await _context.Set<T>().AddRangeAsync(obj);
+            var result = await _context.SaveChangesAsync();
+            if (result > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public async Task<bool> DeleteRange(IEnumerable<T> obj)
+        {
+            _context.Set<T>().RemoveRange(obj);
+            var result = await _context.SaveChangesAsync();
+            if (result > 0)
+                return true;
+            
+            return false;
+        }
+
         public async Task<bool> Delete(int id)
         {
             var entityToDelete = _context.Set<T>().FirstOrDefault(e => e.Id == id);

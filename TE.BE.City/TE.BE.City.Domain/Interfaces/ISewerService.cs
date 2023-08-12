@@ -12,7 +12,7 @@ namespace TE.BE.City.Domain.Interfaces
     {
         Task<SewerEntity> Post(SewerEntity request);
         Task<SewerEntity> Put(SewerEntity request);
-        Task<SewerEntity> Delete(int id);
+        //Task<SewerEntity> Delete(int id);
         Task<IEnumerable<SewerEntity>> GetAll(int skip, int limit);
         Task<IEnumerable<SewerEntity>> GetClosed(bool closed, int skip, int limit);
         Task <SewerEntity> GetById(int id);

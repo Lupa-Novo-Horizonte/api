@@ -10,5 +10,6 @@ namespace TE.BE.City.Domain.Interfaces
         public Task<NewsPriorityEntity> Next();
         public Task<NewsTextEntity> Text(GenerativeTool generativeTool);
         public Task<string> GenerateNewsRecomendation(string subject);
+        public Task<bool> UpdatePriorityTable(List<NewsPriorityEntity> listNewsPriorityEntities);
     }
 }

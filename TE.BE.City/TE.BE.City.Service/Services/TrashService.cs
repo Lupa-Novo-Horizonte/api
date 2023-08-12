@@ -29,11 +29,13 @@ namespace TE.BE.City.Service.Services
             try
             {
                 IEnumerable<TrashEntity> result;
+                var predicate = PredicateBuilder.New<TrashEntity>(true);
+                predicate.And(model => model.StatusId == 1);
 
                 if (skip == 0 && limit == 0)
-                    result = await _repository.Select();
+                    result = await _repository.Filter(predicate);
                 else
-                    result = await _repository.SelectWithPagination(skip, limit);
+                    result = await _repository.FilterWithPagination(predicate, skip, limit);
 
                 if (result != null)
                     return result;
@@ -87,7 +89,7 @@ namespace TE.BE.City.Service.Services
             }
         }
 
-        public async Task<IEnumerable<TrashEntity>> GetClosed(bool closed, int skip, int limit)
+        /*public async Task<IEnumerable<TrashEntity>> GetClosed(bool closed, int skip, int limit)
         {
             var newsEntity = new List<TrashEntity>();
 
@@ -122,13 +124,14 @@ namespace TE.BE.City.Service.Services
             {
                 throw new ExecptionHelper.ExceptionService(ex.Message);
             }
-        }
+        }*/
 
         public async Task<IEnumerable<TrashEntity>> GetFilter(DateTime? startDate, DateTime? endDate, IsProblem isProblem)
         {
             try
             {
                 var predicate = PredicateBuilder.New<TrashEntity>(true);
+                predicate.And(model => model.StatusId == 1);
 
                 if (startDate != null && startDate > DateTime.MinValue)
                     predicate.And(model => model.CreatedAt.Date >= startDate);
@@ -150,7 +153,7 @@ namespace TE.BE.City.Service.Services
             }
         }
 
-        public async Task<TrashEntity> Delete(int id)
+        /*public async Task<TrashEntity> Delete(int id)
         {
             var trashEntity = new TrashEntity();
 
@@ -175,7 +178,7 @@ namespace TE.BE.City.Service.Services
             {
                 throw new ExecptionHelper.ExceptionService(ex.Message);
             }
-        }
+        }*/
 
         public async Task<TrashEntity> Post(TrashEntity request)
         {
@@ -212,14 +215,6 @@ namespace TE.BE.City.Service.Services
             try
             {
                 trashEntity = await _repository.SelectById(request.Id);
-                trashEntity.Longitude = request.Longitude;
-                trashEntity.Latitude = request.Latitude;
-                trashEntity.HasRoadCleanUp = request.HasRoadCleanUp;
-                trashEntity.HowManyTimes = request.HowManyTimes;
-                trashEntity.HasAccumulatedTrash = request.HasAccumulatedTrash;
-                trashEntity.HasLandWeeding = request.HasLandWeeding;
-                trashEntity.CreatedAt = DateTime.Now.ToUniversalTime();
-                trashEntity.UserId = request.UserId;
                 trashEntity.StatusId = request.StatusId;
 
                 var result = await _repository.Edit(trashEntity);
@@ -276,6 +271,10 @@ namespace TE.BE.City.Service.Services
             column = new DataColumn();
             column.ColumnName = "Criado em";
             dataTable.Columns.Add(column);
+            
+            column = new DataColumn();
+            column.ColumnName = "Ocorrência de problema?";
+            dataTable.Columns.Add(column);
 
             foreach (var entity in asphaltEntities)
             {
@@ -287,6 +286,7 @@ namespace TE.BE.City.Service.Services
                 row[4] = entity.HowManyTimes.ToString();
                 row[5] = entity.HasAccumulatedTrash.ToSimNao();
                 row[6] = entity.CreatedAt.ToShortDateString();
+                row[7] = entity.IsProblem.ToSimNao();
 
                 dataTable.Rows.Add(row);
             }

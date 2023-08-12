@@ -11,5 +11,6 @@ namespace TE.BE.City.Presentation.Model
         public DateTime CreatedAt { get; set; }
         public DateTime? EndDate { get; set; }
         public ErrorDetail Error { get; set; }
+        public int StatusId { get; set; }
     }
 }

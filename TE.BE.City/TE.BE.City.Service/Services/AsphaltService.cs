@@ -29,11 +29,13 @@ namespace TE.BE.City.Service.Services
             try
             {
                 IEnumerable<AsphaltEntity> result;
+                var predicate = PredicateBuilder.New<AsphaltEntity>(true);
+                predicate.And(model => model.StatusId == 1);
 
                 if (skip == 0 && limit == 0)
-                    result = await _repository.Select();
+                    result = await _repository.Filter(predicate);
                 else
-                    result = await _repository.SelectWithPagination(skip, limit);
+                    result = await _repository.FilterWithPagination(predicate, skip, limit);
 
                 if (result != null)
                     return result;
@@ -123,6 +125,10 @@ namespace TE.BE.City.Service.Services
             column = new DataColumn();
             column.ColumnName = "Criado em";
             dataTable.Columns.Add(column);
+            
+            column = new DataColumn();
+            column.ColumnName = "Ocorrência de problema?";
+            dataTable.Columns.Add(column);
 
             foreach (var entity in asphaltEntities)
             {
@@ -135,6 +141,7 @@ namespace TE.BE.City.Service.Services
                 row[5] = entity.HasHoles.ToSimNao();
                 row[6] = entity.HasPavedSidewalks.ToSimNao();
                 row[7] = entity.CreatedAt.ToShortDateString();
+                row[8] = entity.IsProblem.ToSimNao();
 
                 dataTable.Rows.Add(row);
             }
@@ -147,6 +154,7 @@ namespace TE.BE.City.Service.Services
             try
             {
                 var predicate = PredicateBuilder.New<AsphaltEntity>(true);
+                predicate.And(model => model.StatusId == 1);
 
                 if (startDate != null && startDate > DateTime.MinValue)
                     predicate.And(model => model.CreatedAt.Date >= startDate);
@@ -168,7 +176,7 @@ namespace TE.BE.City.Service.Services
             }
         }
 
-        public async Task<AsphaltEntity> Delete(int id)
+        /*public async Task<AsphaltEntity> Delete(int id)
         {
             var asphaltEntity = new AsphaltEntity();
 
@@ -193,7 +201,7 @@ namespace TE.BE.City.Service.Services
             {
                 throw new ExecptionHelper.ExceptionService(ex.Message);
             }
-        }
+        }*/
 
         public async Task<AsphaltEntity> Post(AsphaltEntity request)
         {
@@ -230,8 +238,8 @@ namespace TE.BE.City.Service.Services
             try
             {
                 asphaltEntity = await _repository.SelectById(request.Id);
-                asphaltEntity.CreatedAt = request.CreatedAt;
-
+                asphaltEntity.StatusId = request.StatusId;
+                
                 var result = await _repository.Edit(asphaltEntity);
 
                 if (result)

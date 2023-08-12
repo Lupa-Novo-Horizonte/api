@@ -19,12 +19,14 @@ namespace TE.BE.City.Presentation.Controllers
         private readonly IMapper _mapper;
         private readonly ITrashService _trashService;
         private readonly IUserService _userService;
+        private readonly IBackgroundService _backgroundService;
 
-        public TrashController(ITrashService trashService, IMapper mapper, IUserService userService)
+        public TrashController(ITrashService trashService, IMapper mapper, IUserService userService, IBackgroundService backgroundService)
         {
             _trashService = trashService;
             _mapper = mapper;
             _userService = userService;
+            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -75,6 +77,9 @@ namespace TE.BE.City.Presentation.Controllers
 
             var result = await _trashService.Post(trashEntity);
 
+            // Fire and forget
+            _backgroundService.ExecuteAsync();
+
             return Response(result.IsSuccess, null);
         }
 
@@ -87,14 +92,6 @@ namespace TE.BE.City.Presentation.Controllers
         {
             var trashEntity = new TrashEntity();
             trashEntity.Id = request.Id;
-            trashEntity.Longitude = request.Longitude;
-            trashEntity.Latitude = request.Latitude;
-            trashEntity.HasRoadCleanUp = request.HasRoadCleanUp;
-            trashEntity.HowManyTimes = request.HowManyTimes;
-            trashEntity.HasAccumulatedTrash = request.HasAccumulatedTrash;
-            trashEntity.HasLandWeeding = request.HasLandWeeding;
-            trashEntity.CreatedAt = DateTime.Now.ToLocalTime();
-            trashEntity.UserId = request.UserId;
             trashEntity.StatusId = request.StatusId;
 
             var result = await _trashService.Put(trashEntity);
@@ -106,12 +103,12 @@ namespace TE.BE.City.Presentation.Controllers
         /// delete one item.
         /// </summary>
         /// <param name="id"></param>
-        [HttpDelete]
+        /*[HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _trashService.Delete(id);
 
             return Response(result.IsSuccess, null);
-        }
+        }*/
     }
 }

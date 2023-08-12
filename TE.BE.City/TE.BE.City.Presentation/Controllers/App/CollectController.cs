@@ -18,11 +18,13 @@ namespace TE.BE.City.Presentation.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ICollectService _collectService;
+        private readonly IBackgroundService _backgroundService;
 
-        public CollectController(ICollectService collectService, IMapper mapper)
+        public CollectController(ICollectService collectService, IMapper mapper, IBackgroundService backgroundService)
         {
             _collectService = collectService;
             _mapper = mapper;
+            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -73,6 +75,9 @@ namespace TE.BE.City.Presentation.Controllers
 
             var result = await _collectService.Post(collectEntity);
 
+            // Fire and forget
+            _backgroundService.ExecuteAsync();
+
             return Response(result.IsSuccess, null);
         }
 
@@ -85,14 +90,8 @@ namespace TE.BE.City.Presentation.Controllers
         {
             var collectEntity = new CollectEntity();
             collectEntity.Id = request.Id;
-            collectEntity.Longitude = request.Longitude;
-            collectEntity.Latitude = request.Latitude;
-            collectEntity.HasCollect = request.HasCollect;
-            collectEntity.HowManyTimes = request.HowManyTimes;
-            collectEntity.CreatedAt = DateTime.Now;
-            collectEntity.UserId = request.UserId;
             collectEntity.StatusId = request.StatusId;
-
+            
             var result = await _collectService.Put(collectEntity);
 
             return Response(result.IsSuccess, null);
@@ -102,12 +101,12 @@ namespace TE.BE.City.Presentation.Controllers
         /// delete one item.
         /// </summary>
         /// <param name="id"></param>
-        [HttpDelete]
+        /*[HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _collectService.Delete(id);
 
             return Response(result.IsSuccess, null);
-        }
+        }*/
     }
 }

@@ -17,6 +17,7 @@ using System;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using TE.BE.City.Domain.Entity;
+using TE.BE.City.Domain.Caching;
 
 namespace TE.BE.City.Presentation
 {
@@ -102,6 +103,8 @@ namespace TE.BE.City.Presentation
             services.AddScoped(typeof(IPublicServiceService), typeof(PublicServiceService));
             services.AddScoped(typeof(ISurveyService), typeof(SurveyService));
             services.AddScoped(typeof(INewsService), typeof(NewsService));
+            services.AddScoped(typeof(IBackgroundService), typeof(BackgroundService));
+            //services.AddScoped(typeof(IMicroCache<>), typeof(MicroCache<>));
 
             services.AddScoped(typeof(IUserDomain), typeof(UserDomain));
             services.AddScoped(typeof(INewsDomain<NewsPriorityEntity>), typeof(NewsDomain<NewsPriorityEntity>));

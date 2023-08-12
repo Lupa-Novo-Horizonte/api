@@ -159,7 +159,7 @@ namespace TE.BE.City.Presentation.Controllers
                     IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
-                    Title = "Água Potável",
+                    Title = "Moradia: Água Potável",
                     Description = $"- Possui poço amazônico? {item.HasWell.ToSimNao()} |- Há água encanada? {item.HomeWithWater.ToSimNao()} |- Quantos dias faltam água na semana? {item.WaterMissedInAWeek} |- Alguma obra de saneamento está sendo executada? {item.HasWell.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
@@ -173,7 +173,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = string.IsNullOrEmpty(item.Latitude) ? null : float.Parse(item.Latitude),
                     Longitude = string.IsNullOrEmpty(item.Longitude) ? null : float.Parse(item.Longitude),
                     Path = item.Path,
-                    Title = "Iluminação Pública",
+                    Title = "Via: Iluminação Pública",
                     Description = $"- Possui poste? {item.HasLight.ToSimNao()} |- As luzes estão funcionando? {item.IsItWorking.ToSimNao()} |- Há fios elétricos soltos? {item.HasLosesCable.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
@@ -186,7 +186,7 @@ namespace TE.BE.City.Presentation.Controllers
                     IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
-                    Title = "Limpeza Urbana",
+                    Title = "Via: Limpeza Urbana",
                     Description = $"- A prefeitura faz a limpeza? {item.HasRoadcleanUp.ToSimNao()} |- Se sim, qual a frequência semanal? {item.HowManyTimes} |- Existe lixo acumulado? {item.HasAccumulatedTrash.ToSimNao()} |- A prefeitura faz a capinagem? {item.HasAccumulatedTrash.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
@@ -199,7 +199,7 @@ namespace TE.BE.City.Presentation.Controllers
                     IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
-                    Title = "Coleta de Lixo",
+                    Title = "Moradia: Coleta de Lixo",
                     Description = $"- Há coleta de lixo? {item.HasCollect.ToSimNao()} |- Qual a frequência semanal? {item.HowManyTimes} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
@@ -212,7 +212,7 @@ namespace TE.BE.City.Presentation.Controllers
                     IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
-                    Title = "Tratamento de Esgoto",
+                    Title = "Moradia: Tratamento de Esgoto",
                     Description = $"- Há coleta ou tratamento de esgoto? {item.HasHomeSewer.ToSimNao()} |- Possui fossa? {item.HasHomeCesspool.ToSimNao()} |- Alguma obra de saneamento está sendo executada? {item.HasSanitationProject.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }
@@ -226,7 +226,7 @@ namespace TE.BE.City.Presentation.Controllers
                     Latitude = string.IsNullOrEmpty(item.Latitude) ? null : float.Parse(item.Latitude),
                     Longitude = string.IsNullOrEmpty(item.Longitude) ? null : float.Parse(item.Longitude),
                     Path = item.Path,
-                    Title = "Calçadas e Asfalto",
+                    Title = "Via: Calçadas e Asfalto",
                     Description = $"- A via é asfaltada? {item.IsPaved.ToSimNao()} |- A via possui buracos ou crateras? {item.HasHoles.ToSimNao()} |- Há calçadas pavimentadas de acordo com os requisitos municipais? {item.HasPavedSidewalks.ToSimNao()} |- Criado em: {item.CreatedAt.ToString("dd/MM/yyyy HH:mm")}"
                 });
             }

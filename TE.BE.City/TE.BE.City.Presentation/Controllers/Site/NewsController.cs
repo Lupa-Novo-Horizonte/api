@@ -6,12 +6,17 @@ using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting.Enum;
 using TE.BE.City.Presentation.Model.ViewModel;
+using TE.BE.City.Domain.Caching;
+using System.Runtime.Caching;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace TE.BE.City.Presentation.Controllers.Site
 {
     [Route("site/[controller]")]
     public class NewsController : Controller
     {
+        private const string cacheKey = "lupanh";
+        private static IMicroCache<NewsViewModel> _stringCache;
         private readonly INewsService _newsService;
         private readonly IAsphaltService _asphaltService;
         private readonly ICollectService _collectService;
@@ -19,6 +24,8 @@ namespace TE.BE.City.Presentation.Controllers.Site
         private readonly ISewerService _sewerService;
         private readonly ITrashService _trashService;
         private readonly IWaterService _waterService;
+        private readonly IBackgroundService _backgroundService;
+        private readonly IConfiguration _config;
         private GenerativeTool generativeTool;
 
         public NewsController(IConfiguration config,
@@ -28,7 +35,9 @@ namespace TE.BE.City.Presentation.Controllers.Site
             ILightService lightService,
             ISewerService sewerService,
             ITrashService trashService,
-            IWaterService waterService)
+            IWaterService waterService,
+            IBackgroundService backgroundService
+            )
         {
             _newsService = newsService;
             _asphaltService = asphaltService;
@@ -37,12 +46,45 @@ namespace TE.BE.City.Presentation.Controllers.Site
             _sewerService = sewerService;
             _trashService = trashService;
             _waterService = waterService;
-            if(Enum.TryParse(typeof(GenerativeTool), config["generativeTool"], true, out Object option))
+            _backgroundService = backgroundService;
+            _config = config;
+            _stringCache = new MicroCache<NewsViewModel>(System.Runtime.Caching.MemoryCache.Default);
+            if (Enum.TryParse(typeof(GenerativeTool), _config["generativeTool"], true, out Object option))
                 generativeTool = (GenerativeTool)option;
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult> Index()
+        {
+            var response = new NewsViewModel();
+
+            response =  _stringCache.GetOrAdd(
+                cacheKey,
+                () => LoadData(),
+                () => LoadCacheItemPolicy());
+
+            return View(model: response);
+        }
+
+        private CacheItemPolicy LoadCacheItemPolicy()
+        {
+            var policy = new CacheItemPolicy();
+
+            policy.Priority = CacheItemPriority.NotRemovable;
+
+            policy.AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(int.Parse(_config["cacheNews"]));
+
+            return policy;
+        }
+
+        private NewsViewModel LoadData() 
+        {
+            var response = Task.Run(() => LoadDataAsync());
+            response.Wait();
+            return response.Result;
+        }
+
+        private async Task<NewsViewModel> LoadDataAsync()
         {
             var response = new NewsViewModel();
 
@@ -72,21 +114,39 @@ namespace TE.BE.City.Presentation.Controllers.Site
                                     $" {newsEntity.NewsTextEntity.T2}";
                     break;
                 case GenerativeTool.chatGPT:
-                {
-                    var subject = $"{newsEntity.NewsTextEntity.T1}" +
-                                  $" {newsEntity.NewsPriority.OccurrenceType} public service" +
-                                  $" at {newsEntity.NewsPriority.Address}" +
-                                  $" {newsEntity.NewsTextEntity.T2}" +
-                                  $" {newsEntity.NewsTextEntity.T3}";
-                    response.News = await _newsService.GenerateNewsRecomendation(subject);
-                    break;
-                }
+                    {
+                        var subject = $"{newsEntity.NewsTextEntity.T1}" +
+                                      $" {newsEntity.NewsPriority.OccurrenceType} public service" +
+                                      $" at {newsEntity.NewsPriority.Address}" +
+                                      $" {newsEntity.NewsTextEntity.T2}" +
+                                      $" {newsEntity.NewsTextEntity.T3}";
+                        response.News = await _newsService.GenerateNewsRecomendation(subject);
+                        break;
+                    }
                 default:
                     response.News = "Nenhuma recomendação no momento.";
                     break;
             }
+            return response;
+        }
 
-            return View(model: response);
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpPut]
+        public async Task<JsonResult> Update()
+        {
+            try
+            {
+                var task = Task.Run(() => _backgroundService.ExecuteAsync());
+
+                task.Wait();
+
+                return Json("{ 'resultado':'Sucesso'}");
+            }
+            catch(Exception ex)
+            {
+                return Json("{ 'resultado':'"+ex+"'}");
+            }
         }
     }
 }

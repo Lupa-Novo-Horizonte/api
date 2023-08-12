@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Entity;
@@ -48,6 +49,20 @@ namespace TE.BE.City.Service.Services
         public async Task<string> GenerateNewsRecomendation(string subject)
         {
             return await _openAiWebProvider.GenerateNewsRecomendation(subject);
+        }
+
+        public async Task<bool> UpdatePriorityTable(List<NewsPriorityEntity> listNewsPriorityEntities)
+        {
+            bool result = false;
+
+            var listPriority = await _repositoryNewsPriority.Select();
+            if (listPriority.Any())
+                result = await _repositoryNewsPriority.DeleteRange(listPriority);
+
+            if(result)
+                result = await _repositoryNewsPriority.InsertRange(listNewsPriorityEntities);
+
+            return result;
         }
     }
 }

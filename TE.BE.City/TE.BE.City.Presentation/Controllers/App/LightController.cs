@@ -17,11 +17,13 @@ namespace TE.BE.City.Presentation.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ILightService _lightService;
+        private readonly IBackgroundService _backgroundService;
 
-        public LightController(ILightService lightService, IMapper mapper)
+        public LightController(ILightService lightService, IMapper mapper, IBackgroundService backgroundService)
         {
             _lightService = lightService;
             _mapper = mapper;
+            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -29,14 +31,14 @@ namespace TE.BE.City.Presentation.Controllers
         /// </summary>
         /// <param name="id"></param>
         [HttpGet]
-        public async Task<LightResponse> Get()
+        public async Task<LightSearchResponse> Get()
         {
-            var lightResponse = new LightResponse();
+            var lightSearchResponse = new LightSearchResponse();
 
-            var lightEntity = await _lightService.Get();
-            _mapper.Map(lightEntity, lightResponse);
+            var lightEntity = await _lightService.GetAll(0, 0);
+            _mapper.Map(lightEntity, lightSearchResponse.LightList);
 
-            return lightResponse;
+            return lightSearchResponse;
         }
 
         /// <summary>
@@ -62,6 +64,9 @@ namespace TE.BE.City.Presentation.Controllers
 
             var result = await _lightService.Post(lightEntity);
 
+            // Fire and forget
+            _backgroundService.ExecuteAsync();
+
             return Response(result.IsSuccess, null);
         }
 
@@ -74,14 +79,6 @@ namespace TE.BE.City.Presentation.Controllers
         {
             var lightEntity = new LightEntity();
             lightEntity.Id = request.Id;
-            lightEntity.Longitude = request.Longitude;
-            lightEntity.Latitude = request.Latitude;
-            lightEntity.HasLight = request.HasLight;
-            lightEntity.IsItWorking = request.IsItWorking;
-            lightEntity.HasLosesCable = request.HasLosesCable;
-            lightEntity.Path = request.Path;
-            lightEntity.CreatedAt = DateTime.Now;
-            lightEntity.UserId = request.UserId;
             lightEntity.StatusId = request.StatusId;
 
             var result = await _lightService.Put(lightEntity);
@@ -93,12 +90,12 @@ namespace TE.BE.City.Presentation.Controllers
         /// delete one item.
         /// </summary>
         /// <param name="id"></param>
-        [HttpDelete]
+        /*[HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _lightService.Delete(id);
 
             return Response(result.IsSuccess, null);
-        }
+        }*/
     }
 }
