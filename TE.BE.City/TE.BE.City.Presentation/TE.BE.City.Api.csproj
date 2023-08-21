@@ -60,6 +60,8 @@
     <Content Include="wwwroot\images\check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="wwwroot\images\collect-bad.png" />
+    <Content Include="wwwroot\images\collect-good.png" />
     <Content Include="wwwroot\images\edit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -68,6 +70,8 @@
     </Content>
     <Content Include="wwwroot\images\facebook.png" />
     <Content Include="wwwroot\images\instagram.png" />
+    <Content Include="wwwroot\images\light-bad.png" />
+    <Content Include="wwwroot\images\light-good.png" />
     <Content Include="wwwroot\images\linkedin.png" />
     <Content Include="wwwroot\images\location.png" />
     <Content Include="wwwroot\images\location_reverse.png" />
@@ -78,6 +82,10 @@
     <Content Include="wwwroot\images\lupin_reverse.png" />
     <Content Include="wwwroot\images\printing.png" />
     <Content Include="wwwroot\images\printing_reverso.png" />
+    <Content Include="wwwroot\images\sewer-bad.png" />
+    <Content Include="wwwroot\images\sewer-good.png" />
+    <Content Include="wwwroot\images\street-bad.png" />
+    <Content Include="wwwroot\images\street-good.png" />
     <Content Include="wwwroot\images\swagger.png" />
     <Content Include="wwwroot\images\swagger_contato.JPG" />
     <Content Include="wwwroot\images\swagger_fiddler.JPG" />
@@ -85,8 +93,12 @@
     <Content Include="wwwroot\images\swagger_postman.JPG" />
     <Content Include="wwwroot\images\telephone.png" />
     <Content Include="wwwroot\images\telephone_reverse.png" />
+    <Content Include="wwwroot\images\trash-bad.png" />
+    <Content Include="wwwroot\images\trash-good.png" />
     <Content Include="wwwroot\images\twitter.png" />
     <Content Include="wwwroot\images\warning.png" />
+    <Content Include="wwwroot\images\water-bad.png" />
+    <Content Include="wwwroot\images\water-good.png" />
     <Content Include="wwwroot\images\youtube.png" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css" />
