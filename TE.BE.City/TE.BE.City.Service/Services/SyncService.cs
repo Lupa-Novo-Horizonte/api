@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Device.Location;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting.Enum;
+using Microsoft.Extensions.Hosting;
+using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TE.BE.City.Service.Services;
 
-public class BackgroundService : IBackgroundService
+public class SyncService : BackgroundService
 {
+    private const int generalDelay = 1 * 10 * 1000; // 30 seconds
     private List<Issue> listIssue;
     private List<(Issue, Issue)> listTuplaIssue;
     struct Issue
@@ -32,45 +35,50 @@ public class BackgroundService : IBackgroundService
     private readonly IWaterService _waterService;
     private readonly INewsService _newsService;
     private readonly IConfiguration _config;
-    
-    public BackgroundService(IConfiguration config, 
-        IAsphaltService asphaltService,
-        ICollectService collectService,
-        ILightService lightService,
-        ISewerService sewerService,
-        ITrashService trashService,
-        IWaterService waterService,
-        INewsService newsService
-    )
+    IServiceScope scope;
+
+
+    public SyncService(IServiceProvider serviceProvider)
     {
-        _asphaltService = asphaltService;
-        _collectService = collectService;
-        _lightService = lightService;
-        _sewerService = sewerService;
-        _trashService = trashService;
-        _waterService = waterService;
-        _newsService = newsService;
-        _config = config;
-        listIssue = new List<Issue>();
-        listTuplaIssue = new List<(Issue, Issue)>();
-        listNewsPriorityEntity = new List<NewsPriorityEntity>();
+        scope = serviceProvider.CreateScope();
+        
+        _asphaltService = scope.ServiceProvider.GetRequiredService<IAsphaltService>();
+        _collectService = scope.ServiceProvider.GetRequiredService<ICollectService>();
+        _lightService = scope.ServiceProvider.GetRequiredService<ILightService>();
+        _sewerService = scope.ServiceProvider.GetRequiredService<ISewerService>();
+        _trashService = scope.ServiceProvider.GetRequiredService<ITrashService>();
+        _waterService = scope.ServiceProvider.GetRequiredService<IWaterService>();
+        _newsService = scope.ServiceProvider.GetRequiredService<INewsService>();
+        _config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
     }
-    
-    /// <summary>
-    /// This method should be executed as fire/forget.
-    /// Execute all the logic to generate priority list.
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public async Task ExecuteAsync()
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await LoadData();
-        await PrepareData();
-        await CalculateCluster();
-        await CalculateWeight();
-        await UpdatePriorityTable();
+        try
+        {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                listIssue = new List<Issue>();
+                listTuplaIssue = new List<(Issue, Issue)>();
+                listNewsPriorityEntity = new List<NewsPriorityEntity>();
+
+                Console.WriteLine("###");
+                Console.WriteLine("Task started");
+                await Task.Delay(generalDelay, stoppingToken);
+                await LoadData();
+                await PrepareData();
+                await CalculateCluster();
+                await CalculateWeight();
+                await UpdatePriorityTable();
+                Console.WriteLine("Task ended\n");
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
-    
+        
     /// <summary>
     /// Load all data from DB and translate in one snigle list
     /// </summary>
@@ -149,13 +157,7 @@ public class BackgroundService : IBackgroundService
             });    
         }
 
-        Console.WriteLine("Inicio");
-        Console.WriteLine(asphaltEntityList.Count());
-        Console.WriteLine(collectEntityList.Count());
-        Console.WriteLine(lightEntityList.Count());
-        Console.WriteLine(trashEntityList.Count());
-        Console.WriteLine(sewerEntityList.Count());
-        Console.WriteLine(waterEntityList.Count());
+        //Console.WriteLine($"´Load data count: {listIssue.Count}");
     }
 
     /// <summary>
@@ -168,11 +170,8 @@ public class BackgroundService : IBackgroundService
         {
             if (!string.IsNullOrWhiteSpace(a.latitude) && !string.IsNullOrWhiteSpace(b.latitude))
             {
-                Console.WriteLine($"Pair A: {a.ocorrencyId}, {a.ocorrencyType} / Pair B: {b.ocorrencyId}, {b.ocorrencyType}");
                 listTuplaIssue.Add((a, b));
             }
-            else
-                Console.WriteLine($"Path item");
         }
     }
 
@@ -191,13 +190,13 @@ public class BackgroundService : IBackgroundService
         {
             var originCoordenate = new GeoCoordinate();
             originCoordenate.Longitude = double.Parse(tuplaIssue.Item1.longitude);
-            originCoordenate.Latitude = double.Parse(tuplaIssue.Item1.longitude);
+            originCoordenate.Latitude = double.Parse(tuplaIssue.Item1.latitude);
 
             var destinyCoordenate = new GeoCoordinate();
             destinyCoordenate.Longitude = double.Parse(tuplaIssue.Item2.longitude);
-            destinyCoordenate.Latitude = double.Parse(tuplaIssue.Item2.longitude);
+            destinyCoordenate.Latitude = double.Parse(tuplaIssue.Item2.latitude);
 
-            var distance = originCoordenate.GetDistanceTo(destinyCoordenate);
+            var distance = Convert.ToInt32(originCoordenate.GetDistanceTo(destinyCoordenate));
 
             int points = int.Parse(_config["ClusterScore:default"]);
 
@@ -205,15 +204,12 @@ public class BackgroundService : IBackgroundService
             {
                 points += int.Parse(_config["ClusterScore:closeTo"]); ;
                 if (tuplaIssue.Item1.ocorrencyType == tuplaIssue.Item2.ocorrencyType)
-                    points += int.Parse(_config["ClusterScore:sameType"]); ;
+                    points += int.Parse(_config["ClusterScore:sameType"]);
             }
 
             await UpdateCluster(tuplaIssue.Item1, points);
             await UpdateCluster(tuplaIssue.Item2, points);
         }
-
-        Console.WriteLine("Meio");
-        Console.WriteLine(listTuplaIssue.Count());
     }
 
     /// <summary>
@@ -224,10 +220,11 @@ public class BackgroundService : IBackgroundService
     /// <returns></returns>
     private async Task UpdateCluster(Issue item, int points)
     {
-        var item1 = listNewsPriorityEntity.Find(c => c.OccurrenceId == item.ocorrencyId);
+        //Console.WriteLine($"Id={item.ocorrencyId} type={item.ocorrencyType} score={points}");
+
+        var item1 = listNewsPriorityEntity.Find(c => c.OccurrenceId == item.ocorrencyId && c.OccurrenceType == (TypeIssue)item.ocorrencyType);
         if (item1 == null)
         {
-            Console.WriteLine("Null: " + item.ocorrencyId);
             listNewsPriorityEntity.Add(new NewsPriorityEntity()
             {
                 OccurrenceId = item.ocorrencyId,
@@ -239,11 +236,8 @@ public class BackgroundService : IBackgroundService
         }
         else
         {
-            Console.WriteLine("Not null: " + item1.OccurrenceId);
             if (item1.Score < points)
             {
-                Console.WriteLine("Score menor: " + item1.OccurrenceId);
-
                 listNewsPriorityEntity.Remove(item1);
                 listNewsPriorityEntity.Add(new NewsPriorityEntity()
                 {
@@ -269,9 +263,9 @@ public class BackgroundService : IBackgroundService
         {
             int weight = (item.Score * 100) / totalScore;
             item.Weight = weight;
+
+            Console.WriteLine($"Score= {item.Score} total score={totalScore} weight= {weight}");
         }
-        Console.WriteLine("Final");
-        Console.WriteLine(listNewsPriorityEntity.Count());
     }
 
     /// <summary>
@@ -281,6 +275,6 @@ public class BackgroundService : IBackgroundService
     private async Task UpdatePriorityTable()
     {
         await _newsService.UpdatePriorityTable(listNewsPriorityEntity);
-        Console.WriteLine("Tabela atualizada.");
+        Console.WriteLine($"Table updated= {listNewsPriorityEntity.Count} items.");
     }
 }

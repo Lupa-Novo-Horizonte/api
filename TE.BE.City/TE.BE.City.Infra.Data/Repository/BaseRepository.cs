@@ -51,7 +51,7 @@ namespace TE.BE.City.Infra.Data.Repository
 
         public async Task<bool> Delete(int id)
         {
-            var entityToDelete = _context.Set<T>().FirstOrDefault(e => e.Id == id);
+            var entityToDelete = await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
             if (entityToDelete != null)
             {
                 _context.Set<T>().Remove(entityToDelete);
@@ -64,7 +64,7 @@ namespace TE.BE.City.Infra.Data.Repository
 
         public async Task<bool> Edit(T entity)
         {
-            var editedEntity = _context.Set<T>().FirstOrDefault(e => e.Id == entity.Id);
+            var editedEntity = await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == entity.Id);
             
             _context.Entry(editedEntity).CurrentValues.SetValues(entity);
 

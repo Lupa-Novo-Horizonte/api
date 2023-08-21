@@ -41,14 +41,14 @@ namespace TE.BE.City.Domain
                     var text = await response.Content.ReadAsStringAsync();
                     var root = JsonConvert.DeserializeObject<AddressEntity>(text);
 
-                    var result = root.results.First(c => c.formatted_address.Contains("Rua") 
+                    var result = root.results.FirstOrDefault(c => c.formatted_address.Contains("Rua") 
                                                          || c.formatted_address.Contains("Av.")
                                                          || c.formatted_address.Contains("Avenida")
                                                          || c.formatted_address.Contains("Estrada")
                                                          || c.formatted_address.Contains("Travessa")
                                                          || c.formatted_address.Contains("Via")
                                                          || c.formatted_address.Contains("Viela"));
-                    if (! string.IsNullOrEmpty(result.formatted_address))
+                    if (result != null)
                     {
                         var array = result.formatted_address.Split(',').Take(2);
                         address = String.Concat(array);

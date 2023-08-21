@@ -17,13 +17,11 @@ namespace TE.BE.City.Presentation.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ILightService _lightService;
-        private readonly IBackgroundService _backgroundService;
-
-        public LightController(ILightService lightService, IMapper mapper, IBackgroundService backgroundService)
+        
+        public LightController(ILightService lightService, IMapper mapper)
         {
             _lightService = lightService;
             _mapper = mapper;
-            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -63,9 +61,6 @@ namespace TE.BE.City.Presentation.Controllers
             lightEntity.StatusId = 1; // request.StatusId;
 
             var result = await _lightService.Post(lightEntity);
-
-            // Fire and forget
-            _backgroundService.ExecuteAsync();
 
             return Response(result.IsSuccess, null);
         }

@@ -294,5 +294,20 @@ namespace TE.BE.City.Service.Services
                 throw new ExecptionHelper.ExceptionService(ex.Message);
             }
         }
+
+        public async Task<IEnumerable<LightEntity>> GetAllByUser(int userId)
+        {
+            try
+            {
+                var predicate = PredicateBuilder.New<LightEntity>(true);
+                predicate.And(model => model.UserId == userId);
+
+                return await _repository.Filter(predicate);
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
     }
 }

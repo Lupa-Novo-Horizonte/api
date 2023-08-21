@@ -18,13 +18,11 @@ namespace TE.BE.City.Presentation.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IAsphaltService _asphaltService;
-        private readonly IBackgroundService _backgroundService;
-
-        public AsphaltController(IAsphaltService asphaltService, IMapper mapper, IBackgroundService backgroundService)
+        
+        public AsphaltController(IAsphaltService asphaltService, IMapper mapper)
         {
             _asphaltService = asphaltService;
             _mapper = mapper;
-            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -76,9 +74,6 @@ namespace TE.BE.City.Presentation.Controllers
             asphaltEntity.StatusId = 1; // request.StatusId;
 
             var result = await _asphaltService.Post(asphaltEntity);
-
-            // Fire and forget
-            _backgroundService.ExecuteAsync();
 
             return Response(result.IsSuccess, null);
         }

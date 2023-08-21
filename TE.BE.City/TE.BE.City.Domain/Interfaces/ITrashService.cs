@@ -19,5 +19,6 @@ namespace TE.BE.City.Domain.Interfaces
         //Task<TrashEntity> Delete(int id);
         DataTable GetDataTable(IEnumerable<TrashEntity> asphaltEntities);
         Task<string> GetLocationAddress(int id);
+        Task<IEnumerable<TrashEntity>> GetAllByUser(int userId);
     }
 }

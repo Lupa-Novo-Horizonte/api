@@ -48,21 +48,23 @@ namespace TE.BE.City.Service.Services
         
         public async Task<string> GenerateNewsRecomendation(string subject)
         {
-            return await _openAiWebProvider.GenerateNewsRecomendation(subject);
+            try
+            {
+                return await _openAiWebProvider.GenerateNewsRecomendation(subject);
+            }
+            catch(Exception ex)
+            {
+                return "Limite de cotas para chatGPT esgotadas. Contate o administrador.";
+            }
         }
 
         public async Task<bool> UpdatePriorityTable(List<NewsPriorityEntity> listNewsPriorityEntities)
         {
-            bool result = false;
-
             var listPriority = await _repositoryNewsPriority.Select();
-            if (listPriority.Any())
-                result = await _repositoryNewsPriority.DeleteRange(listPriority);
+            await _repositoryNewsPriority.DeleteRange(listPriority);
+            await _repositoryNewsPriority.InsertRange(listNewsPriorityEntities);
 
-            if(result)
-                result = await _repositoryNewsPriority.InsertRange(listNewsPriorityEntities);
-
-            return result;
+            return true;
         }
     }
 }

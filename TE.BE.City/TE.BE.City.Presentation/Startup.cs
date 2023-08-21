@@ -103,9 +103,7 @@ namespace TE.BE.City.Presentation
             services.AddScoped(typeof(IPublicServiceService), typeof(PublicServiceService));
             services.AddScoped(typeof(ISurveyService), typeof(SurveyService));
             services.AddScoped(typeof(INewsService), typeof(NewsService));
-            services.AddScoped(typeof(IBackgroundService), typeof(BackgroundService));
-            //services.AddScoped(typeof(IMicroCache<>), typeof(MicroCache<>));
-
+            
             services.AddScoped(typeof(IUserDomain), typeof(UserDomain));
             services.AddScoped(typeof(INewsDomain<NewsPriorityEntity>), typeof(NewsDomain<NewsPriorityEntity>));
 
@@ -114,6 +112,7 @@ namespace TE.BE.City.Presentation
             
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddHostedService<SyncService>();
         }
 
         /// <summary>

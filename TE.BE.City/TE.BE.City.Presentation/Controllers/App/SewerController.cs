@@ -19,13 +19,11 @@ namespace TE.BE.City.Presentation.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ISewerService _sewerService;
-        private readonly IBackgroundService _backgroundService;
-
-        public SewerController(ISewerService sewerService, IMapper mapper, IBackgroundService backgroundService)
+        
+        public SewerController(ISewerService sewerService, IMapper mapper)
         {
             _sewerService = sewerService;
             _mapper = mapper;
-            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -49,9 +47,6 @@ namespace TE.BE.City.Presentation.Controllers
             sewerEntity.StatusId = 1; // request.StatusId;
 
             var result = await _sewerService.Post(sewerEntity);
-
-            // Fire and forget
-            _backgroundService.ExecuteAsync();
 
             return Response(result.IsSuccess, null);
         }

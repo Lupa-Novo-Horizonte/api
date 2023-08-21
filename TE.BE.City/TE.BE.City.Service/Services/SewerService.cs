@@ -323,5 +323,20 @@ namespace TE.BE.City.Service.Services
                 throw new ExecptionHelper.ExceptionService(ex.Message);
             }
         }
+
+        public async Task<IEnumerable<SewerEntity>> GetAllByUser(int userId)
+        {
+            try
+            {
+                var predicate = PredicateBuilder.New<SewerEntity>(true);
+                predicate.And(model => model.UserId == userId);
+
+                return await _repository.Filter(predicate);
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
     }
 }

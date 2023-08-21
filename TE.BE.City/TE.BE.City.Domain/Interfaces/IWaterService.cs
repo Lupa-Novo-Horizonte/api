@@ -18,5 +18,6 @@ namespace TE.BE.City.Domain.Interfaces
         Task<IEnumerable<WaterEntity>> GetFilter(DateTime? startDate, DateTime? endDate, IsProblem isProblem);
         DataTable GetDataTable(IEnumerable<WaterEntity> asphaltEntities);
         Task<string> GetLocationAddress(int id);
+        Task<IEnumerable<WaterEntity>> GetAllByUser(int userId);
     }
 }

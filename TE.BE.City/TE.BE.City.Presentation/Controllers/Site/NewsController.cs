@@ -24,7 +24,6 @@ namespace TE.BE.City.Presentation.Controllers.Site
         private readonly ISewerService _sewerService;
         private readonly ITrashService _trashService;
         private readonly IWaterService _waterService;
-        private readonly IBackgroundService _backgroundService;
         private readonly IConfiguration _config;
         private GenerativeTool generativeTool;
 
@@ -35,8 +34,7 @@ namespace TE.BE.City.Presentation.Controllers.Site
             ILightService lightService,
             ISewerService sewerService,
             ITrashService trashService,
-            IWaterService waterService,
-            IBackgroundService backgroundService
+            IWaterService waterService 
             )
         {
             _newsService = newsService;
@@ -46,7 +44,6 @@ namespace TE.BE.City.Presentation.Controllers.Site
             _sewerService = sewerService;
             _trashService = trashService;
             _waterService = waterService;
-            _backgroundService = backgroundService;
             _config = config;
             _stringCache = new MicroCache<NewsViewModel>(System.Runtime.Caching.MemoryCache.Default);
             if (Enum.TryParse(typeof(GenerativeTool), _config["generativeTool"], true, out Object option))
@@ -108,45 +105,27 @@ namespace TE.BE.City.Presentation.Controllers.Site
             switch (generativeTool)
             {
                 case GenerativeTool.Local:
-                    response.News = $"{newsEntity.NewsTextEntity.T1}" +
-                                    $" {newsEntity.NewsPriority.OccurrenceType.GetDescription()}" +
-                                    $" no endereço {newsEntity.NewsPriority.Address}." +
-                                    $" {newsEntity.NewsTextEntity.T2}";
+                    response.News = $"{newsEntity.NewsTextEntity.T1}" + $" {newsEntity.NewsPriority.OccurrenceType.GetDescription()}";
+                    if (newsEntity.NewsPriority.Address != string.Empty)
+                        response.News += $" no endereço {newsEntity.NewsPriority.Address}.";
+                    else
+                        response.News += $" no bairro Novo Horizonte.";
+                    response.News += $" {newsEntity.NewsTextEntity.T2}";
                     break;
                 case GenerativeTool.chatGPT:
-                    {
-                        var subject = $"{newsEntity.NewsTextEntity.T1}" +
-                                      $" {newsEntity.NewsPriority.OccurrenceType} public service" +
-                                      $" at {newsEntity.NewsPriority.Address}" +
-                                      $" {newsEntity.NewsTextEntity.T2}" +
-                                      $" {newsEntity.NewsTextEntity.T3}";
+                        var subject = $"{newsEntity.NewsTextEntity.T1}" + $" {newsEntity.NewsPriority.OccurrenceType} public service";
+                        if(newsEntity.NewsPriority.Address != string.Empty)
+                            subject += $" at {newsEntity.NewsPriority.Address}.";
+                        else
+                            subject += $" in Novo Horizonte neighbourhood.";
+                        subject = $" {newsEntity.NewsTextEntity.T2}" + $" {newsEntity.NewsTextEntity.T3}";
                         response.News = await _newsService.GenerateNewsRecomendation(subject);
                         break;
-                    }
                 default:
                     response.News = "Nenhuma recomendação no momento.";
                     break;
             }
             return response;
-        }
-
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        [HttpPut]
-        public async Task<JsonResult> Update()
-        {
-            try
-            {
-                var task = Task.Run(() => _backgroundService.ExecuteAsync());
-
-                task.Wait();
-
-                return Json("{ 'resultado':'Sucesso'}");
-            }
-            catch(Exception ex)
-            {
-                return Json("{ 'resultado':'"+ex+"'}");
-            }
         }
     }
 }

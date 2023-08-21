@@ -256,6 +256,7 @@ namespace TE.BE.City.Presentation.Controllers
         private ChartResponse Chart(HomeViewModel homeResponseModel)
         {
             var chartResponse = new ChartResponse();
+
             chartResponse.ChartQuantity.Add(new ChartObject { label = "Água Potável", y = homeResponseModel.CountWater });
             chartResponse.ChartQuantity.Add(new ChartObject { label = "Iluminação Pública", y = homeResponseModel.CountLight });
             chartResponse.ChartQuantity.Add(new ChartObject { label = "Limpeza Urbana", y = homeResponseModel.CountTrash });
@@ -272,6 +273,61 @@ namespace TE.BE.City.Presentation.Controllers
             chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Tratamento de Esgoto", y = (homeResponseModel.Count == 0) ? 0 : Convert.ToDouble(homeResponseModel.CountSewer) / homeResponseModel.Count });
             chartResponse.ChartProportion.Add(new ChartProportionObject { label = "Calçadas e Asfalto", y = (homeResponseModel.Count == 0) ? 0 : Convert.ToDouble(homeResponseModel.CountAsphalt) / homeResponseModel.Count });
             chartResponse.ChartProportionSerialized = JsonSerializer.Serialize(chartResponse.ChartProportion);
+
+
+            chartResponse.ChartTable = new Dictionary<TypeIssue, ChartTable>();
+                        
+            int countProblemAsphalt = homeResponseModel.AsphaltList.Count(c => c.IsProblem);
+            int countNoProblemAslphat = homeResponseModel.AsphaltList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Asphalt, new ChartTable() { 
+                ProblemCount = countProblemAsphalt, 
+                NoProblemCount = countNoProblemAslphat});
+
+            int countProblemCollect = homeResponseModel.CollectList.Count(c => c.IsProblem);
+            int countNoProblemCollect = homeResponseModel.CollectList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Collect, new ChartTable()
+            {
+                ProblemCount = countProblemCollect,
+                NoProblemCount = countNoProblemCollect
+            });
+
+            int countProblemLight = homeResponseModel.LightList.Count(c => c.IsProblem);
+            int countNoProblemLight = homeResponseModel.LightList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Light, new ChartTable()
+            {
+                ProblemCount = countProblemLight,
+                NoProblemCount = countNoProblemLight
+            });
+
+            int countProblemSewer = homeResponseModel.SewerList.Count(c => c.IsProblem);
+            int countNoProblemSewer = homeResponseModel.SewerList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Sewer, new ChartTable()
+            {
+                ProblemCount = countProblemSewer,
+                NoProblemCount = countNoProblemSewer
+            });
+
+            int countProblemTrash = homeResponseModel.TrashList.Count(c => c.IsProblem);
+            int countNoProblemTrash = homeResponseModel.TrashList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Trash, new ChartTable()
+            {
+                ProblemCount = countProblemTrash,
+                NoProblemCount = countNoProblemTrash
+            });
+
+            int countProblemWater = homeResponseModel.WaterList.Count(c => c.IsProblem);
+            int countNoProblemWater = homeResponseModel.WaterList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Water, new ChartTable()
+            {
+                ProblemCount = countProblemWater,
+                NoProblemCount = countNoProblemWater
+            });
+
+            chartResponse.ChartTable.Add(TypeIssue.All, new ChartTable()
+            {
+                ProblemCount = countProblemAsphalt + countProblemCollect + countProblemLight + countProblemSewer + countProblemTrash + countProblemWater,
+                NoProblemCount = countNoProblemAslphat + countNoProblemCollect + countNoProblemLight + countNoProblemSewer + countNoProblemTrash + countNoProblemWater
+            });
 
             return chartResponse;
         }

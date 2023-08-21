@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.Cmp;
 using System.Linq;
 using System.Threading.Tasks;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting;
+using TE.BE.City.Infra.CrossCutting.Enum;
 using TE.BE.City.Presentation.Model.Response;
 
 namespace TE.BE.City.Presentation.Controllers
@@ -62,6 +64,7 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Id = item.Id,
                     Type = Infra.CrossCutting.Enum.TypeIssue.Water,
                     IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
@@ -75,6 +78,7 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Id = item.Id,
                     Type = Infra.CrossCutting.Enum.TypeIssue.Light,
                     IsProblem = item.IsProblem,
                     Latitude = string.IsNullOrEmpty(item.Latitude) ? null : float.Parse(item.Latitude),
@@ -89,6 +93,7 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Id = item.Id,
                     Type = Infra.CrossCutting.Enum.TypeIssue.Trash,
                     IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
@@ -102,6 +107,7 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Id = item.Id,
                     Type = Infra.CrossCutting.Enum.TypeIssue.Collect,
                     IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
@@ -115,6 +121,7 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Id = item.Id,
                     Type = Infra.CrossCutting.Enum.TypeIssue.Sewer,
                     IsProblem = item.IsProblem,
                     Latitude = float.Parse(item.Latitude),
@@ -128,6 +135,7 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Id = item.Id,
                     Type = Infra.CrossCutting.Enum.TypeIssue.Asphalt,
                     IsProblem = item.IsProblem,
                     Latitude = string.IsNullOrEmpty(item.Latitude) ? null : float.Parse(item.Latitude),
@@ -142,6 +150,7 @@ namespace TE.BE.City.Presentation.Controllers
             {
                 mapResponse.Regions.Add(new Issues()
                 {
+                    Id = item.Id,
                     Type = Infra.CrossCutting.Enum.TypeIssue.PublicService,
                     Latitude = float.Parse(item.Latitude),
                     Longitude = float.Parse(item.Longitude),
@@ -151,6 +160,77 @@ namespace TE.BE.City.Presentation.Controllers
             }
 
             return mapResponse;
+        }
+
+        [HttpGet]
+        [Route("report")]
+        public async Task<ChartResponse> Report(int userId)
+        {
+            var chartResponse = new ChartResponse();
+            chartResponse.ChartTable = new System.Collections.Generic.Dictionary<TypeIssue, ChartTable>();
+
+            var waterEntityList = await _waterService.GetAllByUser(userId);
+            var lightEntityList = await _lightService.GetAllByUser(userId);
+            var trashEntityList = await _trashService.GetAllByUser(userId);
+            var collectEntityList = await _collectService.GetAllByUser(userId);
+            var sewerEntityList = await _sewerService.GetAllByUser(userId);
+            var asphaltEntityList = await _asphaltService.GetAllByUser(userId);
+
+            int countProblemAsphalt = asphaltEntityList.Count(c => c.IsProblem);
+            int countNoProblemAslphat = asphaltEntityList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Asphalt, new ChartTable()
+            {
+                ProblemCount = countProblemAsphalt,
+                NoProblemCount = countNoProblemAslphat
+            });
+
+            int countProblemCollect = collectEntityList.Count(c => c.IsProblem);
+            int countNoProblemCollect = collectEntityList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Collect, new ChartTable()
+            {
+                ProblemCount = countProblemCollect,
+                NoProblemCount = countNoProblemCollect
+            });
+
+            int countProblemLight = lightEntityList.Count(c => c.IsProblem);
+            int countNoProblemLight = lightEntityList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Light, new ChartTable()
+            {
+                ProblemCount = countProblemLight,
+                NoProblemCount = countNoProblemLight
+            });
+
+            int countProblemSewer = sewerEntityList.Count(c => c.IsProblem);
+            int countNoProblemSewer = sewerEntityList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Sewer, new ChartTable()
+            {
+                ProblemCount = countProblemSewer,
+                NoProblemCount = countNoProblemSewer
+            });
+
+            int countProblemTrash = trashEntityList.Count(c => c.IsProblem);
+            int countNoProblemTrash = trashEntityList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Trash, new ChartTable()
+            {
+                ProblemCount = countProblemTrash,
+                NoProblemCount = countNoProblemTrash
+            });
+
+            int countProblemWater = waterEntityList.Count(c => c.IsProblem);
+            int countNoProblemWater = waterEntityList.Count(c => !c.IsProblem);
+            chartResponse.ChartTable.Add(TypeIssue.Water, new ChartTable()
+            {
+                ProblemCount = countProblemWater,
+                NoProblemCount = countNoProblemWater
+            });
+
+            chartResponse.ChartTable.Add(TypeIssue.All, new ChartTable()
+            {
+                ProblemCount = countProblemAsphalt + countProblemCollect + countProblemLight + countProblemSewer + countProblemTrash + countProblemWater,
+                NoProblemCount = countNoProblemAslphat + countNoProblemCollect + countNoProblemLight + countNoProblemSewer + countNoProblemTrash + countNoProblemWater
+            });
+
+            return chartResponse;
         }
     }
 }

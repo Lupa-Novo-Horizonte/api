@@ -18,13 +18,11 @@ namespace TE.BE.City.Presentation.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ICollectService _collectService;
-        private readonly IBackgroundService _backgroundService;
-
-        public CollectController(ICollectService collectService, IMapper mapper, IBackgroundService backgroundService)
+        
+        public CollectController(ICollectService collectService, IMapper mapper)
         {
             _collectService = collectService;
             _mapper = mapper;
-            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -74,9 +72,6 @@ namespace TE.BE.City.Presentation.Controllers
             collectEntity.StatusId = 1; // request.StatusId;
 
             var result = await _collectService.Post(collectEntity);
-
-            // Fire and forget
-            _backgroundService.ExecuteAsync();
 
             return Response(result.IsSuccess, null);
         }

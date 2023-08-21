@@ -19,17 +19,15 @@ namespace TE.BE.City.Presentation.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IWaterService _waterService;
-        private readonly IBackgroundService _backgroundService;
-
+        
         /// <summary>
         /// Dependency injection to access Service layer.
         /// </summary>
         /// <param name="Service"></param>
-        public WaterController(IWaterService Service, IMapper mapper, IBackgroundService backgroundService) : base()
+        public WaterController(IWaterService Service, IMapper mapper) : base()
         {
             _mapper = mapper;
             _waterService = Service;
-            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -54,9 +52,6 @@ namespace TE.BE.City.Presentation.Controllers
             waterEntity.CreatedAt = DateTime.Now;
                 
             var result = await _waterService.Post(waterEntity);
-
-            // Fire and forget
-            _backgroundService.ExecuteAsync();
 
             return Response(result.IsSuccess, null);
         }

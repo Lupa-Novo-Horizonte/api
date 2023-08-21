@@ -19,14 +19,12 @@ namespace TE.BE.City.Presentation.Controllers
         private readonly IMapper _mapper;
         private readonly ITrashService _trashService;
         private readonly IUserService _userService;
-        private readonly IBackgroundService _backgroundService;
-
-        public TrashController(ITrashService trashService, IMapper mapper, IUserService userService, IBackgroundService backgroundService)
+        
+        public TrashController(ITrashService trashService, IMapper mapper, IUserService userService)
         {
             _trashService = trashService;
             _mapper = mapper;
             _userService = userService;
-            _backgroundService = backgroundService;
         }
 
         /// <summary>
@@ -76,10 +74,7 @@ namespace TE.BE.City.Presentation.Controllers
             trashEntity.StatusId = 1; //request.StatusId;
 
             var result = await _trashService.Post(trashEntity);
-
-            // Fire and forget
-            _backgroundService.ExecuteAsync();
-
+            
             return Response(result.IsSuccess, null);
         }
 
