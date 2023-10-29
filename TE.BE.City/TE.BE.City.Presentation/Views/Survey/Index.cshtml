@@ -1,5 +1,9 @@
 ﻿@model TE.BE.City.Presentation.Model.ViewModel.SurveyViewModel
 
+@{
+    Layout = "~/Views/Shared/_LayoutSurvey.cshtml";
+}
+
 <div class="content">
     <h1 class="h1">De Sua Opinião</h1>
 </div>
@@ -32,13 +36,38 @@
             <div class="wrap">
 
         <p>Sua colaboração é anônima!</p>
-        <p>Para cada uma das afirmações abaixo, selecione de 1 a 5 o quanto você concorda com elas. <b>(Onde 1 = pouco e 5 = muito)</b></p>
+        <p>Considerando as perguntas abaixo, selecione um valor na escala de 1 a 5.</p>
         
         <form method="post" asp-controller="Survey" asp-action="Index" runat="server">
             <label class="statement">
-                Eu não tinha conhecimento dos problemas de infraestrutura presentes no bairro.
+                Estou vinculado a:
             </label>
             <ul class='likert'>
+                <li></li>
+                <li></li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question11,"1")
+                    <label>E. E. Raimunda dos Passos</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question11,"2")
+                    <label>Unifap</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question11,"3")
+                    <label>Outro</label>
+                </li>
+                <li></li>
+                <li></li>
+            </ul>
+
+            <label class="statement">
+                Quão fácil é operar o aplicativo.
+            </label>
+            <ul class='likert'>
+                <li>
+                    <label>Difícil</label>
+                </li>
                 <li>
                     @Html.RadioButtonFor(m => m.Question01,"1")
                     <label>1</label>
@@ -59,11 +88,17 @@
                     @Html.RadioButtonFor(m => m.Question01,"5")
                     <label>5</label>
                 </li>
+                <li>
+                    <label>Fácil</label>
+                </li>
             </ul>
             <label class="statement">
-                Eu concorda que a população pode colaborar com o monitoramento da qualidade dos serviços.
+                Sobre a clareza das perguntas.
             </label>
             <ul class='likert'>
+                <li>
+                    <label>Confuso</label>
+                </li>
                 <li>
                             @Html.RadioButtonFor(m => m.Question02,"1")
                     <label>1</label>
@@ -84,80 +119,256 @@
                             @Html.RadioButtonFor(m => m.Question02,"5")
                     <label>5</label>
                 </li>
-            </ul>
-            <label class="statement">
-                Eu acredito que expondo esses problemas pode ajudar na sua resolução pelos orgãos responsáveis.
-            </label>
-            <ul class='likert'>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question03,"1")
-                    <label>1</label>
-                </li>
-                <li>
-                            @Html.RadioButtonFor(m => m.Question03,"2")
-                    <label>2</label>
-                </li>
-                <li>
-                            @Html.RadioButtonFor(m => m.Question03,"3")
-                    <label>3</label>
-                </li>
-                <li>
-                            @Html.RadioButtonFor(m => m.Question03,"4")
-                    <label>4</label>
-                </li>
-                <li>
-                            @Html.RadioButtonFor(m => m.Question03,"5")
-                    <label>5</label>
+                    <label>Claro</label>
                 </li>
             </ul>
             <label class="statement">
-                Considero relevante as informações contidas nesse site.
+                Sobre o tempo utilizado para efeturar um cadastro.
             </label>
             <ul class='likert'>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question04,"1")
+                    <label>Lento</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question03,"1")
                     <label>1</label>
                 </li>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question04,"2")
+                    @Html.RadioButtonFor(m => m.Question03,"2")
                     <label>2</label>
                 </li>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question04,"3")
+                    @Html.RadioButtonFor(m => m.Question03,"3")
                     <label>3</label>
                 </li>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question04,"4")
+                    @Html.RadioButtonFor(m => m.Question03,"4")
                     <label>4</label>
                 </li>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question04,"5")
+                    @Html.RadioButtonFor(m => m.Question03,"5")
                     <label>5</label>
+                </li>
+                <li>
+                    <label>Rápido</label>
                 </li>
             </ul>
             <label class="statement">
-                Eu usária as informações deste site com algum próposito escolar, trabalho ou post em rede social.
+                Sobre interface/telas.
             </label>
             <ul class='likert'>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question05,"1")
+                    <label>Pouco agradável</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question04,"1")
                     <label>1</label>
                 </li>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question05,"2")
+                    @Html.RadioButtonFor(m => m.Question04,"2")
                     <label>2</label>
                 </li>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question05,"3")
+                    @Html.RadioButtonFor(m => m.Question04,"3")
                     <label>3</label>
                 </li>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question05,"4")
+                    @Html.RadioButtonFor(m => m.Question04,"4")
                     <label>4</label>
                 </li>
                 <li>
-                            @Html.RadioButtonFor(m => m.Question05,"5")
+                    @Html.RadioButtonFor(m => m.Question04,"5")
                     <label>5</label>
+                </li>
+                <li>
+                    <label>Muito agradável</label>
+                </li>
+            </ul>
+            <label class="statement">
+                Quão relevante você considera as informações contidas no aplicativo?.
+            </label>
+            <ul class='likert'>
+                <li>
+                    <label>Pouco relevante</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question05,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question05,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question05,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question05,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question05,"5")
+                    <label>5</label>
+                </li>
+                <li>
+                    <label>Muito relevante</label>
+                </li>
+            </ul>
+            <label class="statement">
+                Você tinha conhecimento dos problemas de infraestrutura apresentados no site?
+            </label>
+            <ul class='likert'>
+                <li>
+                    <label>Pouco</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question06,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question06,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question06,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question06,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question06,"5")
+                    <label>5</label>
+                </li>
+                <li>
+                    <label>Muito</label>
+                </li>
+            </ul>
+            <label class="statement">
+                Você acredita que o site pode ajudar no monitoramento da qualidade dos serviços de infraestrutura?
+            </label>
+            <ul class='likert'>
+                <li>
+                    <label>Não acredito</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question07,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question07,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question07,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question07,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question07,"5")
+                    <label>5</label>
+                </li>
+                <li>
+                    <label>Acredito</label>
+                </li>
+            </ul>
+            <label class="statement">
+                Você acredita que o site pode colaborar com a criação de conteúdo informativo como notícias e postes nas redes sociais?
+            </label>
+            <ul class='likert'>
+                <li>
+                    <label>Não acredito</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question08,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question08,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question08,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question08,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question08,"5")
+                    <label>5</label>
+                </li>
+                <li>
+                    <label>Acredito</label>
+                </li>
+            </ul>
+            <label class="statement">
+                Quão relevante você considera as informações contidas no site?
+            </label>
+            <ul class='likert'>
+                <li>
+                    <label>Pouco relevante</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question09,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question09,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question09,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question09,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question09,"5")
+                    <label>5</label>
+                </li>
+                <li>
+                    <label>Muito relevante</label>
+                </li>
+            </ul>
+            <label class="statement">
+                Você usaria as informações deste aplicativo com algum próposito como escola, trabalho ou post em rede social?
+            </label>
+            <ul class='likert'>
+                <li>
+                    <label>Não</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question10,"1")
+                    <label>1</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question10,"2")
+                    <label>2</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question10,"3")
+                    <label>3</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question10,"4")
+                    <label>4</label>
+                </li>
+                <li>
+                    @Html.RadioButtonFor(m => m.Question10,"5")
+                    <label>5</label>
+                </li>
+                <li>
+                    <label>Sim</label>
                 </li>
             </ul>
             <div class="buttons">

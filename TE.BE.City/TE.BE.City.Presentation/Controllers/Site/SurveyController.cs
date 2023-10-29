@@ -63,7 +63,13 @@ namespace TE.BE.City.Presentation.Controllers
                 surveyViewModel.Question02 == null ||
                 surveyViewModel.Question03 == null ||
                 surveyViewModel.Question04 == null ||
-                surveyViewModel.Question05 == null)
+                surveyViewModel.Question05 == null ||
+                surveyViewModel.Question06 == null ||
+                surveyViewModel.Question07 == null ||
+                surveyViewModel.Question08 == null ||
+                surveyViewModel.Question09 == null ||
+                surveyViewModel.Question10 == null ||
+                surveyViewModel.Question11 == null)
             {
                 errorDetail = new ErrorDetail()
                 {

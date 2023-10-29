@@ -33,6 +33,30 @@ namespace TE.BE.City.Infra.Data.Mappings
                .HasColumnName("question05")
                .HasColumnType("varchar(1)");
 
+            builder.Property(c => c.Question06)
+               .HasColumnName("question06")
+               .HasColumnType("varchar(1)");
+
+            builder.Property(c => c.Question07)
+               .HasColumnName("question07")
+               .HasColumnType("varchar(1)");
+
+            builder.Property(c => c.Question08)
+               .HasColumnName("question08")
+               .HasColumnType("varchar(1)");
+
+            builder.Property(c => c.Question09)
+               .HasColumnName("question09")
+               .HasColumnType("varchar(1)");
+
+            builder.Property(c => c.Question10)
+               .HasColumnName("question10")
+               .HasColumnType("varchar(1)");
+
+            builder.Property(c => c.Question11)
+               .HasColumnName("question11")
+               .HasColumnType("varchar(1)");
+
             builder.Property(c => c.CreatedAt)
                 .IsRequired()
                 .HasColumnName("createdAt")

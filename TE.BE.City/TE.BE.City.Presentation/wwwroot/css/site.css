@@ -242,16 +242,16 @@ form .likert {
         content: '';
         position: relative;
         top: 11px;
-        left: 9.5%;
+        left: 13.0%;
         display: block;
         background-color: #efefef;
         height: 4px;
-        width: 78%;
+        width: 68%;
     }
 
     form .likert li {
         display: inline-block;
-        width: 19%;
+        width: 13%;
         text-align: center;
         vertical-align: top;
     }
