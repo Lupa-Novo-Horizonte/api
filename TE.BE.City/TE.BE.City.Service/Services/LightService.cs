@@ -269,7 +269,7 @@ namespace TE.BE.City.Service.Services
                 row[4] = entity.HasLight.ToSimNao();
                 row[5] = entity.IsItWorking.ToSimNao();
                 row[6] = entity.HasLosesCable.ToSimNao();
-                row[7] = entity.CreatedAt.ToShortDateString();
+                row[7] = entity.CreatedAt.ToString("dd-MM-yyyy HH:mm:ss");
                 row[8] = entity.IsProblem.ToSimNao();
 
                 dataTable.Rows.Add(row);

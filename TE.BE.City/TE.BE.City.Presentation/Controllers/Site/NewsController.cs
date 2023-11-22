@@ -50,17 +50,29 @@ namespace TE.BE.City.Presentation.Controllers.Site
                 generativeTool = (GenerativeTool)option;
         }
 
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<ActionResult> Index()
+        //[ApiExplorerSettings(IgnoreApi = true)]
+        //public async Task<ActionResult> Index()
+        //{
+        //    var response = new NewsViewModel();
+
+        //    response =  _stringCache.GetOrAdd(
+        //        cacheKey,
+        //        () => LoadData(),
+        //        () => LoadCacheItemPolicy());
+
+        //    return View(model: response);
+        //}
+
+        public NewsViewModel InternalIndex()
         {
             var response = new NewsViewModel();
 
-            response =  _stringCache.GetOrAdd(
+            response = _stringCache.GetOrAdd(
                 cacheKey,
                 () => LoadData(),
                 () => LoadCacheItemPolicy());
 
-            return View(model: response);
+            return response;
         }
 
         private CacheItemPolicy LoadCacheItemPolicy()

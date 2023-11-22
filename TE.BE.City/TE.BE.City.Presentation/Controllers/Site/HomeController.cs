@@ -13,6 +13,7 @@ using TE.BE.City.Domain.Entity;
 using TE.BE.City.Domain.Interfaces;
 using TE.BE.City.Infra.CrossCutting;
 using TE.BE.City.Infra.CrossCutting.Enum;
+using TE.BE.City.Presentation.Controllers.Site;
 using TE.BE.City.Presentation.Model.Response;
 using TE.BE.City.Presentation.Model.ViewModel;
 
@@ -30,6 +31,7 @@ namespace TE.BE.City.Presentation.Controllers
         private readonly ISewerService _sewerService;
         private readonly ITrashService _trashService;
         private readonly IWaterService _waterService;
+        private readonly INewsService _newsService;
         private readonly IPublicServiceService _publicServiceService;
 
         public HomeController(IConfiguration config, IMapper mapper, 
@@ -39,7 +41,8 @@ namespace TE.BE.City.Presentation.Controllers
             ISewerService sewerService,
             ITrashService trashService,
             IWaterService waterService,
-            IPublicServiceService publicServiceService
+            IPublicServiceService publicServiceService,
+            INewsService newsService
             ) : base()
         {
             _config = config;
@@ -51,6 +54,7 @@ namespace TE.BE.City.Presentation.Controllers
             _sewerService = sewerService;
             _trashService = trashService;
             _waterService = waterService;
+            _newsService = newsService;
             _publicServiceService = publicServiceService;
         }
 
@@ -61,12 +65,15 @@ namespace TE.BE.City.Presentation.Controllers
         
         public IActionResult Index()
         {   
-            HomeViewModel reportResponseModel = Execute();
+            HomeViewModel reportResponseModel = Execute(ddlIssueType: TypeIssue.All.ToString(), startDate: DateTime.Today.AddDays(-7), endDate: DateTime.Today, ddlIsProblem: IsProblem.All);
             reportResponseModel.ApiKey = _config["GoogleMapsKey"];
             reportResponseModel.Map = Map(reportResponseModel);
+            reportResponseModel.News = News();
 
             if (HttpContext.Request.QueryString.HasValue && HttpContext.Request.QueryString.Value.Contains("iframe=true"))
                 reportResponseModel.IsFrameView = true;
+
+
 
             return View(model: reportResponseModel);
         }
@@ -91,6 +98,7 @@ namespace TE.BE.City.Presentation.Controllers
             reportResponseModel.DataViewState = dataViewState;
             reportResponseModel.Map = Map(reportResponseModel);
             reportResponseModel.Chart = Chart(reportResponseModel);
+            reportResponseModel.News = News();
 
             if (HttpContext.Request.QueryString.HasValue && HttpContext.Request.QueryString.Value.Contains("iframe=true"))
                 reportResponseModel.IsFrameView = true;
@@ -426,6 +434,12 @@ namespace TE.BE.City.Presentation.Controllers
             }
 
             return errorDetail;
+        }
+    
+        private NewsViewModel News()
+        {
+            var newsController = new NewsController(_config, _newsService, _asphaltService, _collectService, _lightService, _sewerService, _trashService, _waterService);
+            return newsController.InternalIndex();
         }
     }
 }

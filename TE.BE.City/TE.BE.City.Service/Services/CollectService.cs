@@ -243,7 +243,7 @@ namespace TE.BE.City.Service.Services
                 row[2] = entity.Latitude.ToString();
                 row[3] = entity.HasCollect.ToSimNao();
                 row[4] = entity.HowManyTimes.ToString();
-                row[5] = entity.CreatedAt.ToShortDateString();
+                row[5] = entity.CreatedAt.ToString("dd-MM-yyyy HH:mm:ss");
                 row[6] = entity.IsProblem.ToSimNao();
 
                 dataTable.Rows.Add(row);

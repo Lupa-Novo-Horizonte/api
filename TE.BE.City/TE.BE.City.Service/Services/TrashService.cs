@@ -285,7 +285,7 @@ namespace TE.BE.City.Service.Services
                 row[3] = entity.HasRoadCleanUp.ToSimNao();
                 row[4] = entity.HowManyTimes.ToString();
                 row[5] = entity.HasAccumulatedTrash.ToSimNao();
-                row[6] = entity.CreatedAt.ToShortDateString();
+                row[6] = entity.CreatedAt.ToString("dd-MM-yyyy HH:mm:ss");
                 row[7] = entity.IsProblem.ToSimNao();
 
                 dataTable.Rows.Add(row);
