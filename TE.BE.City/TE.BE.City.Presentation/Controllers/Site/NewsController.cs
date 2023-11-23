@@ -130,7 +130,7 @@ namespace TE.BE.City.Presentation.Controllers.Site
                             subject += $" at {newsEntity.NewsPriority.Address}.";
                         else
                             subject += $" in Novo Horizonte neighbourhood.";
-                        subject = $" {newsEntity.NewsTextEntity.T2}" + $" {newsEntity.NewsTextEntity.T3}";
+                        subject += $" {newsEntity.NewsTextEntity.T2}" + $" {newsEntity.NewsTextEntity.T3}";
                         response.News = await _newsService.GenerateNewsRecomendation(subject);
                         break;
                 default:
