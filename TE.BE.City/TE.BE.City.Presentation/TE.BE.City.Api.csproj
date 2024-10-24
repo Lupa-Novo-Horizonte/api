@@ -7,6 +7,7 @@
     <RootNamespace>TE.BE.City.Presentation</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>f2e359a7-6df8-4b3b-ab49-e77e203e59dc</UserSecretsId>
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
