@@ -8,6 +8,7 @@
     <AssemblyName>TE.BE.City.Unit.Test</AssemblyName>
 
     <RootNamespace>TE.BE.City.Unit.Test</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
