@@ -1,0 +1,18 @@
+# Execute to install: docker-compose -f stack.yml up
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: city123
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
